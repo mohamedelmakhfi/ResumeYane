@@ -1,0 +1,8 @@
+export { default as Header} from './Header/Header'
+export { default as Firstsec } from './Firstsec/Firstsec'
+export { default as Footer } from './Footer/Footer'
+export { default as Secondsec } from './Secondsec/Secondsec'
+export { default as Thirdsec } from './Thirdsec/Thirdsec'
+export { default as Fourthsec } from './Fourthsec/Fourthsec'
+export { default as Logsec } from './logsec/Logsec'
+export { default as Signsec } from './signsec/Signsec'

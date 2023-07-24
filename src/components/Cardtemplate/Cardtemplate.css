@@ -1,0 +1,23 @@
+.card-img {
+    object-fit: cover;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(82, 82, 82, 0.6);
+    opacity: 0;
+    transition: opacity .7s ease-in-out;
+  }
+  
+  .card:hover .overlay {
+    opacity: 1;
+  }
+
+  .template {
+    width: 200px;
+    font-size: medium;
+  }

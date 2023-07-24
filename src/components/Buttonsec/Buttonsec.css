@@ -1,0 +1,11 @@
+.btn{
+    width: 400px;
+    font-size: 18px;
+    border-radius: 40px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color:#3c8dbc ;
+    color: black ;
+}

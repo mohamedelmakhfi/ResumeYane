@@ -1,0 +1,36 @@
+.container-fluid{
+  margin-top: 40px;
+  border-radius: 30px;
+  border: 2px solid azure;
+}
+
+  .login {
+    min-height: 70vh;
+  }
+  
+  .bg-image {
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px 30px 30px 30px;
+    background-image: url('../../assets/images/login.jpg');
+  }
+  
+  .login-heading {
+    font-weight: 300;
+  }
+  
+  .btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .haha {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .error {
+    font-size: 15px;
+    color: red;
+  }

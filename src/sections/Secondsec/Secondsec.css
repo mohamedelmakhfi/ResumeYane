@@ -1,0 +1,48 @@
+.Secondsec-main{
+    margin: 120px 20px 20px 20px;
+    background-color: azure;
+    color: black;
+    border-radius: 40px ;
+    border: 1px solid black;
+    padding: 50px 50px 50px 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    gap: 30px;
+}
+
+.Secondsec-title{
+    font-size: 30px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.Secondsec-text{
+    max-width: 700px;
+}
+
+.btn{
+    width: 400px;
+    font-size: 20px;
+    border-radius: 40px;
+}
+
+.defcolor {
+    color: rgb(16, 7, 189);
+    font-style: bolder;
+}
+
+.hero-subtitle{
+    font-size: 20px;
+}
+.two{
+    margin-bottom: 20px;
+}
+
+.image2{
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 40%;
+}

@@ -1,0 +1,20 @@
+.form-control:focus {
+    box-shadow: none;
+    border-color: blue ;
+}
+
+.back:hover {
+    color: blue;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: blue;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px blue;
+}

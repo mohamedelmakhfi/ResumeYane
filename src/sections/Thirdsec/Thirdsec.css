@@ -1,0 +1,19 @@
+.Thirdsec-main{
+    margin: 120px 20px 20px 20px;
+    background-color: rgb(206, 206, 206);
+    color: black;
+    border-radius: 40px ;
+    border: 1px solid black;
+    padding: 50px 50px 50px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    row-gap: 40px;
+}
+
+
+.defcolorr{
+    color: rgb(16, 7, 189);
+    font-style: bolder;
+}

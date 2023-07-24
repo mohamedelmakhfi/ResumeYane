@@ -1,0 +1,7 @@
+.card {
+    width: 350px;
+    background-color: azure;
+    border-radius: 30px;
+    padding: 30px;
+    flex: 1 33%;
+}

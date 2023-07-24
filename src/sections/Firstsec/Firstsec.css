@@ -1,0 +1,42 @@
+.hero-main{
+    margin: 20px;
+    background-color: azure;
+    color: black;
+    border-radius: 40px ;
+    border: 1px solid black;
+    padding: 50px 50px 0px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-title{
+    font-size: 50px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.btnn{
+    width: 400px;
+    font-size: 20px;
+    border-radius: 40px;
+}
+
+.difcolor {
+    color: rgb(50, 31, 227);
+    font-style: bolder;
+}
+
+.hero-subtitle{
+    font-size: 20px;
+}
+.two{
+    margin-bottom: 20px;
+}
+
+.image1{
+    width: 60%;
+    max-width: 100%;
+    height: auto;
+}

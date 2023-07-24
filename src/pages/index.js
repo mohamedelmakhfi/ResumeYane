@@ -1,0 +1,8 @@
+export {default as Home} from './Home/Home'
+export {default as Contactus} from './Contactus/Contactus'
+export {default as Login} from './Login/Login'
+export {default as Signup} from './signup/Signup'
+export {default as Templates} from './Templates/Templates'
+export {default as Forgotpassword} from './Forgotpassword/Forgotpassword'
+export {default as Resumeform} from './Resumeform/Resumeform'
+export {default as Profilepage} from './Profilepage/Profilepage'
