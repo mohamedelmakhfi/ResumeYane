@@ -23,7 +23,7 @@ const Logsec = () => {
         .then((userCredential) => {
         const user = userCredential.user;
         dispatch({type:"LOGIN" , payload:user})
-        navigate("/profilepage");
+        navigate("/loginprofil");
         })
         .catch((error) => {
             setError(true);

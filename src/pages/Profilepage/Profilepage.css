@@ -13,8 +13,14 @@
 }
 
 .add-experience:hover {
-    background: blue;
+    background: rgb(249, 10, 10);
     color: #fff;
     cursor: pointer;
     border: solid 1px blue;
+}
+
+&:disabled {
+    background-color: grey;
+    color: black;
+    cursor: not-allowed;
 }
