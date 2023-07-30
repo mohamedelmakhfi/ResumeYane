@@ -1,6 +1,6 @@
 import './App.css';
 import {Container } from './components/index';
-import { Home , Contactus , Login, Signup, Templates, Forgotpassword, Resumeform, Profilepage } from './pages/index';
+import { Home , Contactus , Login, Signup, Templates, Forgotpassword, Resumeform, Profilepage, Loginprofil } from './pages/index';
 import { BrowserRouter as Router , Route , Routes, Navigate } from 'react-router-dom'
 import { Footer } from './sections';
 import { useContext } from 'react';
@@ -35,6 +35,11 @@ const App = () => {
             <Route path='/Profilepage' element={
                           <RequireAuth> 
                               <Profilepage />
+                          </RequireAuth>    
+            } />
+            <Route path='/loginprofil' element={
+                          <RequireAuth> 
+                              <Loginprofil />
                           </RequireAuth>    
             } />
           </Routes>

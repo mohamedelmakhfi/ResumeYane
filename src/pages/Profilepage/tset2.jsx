@@ -47,7 +47,7 @@ const ProfilePage  = () => {
   const [email, setEmail] = useState(userEmail);
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [profesummary, setProfsummary] = useState('');
+  const [professummary, setProfsummary] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [file, setFile] = useState("");
@@ -120,14 +120,53 @@ const ProfilePage  = () => {
     }, []);
     
 
+    // Prepare the education data in an object format
+    const educationData = education.reduce((acc, edu, index) => {
+      if (edu.school !== '' && edu.degree !== '' && edu.startDate !== '' && edu.endDate !== '') {
+        acc[`education${index + 1}`] = {
+          school: edu.school,
+          degree: edu.degree,
+          startDate: edu.startDate,
+          endDate: edu.endDate,
+        };
+      }
+      return acc;
+    }, {});
+
+
+    // Prepare the experiences data in an object format
+  const experienceData = experiences.reduce((acc, exp, index) => {
+    if (exp.position !== '' && exp.company !== '' && exp.startDate !== '' && exp.endDate !== '') {
+      acc[`experience${index + 1}`] = {
+        position: exp.position,
+        company: exp.company,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        workSummary: exp.workSummary,
+      };
+    }
+    return acc;
+  }, {});
+
+
+    // Prepare the languages data in an object format
+    const languagesData = languages.reduce((acc, lang, index) => {
+      if(lang.language !== '' && lang.proficiency !== ''){
+        acc[`language${index + 1}`] = {
+          language: lang.language,
+          proficiency: lang.proficiency,
+        };
+      }
+      return acc;
+    }, {});
   
     try {
       await setDoc(doc(db, "users", userId), {
-        languages: languages, 
+        languages: languagesData, 
         skills: arrayUnion(...skillsData),
         hobbies: arrayUnion(...hobbiesData),
-        education: education,
-        experience: experience,
+        education: educationData,
+        experience: experienceData,
       });
   
       await setDoc(doc(db, "infoperson", userId), {
@@ -136,7 +175,7 @@ const ProfilePage  = () => {
         email: userEmail,
         phone: phone,
         address: address,
-        profesummary: profesummary,
+        profesummary: professummary,
         state: state,
         country: country,
         img: imgUrl,
@@ -151,8 +190,8 @@ const ProfilePage  = () => {
   
   //**************************** skills parametrs *******************************
 
-                    const [numSkills, setNumSkills] = useState();
-                    const [skills, setSkills] = useState([]);
+                    const [numSkills, setNumSkills] = useState(1);
+                    const [skills, setSkills] = useState(Array(1).fill(''));
 
                     const addSkill = () => {
                       setNumSkills(prevNumSkills => prevNumSkills + 1);
@@ -177,10 +216,38 @@ const ProfilePage  = () => {
   //**************************** End skills parametrs *******************************
 
 
+  //**************************** languages parametrs *******************************
+
+                    const [numFields, setNumFields] = useState(1);
+                    const [languages, setLanguages] = useState(Array(1).fill({ language: '', proficiency: '' }));
+
+                    const addField = () => {
+                      setNumFields(prevNumFields => prevNumFields + 1);
+                      setLanguages(prevLanguages => [...prevLanguages, { language: '', proficiency: '' }]);
+                    };
+
+                    const removeField = () => {
+                      if (numFields > 1) {
+                        setNumFields(prevNumFields => prevNumFields - 1);
+                        setLanguages(prevLanguages => prevLanguages.slice(0, numFields - 1));
+                      }
+                    };
+
+                    const handleLanguageChange = (index, field, value) => {
+                      setLanguages(prevLanguages => {
+                        const newLanguages = [...prevLanguages];
+                        newLanguages[index][field] = value;
+                        return newLanguages;
+                      });
+                    };
+
+//**************************** End languages parametrs *******************************
+
+
     //**************************** Hobbies parametrs *******************************
 
-                  const [numHobbies, setNumHobbies] = useState();
-                  const [hobbies, setHobbies] = useState([]);
+                  const [numHobbies, setNumHobbies] = useState(1);
+                  const [hobbies, setHobbies] = useState(Array(1).fill(''));
                 
                   const addHobby = () => {
                     setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
@@ -205,51 +272,20 @@ const ProfilePage  = () => {
   //**************************** End Hobiiesparametrs *******************************
 
 
-                  //**************************** languages parametrs *******************************
-
-                  const [numFields, setNumFields] = useState(1);
-                  const [languages, setLanguages] = useState([{ language: '', proficiency: '' },]);
-
-                  const addField = () => {
-                    setNumFields(prevNumFields => prevNumFields + 1);
-                    setLanguages([...languages, { language: '', proficiency: '' }]); 
-                  };
-
-                  const removeField = () => {
-                    if (languages.length > 1) {
-                      setNumFields(prevNumFields => prevNumFields - 1);
-                      const updatedLanguages = languages.slice(0, languages.length - 1);
-                      setLanguages(updatedLanguages);
-                    }
-                  };
-
-                  const handleLanguageChange = (index, field, value) => {
-                    setLanguages(prevLanguages => {
-                      const newLanguages = [...prevLanguages];
-                      newLanguages[index][field] = value;
-                      return newLanguages;
-                    });
-                  };
-
-//**************************** End languages parametrs *******************************
-
-
-
   //**************************** education parametrs *******************************
 
                   const [numEducation, setNumEducation] = useState(1);
-                  const [education, setEducation] = useState([{ school: '', degree: '', startDate: '', endDate: '' },]);
-                  
+                  const [education, setEducation] = useState(Array(1).fill({ school: '', degree: '', startDate: '', endDate: '' }));
+
                   const addEducation = () => {
                     setNumEducation(prevNumEducation => prevNumEducation + 1);
-                    setEducation([...education, { school: '', degree: '', startDate: '', endDate: '' }]);
+                    setEducation(prevEducation => [...prevEducation, { school: '', degree: '', startDate: '', endDate: '' }]);
                   };
 
                   const removeEducation = () => {
-                    if (education.length > 1) {
+                    if (numEducation > 1) {
                       setNumEducation(prevNumEducation => prevNumEducation - 1);
-                      const updatedEducation = education.slice(0, education.length - 1);
-                      setEducation(updatedEducation);
+                      setEducation(prevEducation => prevEducation.slice(0, numEducation - 1));
                     }
                   };
 
@@ -267,18 +303,17 @@ const ProfilePage  = () => {
 
 
               const [numExperiences, setNumExperiences] = useState(1);
-              const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
-              
+              const [experiences, setExperiences] = useState(Array(1).fill({ position: '', company: '', startDate: '', endDate: '', workSummary: '' }));
+
               const addExperience = () => {
                 setNumExperiences(prevNumExperiences => prevNumExperiences + 1);
-                setExperiences([...experience, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
+                setExperiences(prevExperiences => [...prevExperiences, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
               };
 
               const removeExperience = () => {
-                if (experience.length > 1) {
+                if (numExperiences > 1) {
                   setNumExperiences(prevNumExperiences => prevNumExperiences - 1);
-                  const updatedExperience = experience.slice(0, experience.length - 1);
-                  setExperiences(updatedExperience);
+                  setExperiences(prevExperiences => prevExperiences.slice(0, numExperiences - 1));
                 }
               };
 
@@ -533,7 +568,7 @@ const ProfilePage  = () => {
                     </span>
                   </div>
                   <br />
-                  {experience.map((exp, index) => (
+                  {experiences.map((exp, index) => (
                     <React.Fragment key={index}>
                       <div className="col-md-12">
                         <label className="labels">Position Title {index + 1}</label>

@@ -1,22 +1,18 @@
-import './Profilepage.css';
-import {
-  MDBCol,
-  MDBRow,
-  MDBBreadcrumb,
-  MDBBreadcrumbItem
-} from 'mdb-react-ui-kit';
+import './Loginprofil.css' ;
+
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { FaRegCircleDown } from "react-icons/fa6";
-import { arrayUnion, doc, setDoc } from "firebase/firestore"; 
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { arrayUnion, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
+import { FaRegCircleDown } from 'react-icons/fa6';
 
 
 
-const ProfilePage  = () => {
+const Loginprofil = () => {
 
   const {dispatch} = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
@@ -41,7 +37,10 @@ const ProfilePage  = () => {
     });
 
   }
-  
+
+
+  /*********************** initialise data  ****************************/
+
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState(userEmail);
@@ -51,12 +50,76 @@ const ProfilePage  = () => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [file, setFile] = useState("");
-  const [imgUrl, setImgurl] = useState("");
+  const [imgUrl, setImgurl] = useState('');
 
 
   const [per, setPer] = useState(null);
 
+  /*********************** end initialise data  ****************************/
 
+
+/**************************** get data ********************************** */
+
+
+  const docUsers = doc(db,"users",userId);
+  const [userinfo, setUserinfo] = useState([]);
+
+  const docinfo = doc(db,"infoperson",userId);
+  const [infoperso, setInfoperso] = useState([]);
+
+
+  useEffect(()=> {  
+    const getUsersinfo = async () => {
+      try {
+          const data = await getDoc(docUsers);
+          const filteredData = data.data();
+          setUserinfo(filteredData);
+
+          setHobbies(filteredData.hobbies);
+          setNumHobbies(filteredData.hobbies.length);
+          
+          setSkills(filteredData.skills);
+          setNumSkills(filteredData.skills.length);
+
+          setLanguages(filteredData.languages);
+          setEducation(filteredData.education);
+
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    const getPersonelinfo = async () => {
+      try {
+          const data = await getDoc(docinfo);
+          const filteredData = data.data();
+          setInfoperso(filteredData);
+
+          setName(filteredData?.name || '');
+          setSurname(filteredData?.surname || '');
+          setPhone(filteredData?.phone || '');
+          setAddress(filteredData?.address || '');
+          setProfsummary(filteredData?.profesummary || '');
+          setCountry(filteredData?.country || '');
+          setState(filteredData?.state || '');
+          setImgurl(filteredData?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg')
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getPersonelinfo();
+    getUsersinfo();
+
+  },[])
+
+  /**************************** End get data ********************************** */
+
+
+
+  /******************************* copy ************************************************ */
+  
+  
 
   //********************** upload image *********************** */
 
@@ -120,6 +183,22 @@ const ProfilePage  = () => {
     }, []);
     
 
+    // Prepare the experiences data in an object format
+    const experienceData = experiences.reduce((acc, exp, index) => {
+    if (exp.position !== '' && exp.company !== '' && exp.startDate !== '' && exp.endDate !== '') {
+      acc[`experience${index + 1}`] = {
+        position: exp.position,
+        company: exp.company,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        workSummary: exp.workSummary,
+      };
+    }
+    return acc;
+    }, {});
+
+
+   
   
     try {
       await setDoc(doc(db, "users", userId), {
@@ -127,7 +206,7 @@ const ProfilePage  = () => {
         skills: arrayUnion(...skillsData),
         hobbies: arrayUnion(...hobbiesData),
         education: education,
-        experience: experience,
+        experience: experienceData,
       });
   
       await setDoc(doc(db, "infoperson", userId), {
@@ -267,18 +346,17 @@ const ProfilePage  = () => {
 
 
               const [numExperiences, setNumExperiences] = useState(1);
-              const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
-              
+              const [experiences, setExperiences] = useState(Array(1).fill({ position: '', company: '', startDate: '', endDate: '', workSummary: '' }));
+
               const addExperience = () => {
                 setNumExperiences(prevNumExperiences => prevNumExperiences + 1);
-                setExperiences([...experience, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
+                setExperiences(prevExperiences => [...prevExperiences, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
               };
 
               const removeExperience = () => {
-                if (experience.length > 1) {
+                if (numExperiences > 1) {
                   setNumExperiences(prevNumExperiences => prevNumExperiences - 1);
-                  const updatedExperience = experience.slice(0, experience.length - 1);
-                  setExperiences(updatedExperience);
+                  setExperiences(prevExperiences => prevExperiences.slice(0, numExperiences - 1));
                 }
               };
 
@@ -295,13 +373,12 @@ const ProfilePage  = () => {
 
 
 
+  /********************************* End Copy ****************************************** */
 
-    
 
-
-    return (
+  return (
     <div className='container rounded bg-light mt-5 mb-5'>
-      <MDBRow>
+    <MDBRow>
           <MDBCol>
             <MDBBreadcrumb className="bg-white rounded-3 mt-4 p-3 mb-4 border border-primary">
               <MDBBreadcrumbItem>
@@ -315,18 +392,14 @@ const ProfilePage  = () => {
               </MDBBreadcrumbItem>
             </MDBBreadcrumb>
           </MDBCol>
-      </MDBRow>
+    </MDBRow>
         
 
     <form className="row" onSubmit={handleAdd}>
         <div className="col-md-3 border-right">
             <div className="d-flex flex-column align-items-center text-center p-3 py-5">
               <img className="rounded-circle mt-5" width="150px" 
-                src={
-                  file
-                    ? URL.createObjectURL(file)
-                    : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                }
+                src={ file ? URL.createObjectURL(file) : imgUrl }
                 alt='profil'
               />
 
@@ -353,20 +426,20 @@ const ProfilePage  = () => {
 
                 {/* info personels */}
                 <div className="row mt-2">
-                    <div className="col-md-6"><label className="labels">Name</label><input type="text" className="form-control" placeholder="first name"  required onChange={(e) => setSurname(e.target.value)}/></div>
-                    <div className="col-md-6"><label className="labels">Surname</label><input type="text" className="form-control"  placeholder="surname" required onChange={(e) => setName(e.target.value)}/></div>
+                    <div className="col-md-6"><label className="labels">Name</label><input type="text" className="form-control" placeholder="first name"  required onChange={(e) => setName(e.target.value)} value={name}/></div>
+                    <div className="col-md-6"><label className="labels">Surname</label><input type="text" className="form-control"  placeholder="surname" required onChange={(e) => setSurname(e.target.value)} value={surname}/></div>
                 </div>
                 <div className="row mt-3">
-                    <div className="col-md-12"><label className="labels">Mobile Number</label><input type="text" className="form-control" placeholder="phone number" required onChange={(e) => setPhone(e.target.value)}/></div>
-                    <div className="col-md-12"><label className="labels">Address</label><input type="text" className="form-control" placeholder="enter address" required onChange={(e) => setAddress(e.target.value)}/></div>
+                    <div className="col-md-12"><label className="labels">Mobile Number</label><input type="text" className="form-control" placeholder="phone number" required onChange={(e) => setPhone(e.target.value)} value={phone}/></div>
+                    <div className="col-md-12"><label className="labels">Address</label><input type="text" className="form-control" placeholder="enter address" required onChange={(e) => setAddress(e.target.value)} value={address}/></div>
                     <div className="col-md-12"><label className="labels">Email ID</label><input type="text" className="form-control" placeholder="email id" required value={currentUser.email}/></div>
-                    <div className="col-md-12"><label className="labels">Professional Summary </label><input className="form-control" defaultValue="Professional Summary" required onChange={(e) => setProfsummary(e.target.value)} /></div>
+                    <div className="col-md-12"><label className="labels">Professional Summary </label><input className="form-control" required onChange={(e) => setProfsummary(e.target.value)} value={profesummary}/></div>
                 </div>
 
                 {/* country */}                
                 <div className="row mt-4">
-                    <div className="col-md-6"><label className="labels">Country</label><input type="text" className="form-control" placeholder="country" required onChange={(e) => setCountry(e.target.value)} /></div>
-                    <div className="col-md-6"><label className="labels">State/Region</label><input type="text" className="form-control"  placeholder="state" required onChange={(e) => setState(e.target.value)} /></div>
+                    <div className="col-md-6"><label className="labels">Country</label><input type="text" className="form-control" placeholder="country" required onChange={(e) => setCountry(e.target.value)} value={country} /></div>
+                    <div className="col-md-6"><label className="labels">State/Region</label><input type="text" className="form-control"  placeholder="state" required onChange={(e) => setState(e.target.value)} value={state} /></div>
                 </div>
 
                 {/* Education */}
@@ -381,6 +454,7 @@ const ProfilePage  = () => {
                       </span>
                     </div>
                     <br />
+                    
                     {education.map((edu, index) => (
                       <React.Fragment key={index}>
                         <div className="col-md-6">
@@ -403,6 +477,7 @@ const ProfilePage  = () => {
                             onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
                           />
                         </div>
+                        
                         <div className="col-md-6">
                           <label className="labels">Start Date</label>
                           <input
@@ -424,6 +499,8 @@ const ProfilePage  = () => {
                       </React.Fragment>
                     ))}
                 </div>
+                <br />
+                <br />
 
                 {/* languages */}
                 <div className="row mt-6">
@@ -463,6 +540,9 @@ const ProfilePage  = () => {
                     ))}
                 </div>
                 
+                <br />
+                <br />
+
                 {/* Skills */}
                 <div className="row mt-7">
                   <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
@@ -489,7 +569,9 @@ const ProfilePage  = () => {
                   ))}
                 </div>
 
-                
+                <br />
+                <br />
+
                 {/* Hobbies */}
                 <div className="row mt-8">
                   <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
@@ -515,6 +597,8 @@ const ProfilePage  = () => {
                     </div>
                   ))}
                 </div>
+                <br />
+                <br />
                                 
                 <div className="mt-5 text-center"><button className="btn btn-primary profile-button" type="submit" disabled={per !== null && per < 100} >Save Profile</button></div>
             </div>
@@ -532,10 +616,14 @@ const ProfilePage  = () => {
                       <i className="fa fa-minus"></i>
                     </span>
                   </div>
+                  
                   <br />
-                  {experience.map((exp, index) => (
+                  {experiences.map((exp, index) => (
+                    
                     <React.Fragment key={index}>
                       <div className="col-md-12">
+                        <br />
+
                         <label className="labels">Position Title {index + 1}</label>
                         <input
                           type="text"
@@ -584,11 +672,13 @@ const ProfilePage  = () => {
                       </div>
                     </React.Fragment>
                   ))}
+                  
                 </div>
             </div>
+            
     </form>
     </div>
-  );
+  )
 }
 
-export default ProfilePage
+export default Loginprofil
