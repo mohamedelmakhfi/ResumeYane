@@ -32,6 +32,10 @@ const App = () => {
             <Route path='/Templates' element={<Templates />} />
             <Route path='/Forgotpassword' element={<Forgotpassword />} />
             <Route path='/Resumeform' element={<Resumeform />} />
+          </Routes>
+
+        </Container>
+          <Routes>
             <Route path='/Profilepage' element={
                           <RequireAuth> 
                               <Profilepage />
@@ -43,7 +47,7 @@ const App = () => {
                           </RequireAuth>    
             } />
           </Routes>
-        </Container>
+        {/* </Container>*/}
         <Footer />
       </Router>
     </>
