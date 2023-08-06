@@ -1,3 +1,6 @@
 export { default as Container} from './Container/Container'
 export { default as Ansquestion} from './Ansquestion/Ansquestion'
 export { default as Card} from './Card/Card'
+export { default as Resume1Component} from './Resume/Resume1Component'
+export { default as Resume2Component} from './Resume/Resume2Component'
+export { default as Resume3Component} from './Resume/Resume3Component'

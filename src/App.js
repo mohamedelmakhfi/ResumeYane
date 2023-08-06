@@ -33,7 +33,6 @@ const App = () => {
             <Route path='/Forgotpassword' element={<Forgotpassword />} />
             <Route path='/Resumeform' element={<Resumeform />} />
           </Routes>
-
         </Container>
           <Routes>
             <Route path='/Profilepage' element={

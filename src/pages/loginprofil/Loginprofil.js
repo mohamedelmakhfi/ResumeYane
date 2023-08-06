@@ -9,6 +9,7 @@ import { arrayUnion, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
 import { FaRegCircleDown } from 'react-icons/fa6';
+import { Resume1Component , Resume2Component , Resume3Component } from '../../components/index';
 
 
 
@@ -52,8 +53,25 @@ const Loginprofil = () => {
   const [file, setFile] = useState("");
   const [imgUrl, setImgurl] = useState('');
 
-
+  ///////////////////////////////////////
   const [per, setPer] = useState(null);
+  //////////////////////////////////////
+
+  //changement resume
+
+  const [numResume, setNumresume] = useState(1);
+  const nextResume = () => {
+    setNumresume(prevNumResume => prevNumResume + 1);
+  };
+
+  const prevResume = () => {
+      setNumresume(prevNumResume => prevNumResume - 1);
+  };
+
+  console.log(numResume)
+
+  
+
 
   /*********************** end initialise data  ****************************/
 
@@ -669,7 +687,7 @@ const Loginprofil = () => {
         </form>
       </div>
 
-    {/*Test template :*/}
+    {/*Test template :
     <div className='container mx-1 ' >
       <div className='row' style={{ width: '900px' , height : 'auto'}} >
           <div className='col-lg-4 bg-dark text-white text-center py-4'>
@@ -762,8 +780,38 @@ const Loginprofil = () => {
 
           </div>
       </div>
-    </div>
+    </div>*/}
 
+                      <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
+                        <span>Resume templates</span>
+                        <span className="border px-2 difcolor btnhov add-experience" onClick={nextResume}>
+                          <i className="fa fa-plus"></i>
+                        </span>
+                        <span className="border px-2 difcolor btnhov add-experience" onClick={prevResume}>
+                          <i className="fa fa-minus"></i>
+                        </span>
+                      </div>
+
+    { numResume === 1 && <Resume1Component
+      name ={name} 
+      surname={surname}
+      email= {email}
+      phone={phone}
+      address={address}
+      state={state}
+      country={country}
+      education={education}
+      experience={experience}
+      profesummary={profesummary}
+      hobbies={hobbies}
+      languages={languages}
+      skills={skills}
+      file={file}
+      imgUrl={imgUrl}
+    /> }
+
+     { numResume === 2 && <Resume2Component /> }
+     { numResume === 3 && <Resume3Component /> }
     
     </div>
   )
