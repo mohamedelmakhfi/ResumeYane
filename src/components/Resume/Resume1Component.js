@@ -91,13 +91,19 @@ const Resume1Component = (props) => {
               </div>
 
               <div>
-                <h5 className='text-uppercase bg-white text-dark py-2 rounded-pill'>Hobbies</h5>
-                <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
-                {props.hobbies.map((hobbie ,index) => (
-                    <li key={index} className='list-item'>{hobbie}</li>
-                ))}
-                </ul>
+                  <h5 className='text-uppercase bg-white text-dark py-2 rounded-pill'>Hobbies</h5>
+                  <div className="row">
+                      {props.hobbies.map((hobbie, index) => (
+                          <div key={index} className="col-md-6">
+                              <div className="list-item">
+                                {hobbie}
+                              </div>
+                          </div>
+                      ))}
+                  </div>
               </div>
+
+
           </div>
 
           <div className='col-lg-8 bg-light text-dark py-4 px-5'>
@@ -133,17 +139,16 @@ const Resume1Component = (props) => {
                 ))}                
             </div>
 
-            <div className='text-center'>
+            <div className=''>
               <h4 className='text-center'>projects</h4>
               <hr />
                 {props.projects.map((projet,index) => (
                 <>
-                  <h5 key={index}>Projet {index+1} :</h5>
                   <div className="d-flex justify-content-evenly">
                     <h5> {projet.projectName}</h5>
                     <h5> {projet.projectType}</h5>
                   </div>
-                  <h6 className="m-auto" style={{maxWidth : '450px'}}> {projet.description}</h6>
+                  <h6 className="m-auto text-left" style={{maxWidth : '450px'}}> {projet.description}</h6>
                   <br /></>              
                 ))}  
             </div>

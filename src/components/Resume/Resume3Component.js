@@ -38,11 +38,11 @@ const Resume3Component = (props) => {
           <div className="resume-header">
             {/* ... (header content) ... */}
             <div className="row align-items-center">
-						<div className="resume-title col-12 col-md-6 col-lg-8 col-xl-9">
+						<div className="resume-title col-12 col-md-6 col-lg-6 col-xl-6">
 							<h2 className="resume-name mb-0 text-uppercase">{props.name} {props.surname}</h2>
 							<div className="resume-tagline mb-3 mb-md-0">{props.profession}</div>
 						</div>
-						<div className="resume-contact col-12 col-md-6 col-lg-4 col-xl-3">
+						<div className="resume-contact col-12 col-md-6 col-lg-6 offset-md-1 col-xl-5">
 							<ul className="list-unstyled mb-0">
 								<li className="mb-2"><i className="fas fa-phone-square fa-fw fa-lg me-2 "></i><a className="resume-link" href="tel:#">{props.phone}</a></li>
 								<li className="mb-2"><i className="fas fa-envelope-square fa-fw fa-lg me-2"></i><a className="resume-link" href="mailto:#">{props.email}</a></li>
@@ -184,26 +184,47 @@ const Resume3Component = (props) => {
             </section>
               </div>
 
-              <aside className="resume-aside col-12 col-lg-4 col-xl-3 px-lg-4 pb-lg-4">
+              <aside className="resume-aside col-12 col-lg-4 col-xl-3 ">
                 <section className="skills-section py-3">
-                  {/* ... (skills section) ... */}
-                  <div className="item">
-                  <h4 className="item-title">skills</h4>
+                {props.skills.length < 6 && ( 
+                  <div className="item text-center">
+                  <h4 className="item-title ">skills</h4>
                   {props.skills.map((skill, index) => (
             			<ul key={index} className="list-unstyled resume-skills-list">
                     <li className="mb-2">{skill}</li>
                     </ul>
 									))}
 									</div>
+                )}
+
+                  {props.skills.length >= 6 && ( 
+                    <div className="row text-center ">
+                                      <h4 className="item-title mb-3">skills</h4>
+
+                        {props.skills.map((skill, index) => {
+                              if (index % 2 === 0) {
+                                const nextSkill = props.skills[index + 1];
+                                return (
+                                    <div key={index} className="col-md-12">
+                                        <ul className="list-unstyled resume-skills-list">
+                                            <li className="mb-2">{skill} {nextSkill && <span>- {nextSkill}</span>}</li>
+                                        </ul>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })}
+                        
+                    </div>)}
                 </section>
 
               
 
-                <section className="education-section py-3">
+                <section className="education-section py-3 ">
                   {/* ... (languages section) ... */}
-                  <h3 className="text-uppercase resume-section-heading mb-4">Languages</h3>
+                  <h3 className="text-uppercase resume-section-heading mb-4 text-center">Languages</h3>
                   {props.languages.map((language ,index) => (                     
-										<ul key = {index} className="list-unstyled resume-education-list">
+										<ul key = {index} className="list-unstyled resume-education-list mx-1">
 											<li className="mb-3">
 												<div className="resume-degree font-weight-bold">{language.language} - ({language.proficiency}) </div>
 												
@@ -212,7 +233,7 @@ const Resume3Component = (props) => {
                     ))}
                 </section>
 
-                <section className="skills-section py-3">
+                <section className="skills-section py-3 text-center">
 										<h3 className="text-uppercase resume-section-heading mb-4">Interests</h3>
                     {props.hobbies.map((hobbie ,index) => (
 										<ul key={index} className="list-unstyled resume-interests-list mb-0">

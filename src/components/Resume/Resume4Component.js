@@ -1,4 +1,33 @@
 
+
+const getIconClass = platform => {
+	switch (platform) {
+	  case 'github':
+		return 'fab fa-github';
+	  case 'linkedin':
+		return 'fab fa-linkedin';
+	  case 'twitter':
+		return 'fab fa-twitter';
+	  case 'website':
+		return 'fas fa-globe';
+	  case 'instagram':
+		return 'fab fa-instagram';
+	  case 'facebook':
+		return 'fab fa-facebook';
+	  case 'stackoverflow':
+		return 'fab fa-stack-overflow';
+	  case 'youtube':
+		return 'fab fa-youtube';
+	  case 'medium':
+		return 'fab fa-medium';
+	  case 'pinterest':
+		return 'fab fa-pinterest';
+	  case 'twitch':
+		return 'fab fa-twitch';
+	  default:
+		return 'fas fa-link';
+	}
+  };
 const Resume4Component = (props) => {
   return (
     <div className='container '  style={{maxWidth : '1000px'}}>
@@ -12,21 +41,20 @@ const Resume4Component = (props) => {
                     </div>
 				    <div className="col">
 					    <div className="row p-4 justify-content-center justify-content-md-between">
-						    <div className="primary-info col-auto">
-							    <h1 className="name mt-0 mb-1 text-white text-uppercase text-uppercase">Steve Doe</h1>
+						    <div className="primary-info col-md-5">
+							    <h2 className="name mt-4 mb-2 text-dark ">{props.name} {props.surname}</h2>
 							    <div className="title mb-3">{props.profession}</div>
 							    <ul className="list-unstyled">
-								    <li className="mb-2"><a className="text-link" href="#"><i className="far fa-envelope fa-fw me-2" data-fa-transform="grow-3"></i>Steve.Doe@website.com</a></li>
-								    <li><a className="text-link" href="#"><i className="fas fa-mobile-alt fa-fw me-2" data-fa-transform="grow-6"></i>0123 456 78900</a></li>
+								    <li className="mb-2"><a className="text-link" href="#"><i className="far fa-envelope fa-fw me-2" data-fa-transform="grow-3"></i>{props.email}</a></li>
+								    <li><a className="text-link" href="#"><i className="fas fa-mobile-alt fa-fw me-2" data-fa-transform="grow-6"></i>{props.phone}</a></li>
 							    </ul>
 						    </div>
                             
-						    <div className="secondary-info col-auto mt-5">
+						    <div className="secondary-info col-md-7 mt-5">
 							    <ul className="resume-social list-unstyled">
-					                <li className="mb-3"><a className="text-link" href="#"><span className="fa-container text-center me-2"><i className="fab fa-linkedin-in fa-fw"></i></span>linkedin.com/in/stevedoe</a></li>
-					                <li className="mb-3"><a className="text-link" href="#"><span className="fa-container text-center me-2"><i className="fab fa-github-alt fa-fw"></i></span>github.com/username</a></li>
-					                <li className="mb-3"><a className="text-link" href="#"><span className="fa-container text-center me-2"><i className="fab fa-codepen fa-fw"></i></span>codepen.io/username/</a></li>
-					                <li><a className="text-link" href="#"><span className="fa-container text-center me-2"><i className="fas fa-globe"></i></span>yourwebsite.com</a></li>
+								{props.links.map((link, index) => (
+					                <li key={index} className="mb-3"><a className="text-link" href="#"><span className="fa-container text-center me-2"><i className={`${getIconClass(link.platform)} icon-large`}></i></span>{link.url}</a></li>
+								))} 
 							    </ul>
 						    </div>
 					    </div>
@@ -36,7 +64,7 @@ const Resume4Component = (props) => {
 		    </header>
             <hr />
 		    <div className="resume-body p-5" style={{display : 'flex' , flexDirection : 'column'}}>
-			    <section className="resume-section summary-section mb-5">
+			    <section className="resume-section summary-section mb-4">
 				    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Career Summary</h2>
 				    <div className="resume-section-content">
 					    <p className="mb-0">{props.profesummary}</p>
@@ -47,14 +75,29 @@ const Resume4Component = (props) => {
 					    <section className="resume-section experience-section mb-5">
 
 						    <div className="resume-section-content">
-                            
-                            <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Work Experience</h2>
+
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">education</h2>
+                                {props.education.map((edu,index) => (    
+                                    <article className="resume-timeline-item position-relative pb-3" key = {index}>
+									    <div className="resume-timeline-item-header mb-2">
+										    <div className="d-flex flex-column flex-md-row">
+										        <h4 className="resume-position-title font-weight-bold mb-1">School : {edu.school}</h4>
+										        <div className="resume-company-name ms-auto">Degree : {edu.degree}</div>
+										    </div>
+										    <div className="resume-position-time">{edu.startDate} - {edu.endDate}</div>
+									    </div>
+									   
+								    </article>
+                                ))}
+                            <br />
+
+                            <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Work Experience</h2>
                                 {props.experience.map((exp,index) => (
-								    <article className="resume-timeline-item position-relative pb-5" key = {index}>
+								    <article className="resume-timeline-item position-relative pb-1" key = {index}>
 									    
 									    <div className="resume-timeline-item-header mb-2">
 										    <div className="d-flex flex-column flex-md-row">
-										        <h3 className="resume-position-title font-weight-bold mb-1">{exp.position}</h3>
+										        <h4 className="resume-position-title font-weight-bold mb-1">{exp.position}</h4>
 										        <div className="resume-company-name ms-auto">{exp.company}</div>
 										    </div>
 										    <div className="resume-position-time">{exp.startDate} - {exp.endDate}</div>
@@ -65,35 +108,41 @@ const Resume4Component = (props) => {
 
 								    </article>
                                 ))} 
+                            <br />
 
-                                    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">education</h2>
-                                {props.education.map((edu,index) => (    
-                                    <article className="resume-timeline-item position-relative pb-5" key = {index}>
-									    <div className="resume-timeline-item-header mb-2">
-										    <div className="d-flex flex-column flex-md-row">
-										        <h3 className="resume-position-title font-weight-bold mb-1">School : {edu.school}</h3>
-										        <div className="resume-company-name ms-auto">Degree : {edu.degree}</div>
-										    </div>
-										    <div className="resume-position-time">{edu.startDate} - {edu.endDate}</div>
-									    </div>
-									   
-								    </article>
-                                ))}
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Projects</h2>
 
-									<article class="resume-timeline-item position-relative pb-5">
-									    
+									{props.projects.map((projet,index) => (
+									<article key={index} class="resume-timeline-item position-relative ">
 									    <div class="resume-timeline-item-header mb-2">
 										    <div class="d-flex flex-column flex-md-row">
-										        <h3 class="resume-position-title font-weight-bold mb-1">Co-Founder & Lead Developer</h3>
-										        <div class="resume-company-name ms-auto">To-do Lists</div>
+										        <h3 class="resume-position-title font-weight-bold mb-1">{projet.projectName}</h3>
+										        <div class="resume-company-name ms-auto">{projet.projectType}</div>
 										    </div>
-										    <div class="resume-position-time">2015 - 2019</div>
+										    
 									    </div>
 									    <div class="resume-timeline-item-desc">
 										    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
 									    </div>
 
 								    </article>
+									))}
+
+										<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Certificates</h2>
+
+										{props.certificates.map((cert,index) => (
+										<article key={index} class="resume-timeline-item position-relative ">
+											<div class="resume-timeline-item-header mb-2">
+												<div class="d-flex flex-column flex-md-row">
+													<h4 class="resume-position-title font-weight-bold mb-1">{cert.company}</h4>
+													<div class="resume-company-name ms-auto">{cert.certificateLink}</div>
+												</div>
+												
+											</div>
+											
+
+										</article>
+										))}
 						    </div>
 
 					    </section>
@@ -128,16 +177,27 @@ const Resume4Component = (props) => {
 							    </ul>
 						    </div>
 					    </section>
+
+
 					    <section className="resume-section interests-section mb-5">
-						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Interests</h2>
-						    <div className="resume-section-content">
-							    <ul className="list-unstyled">
-                                    {props.hobbies.map((hobbie ,index) => (    
-                                        <li className="mb-1">{hobbie}</li>
-                                    ))}
-							    </ul>
-						    </div>
-					    </section>
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Interests</h2>
+							<div className="resume-section-content">
+								<ul className="list-unstyled">
+									{props.hobbies.map((hobbie, index) => {
+										if (index % 2 === 0) {
+											const nextHobbie = props.hobbies[index + 1];
+											return (
+												<li className="mb-2" key={index}>
+													{hobbie} {nextHobbie &&  <span>&bull; {nextHobbie}</span>}
+												</li>
+											);
+										}
+										return null;
+									})}
+								</ul>
+							</div>
+						</section>
+
 					    
 				    </div>
 			    </div>
