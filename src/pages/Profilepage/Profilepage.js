@@ -1,10 +1,5 @@
 import './Profilepage.css';
-import {
-  MDBCol,
-  MDBRow,
-  MDBBreadcrumb,
-  MDBBreadcrumbItem
-} from 'mdb-react-ui-kit';
+import {MDBCol,MDBRow,MDBBreadcrumb,MDBBreadcrumbItem} from 'mdb-react-ui-kit';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
@@ -13,6 +8,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { FaRegCircleDown } from "react-icons/fa6";
 import { arrayUnion, doc, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { Resume1Component , Resume2Component , Resume3Component, Resume4Component } from '../../components/index';
 
 
 
@@ -23,7 +19,6 @@ const ProfilePage  = () => {
 
   const navigate = useNavigate();
 
-  console.log(currentUser.uid);
 
   const userId = currentUser.uid;
   const userEmail = currentUser.email;
@@ -42,6 +37,9 @@ const ProfilePage  = () => {
 
   }
   
+
+    /*********************** initialise data  ****************************/
+
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState(userEmail);
@@ -52,11 +50,28 @@ const ProfilePage  = () => {
   const [state, setState] = useState('');
   const [file, setFile] = useState("");
   const [imgUrl, setImgurl] = useState("");
+  const [profession, setProfession] = useState("");
+  
 
-
+///////////////////////////////////////
   const [per, setPer] = useState(null);
+ //////////////////////////////////////
+
+  //changement resume
+
+  const [numResume, setNumresume] = useState(1);
+  const nextResume = () => {
+    setNumresume(prevNumResume => prevNumResume + 1);
+  };
+
+  const prevResume = () => {
+      setNumresume(prevNumResume => prevNumResume - 1);
+  };
+
+  console.log(numResume)
 
 
+    /*********************** end initialise data  ****************************/
 
   //********************** upload image *********************** */
 
@@ -128,6 +143,9 @@ const ProfilePage  = () => {
         hobbies: arrayUnion(...hobbiesData),
         education: education,
         experience: experience,
+        certificates : certificates,
+        projects : projects,
+
       });
   
       await setDoc(doc(db, "infoperson", userId), {
@@ -140,6 +158,8 @@ const ProfilePage  = () => {
         state: state,
         country: country,
         img: imgUrl,
+        links : links ,
+        profession : profession,
       });
   
       alert("Submit réussi !");
@@ -151,35 +171,243 @@ const ProfilePage  = () => {
   
   //**************************** skills parametrs *******************************
 
-                    const [numSkills, setNumSkills] = useState();
-                    const [skills, setSkills] = useState([]);
+                  const [numSkills, setNumSkills] = useState(0);
+                  const [skills, setSkills] = useState([]);
 
-                    const addSkill = () => {
-                      setNumSkills(prevNumSkills => prevNumSkills + 1);
-                      setSkills(prevSkills => [...prevSkills, '']);
-                    };
+                  const addSkill = () => {
+                    setNumSkills(prevNumSkills => prevNumSkills + 1);
+                    setSkills(prevSkills => [...prevSkills, '']);
+                  };
 
-                    const removeSkill = () => {
-                      if (numSkills > 1) {
-                        setNumSkills(prevNumSkills => prevNumSkills - 1);
-                        setSkills(prevSkills => prevSkills.slice(0, numSkills - 1));
-                      }
-                    };
+                  const removeSkill = () => {
+                    if (numSkills > 0) {
+                      setNumSkills(prevNumSkills => prevNumSkills - 1);
+                      setSkills(prevSkills => prevSkills.slice(0, numSkills - 1));
+                    }
+                  };
 
-                    const handleSkillChange = (index, value) => {
-                      setSkills(prevSkills => {
-                        const newSkills = [...prevSkills];
-                        newSkills[index] = value;
-                        return newSkills;
-                      });
-                    };
+                  const handleSkillChange = (index, value) => {
+                    setSkills(prevSkills => {
+                      const newSkills = [...prevSkills];
+                      newSkills[index] = value;
+                      return newSkills;
+                    });
+                  };
 
   //**************************** End skills parametrs *******************************
 
 
+
+/************************************   Certificats parametrs ****************************/
+  
+const popularCertificateCompanies = [
+  'Coursera',
+  'edX',
+  'Udemy',
+  'Pluralsight',
+  'Codecademy',
+  'LinkedIn Learning', 
+  'Udacity',
+  'Treehouse', 
+  'FreeCodeCamp',
+  'Khan Academy', 
+  'Skillshare',
+  'FutureLearn',
+  'DataCamp', 
+  'Frontend Masters',
+  'BackEnd Academy', 
+  'Fullstack Academy', 
+  'General Assembly', 
+  'Springboard',
+  'Amazon',
+];
+
+
+
+
+          const [numCertificates, setNumCertificates] = useState(1);
+          const [certificates, setCertificates] = useState([]);
+
+          const addCertificate = () => {
+            setNumCertificates(prevNumCertificates => prevNumCertificates + 1);
+            setCertificates([...certificates, { company: '', certificateLink: '' }]);
+          };
+
+          const removeCertificate = () => {
+            if (certificates.length > 0) {
+              setNumCertificates(prevNumCertificates => prevNumCertificates - 1);
+              setCertificates(certificates.slice(0, certificates.length - 1));
+            }
+          };
+
+          const handleCertificateChange = (index, field, value) => {
+            setCertificates(prevCertificates => {
+              const newCertificates = [...prevCertificates];
+              newCertificates[index][field] = value;
+              return newCertificates;
+            });
+          };
+
+
+
+
+
+/************************************  end  Certificats parametrs ****************************/
+
+
+
+/************************************* Projets parametrs *************************************/
+           
+          const projectTypes = [
+            'Développement de Logiciel',
+            'Réseaux et Infrastructure',
+            'Automatisation Industrielle',
+            'Gestion de Projet',
+            'Sécurité Informatique',
+            'Internet des Objets (IoT)',
+            'Intelligence Artificielle',
+            'Big Data et Analyse de Données',
+            'Cloud Computing',
+            'Développement Web',
+            'Applications Mobiles',
+            'Systèmes Embarqués',
+            'Technologies Automobiles',
+            'Robotique',
+            'Automatisation de Processus',
+            'Technologies d\'Énergie',
+            'Électronique',
+            'Design Industriel',
+            'Projets de Recherche',
+            'Projets Éducatifs',
+            'Solutions de Santé',
+            'Projets Environnementaux',
+            'Solutions de Transport',
+            'Technologies de Communication',
+            'Architecture Informatique',
+            'Intégration de Systèmes',
+            'Solutions d\'Analyse',
+            'Gestion des Données',
+            'Conception d\'Interfaces Utilisateur',
+            'Simulation et Modélisation',
+            'Maintenance Industrielle',
+            'Optimisation de Processus',
+            'Consulting Technologique',
+            'Projets d\'Innovation',
+            'Logistique et Chaîne d\'Approvisionnement',
+            'Automatisme et Contrôle',
+            'Contrôle Qualité',
+            'Management de Projet',
+            'Maintenance et Support',
+            'Enseignement et Formation',
+            'Technologies Financières',
+            'Technologies Marketing',
+            'Intelligence d\'Affaires',
+            'Technologies Juridiques',
+            'Multimédia',
+            'Projets Artistiques',
+            'Design',
+            'Solutions Sociales',
+            'Divertissement et Loisirs',
+            'Technologies Agricoles',
+            'Autre'
+          ];
+
+
+          const [numProjects, setNumProjects] = useState(0);
+          const [projects, setProjects] = useState([]);
+
+          const addProject = () => {
+            setNumProjects(prevNumProjects => prevNumProjects + 1);
+            setProjects([...projects, { projectName: '', projectType: '', description: '' }]);
+          };
+
+          const removeProject = () => {
+            if (projects.length > 0) {
+              setNumProjects(prevNumProjects => prevNumProjects - 1);
+              const updatedProjects = projects.slice(0, projects.length - 1);
+              setProjects(updatedProjects);
+            }
+          };
+
+          const handleProjectChange = (index, field, value) => {
+            setProjects(prevProjects => {
+              const newProjects = [...prevProjects];
+              newProjects[index][field] = value;
+              return newProjects;
+            });
+          };
+
+
+/************************************* Projets parametrs *************************************/
+
+
+
+
+  //****************************  Links parametrs *******************************
+
+  const platforms = ['github', 'linkedin', 'twitter', 'website', 'instagram', 'facebook', 'stackoverflow', 'youtube', 'medium', 'pinterest'];
+
+    const getIconClass = platform => {
+      switch (platform) {
+        case 'github':
+          return 'fab fa-github';
+        case 'linkedin':
+          return 'fab fa-linkedin';
+        case 'twitter':
+          return 'fab fa-twitter';
+        case 'website':
+          return 'fas fa-globe';
+        case 'instagram':
+          return 'fab fa-instagram';
+        case 'facebook':
+          return 'fab fa-facebook';
+        case 'stackoverflow':
+          return 'fab fa-stack-overflow';
+        case 'youtube':
+          return 'fab fa-youtube';
+        case 'medium':
+          return 'fab fa-medium';
+        case 'pinterest':
+          return 'fab fa-pinterest';
+        case 'twitch':
+          return 'fab fa-twitch';
+        default:
+          return 'fas fa-link';
+      }
+    };
+
+  
+  
+        const [numLinks, setNumLinks] = useState(1);
+        const [links, setLinks] = useState([]);
+
+        const addLink = () => {
+          setNumLinks(prevNumLinks => prevNumLinks + 1);
+          setLinks([...links, { platform: '', url: '' }]);
+        };
+
+        const removeLink = () => {
+          if (links.length > 0) {
+            setNumLinks(prevNumLinks => prevNumLinks - 1);
+            setLinks(links.slice(0, links.length - 1));
+          }
+        };
+
+        const handleLinkChange = (index, field, value) => {
+          setLinks(prevLinks => {
+            const newLinks = [...prevLinks];
+            newLinks[index][field] = value;
+            return newLinks;
+          });
+        };
+
+  //**************************** End Links parametrs *******************************
+
+
+
     //**************************** Hobbies parametrs *******************************
 
-                  const [numHobbies, setNumHobbies] = useState();
+                  const [numHobbies, setNumHobbies] = useState(0);
                   const [hobbies, setHobbies] = useState([]);
                 
                   const addHobby = () => {
@@ -188,7 +416,7 @@ const ProfilePage  = () => {
                   };
                 
                   const removeHobby = () => {
-                    if (numHobbies > 1) {
+                    if (numHobbies > 0) {
                       setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
                       setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
                     }
@@ -267,7 +495,7 @@ const ProfilePage  = () => {
 
 
               const [numExperiences, setNumExperiences] = useState(1);
-              const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
+              const [experience, setExperiences] = useState([]);
               
               const addExperience = () => {
                 setNumExperiences(prevNumExperiences => prevNumExperiences + 1);
@@ -300,7 +528,8 @@ const ProfilePage  = () => {
 
 
     return (
-    <div className='container rounded bg-light mt-5 mb-5'>
+    <div className='mx-4' style={{display : 'flex' , flexDirection : 'column' ,gap : '40px'}}>
+    <div className='container rounded bg-light'>
       <MDBRow>
           <MDBCol>
             <MDBBreadcrumb className="bg-white rounded-3 mt-4 p-3 mb-4 border border-primary">
@@ -355,21 +584,24 @@ const ProfilePage  = () => {
                 <div className="row mt-2">
                     <div className="col-md-6"><label className="labels">Name</label><input type="text" className="form-control" placeholder="first name"  required onChange={(e) => setSurname(e.target.value)}/></div>
                     <div className="col-md-6"><label className="labels">Surname</label><input type="text" className="form-control"  placeholder="surname" required onChange={(e) => setName(e.target.value)}/></div>
+                    <div className="col-md-8 text-center offset-md-2"><label className="labels">Profession</label><input type="text" className="form-control"  placeholder="surname" required onChange={(e) => setProfession(e.target.value)} value={profession}/></div>
+
                 </div>
                 <div className="row mt-3">
                     <div className="col-md-12"><label className="labels">Mobile Number</label><input type="text" className="form-control" placeholder="phone number" required onChange={(e) => setPhone(e.target.value)}/></div>
                     <div className="col-md-12"><label className="labels">Address</label><input type="text" className="form-control" placeholder="enter address" required onChange={(e) => setAddress(e.target.value)}/></div>
                     <div className="col-md-12"><label className="labels">Email ID</label><input type="text" className="form-control" placeholder="email id" required value={currentUser.email}/></div>
-                    <div className="col-md-12"><label className="labels">Professional Summary </label><input className="form-control" defaultValue="Professional Summary" required onChange={(e) => setProfsummary(e.target.value)} /></div>
                 </div>
 
                 {/* country */}                
                 <div className="row mt-4">
                     <div className="col-md-6"><label className="labels">Country</label><input type="text" className="form-control" placeholder="country" required onChange={(e) => setCountry(e.target.value)} /></div>
                     <div className="col-md-6"><label className="labels">State/Region</label><input type="text" className="form-control"  placeholder="state" required onChange={(e) => setState(e.target.value)} /></div>
+                    <div className="col-md-12"><label className="labels">Professional Summary </label><input className="form-control" defaultValue="Professional Summary" required onChange={(e) => setProfsummary(e.target.value)} /></div>
                 </div>
 
                 {/* Education */}
+                
                 <div className="row mt-5">
                     <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
                       <span>Education</span>
@@ -425,8 +657,9 @@ const ProfilePage  = () => {
                     ))}
                 </div>
 
+
                 {/* languages */}
-                <div className="row mt-6">
+                <div className="row mt-6 py-3">
                   <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
                     <span>Languages</span>
                     <span className="border px-2 difcolor btnhov add-experience" onClick={addField}>
@@ -462,34 +695,9 @@ const ProfilePage  = () => {
                     </React.Fragment>
                     ))}
                 </div>
-                
-                {/* Skills */}
-                <div className="row mt-7">
-                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
-                    <span>Skills</span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={addSkill}>
-                      <i className="fa fa-plus"></i>
-                    </span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeSkill}>
-                      <i className="fa fa-minus"></i>
-                    </span>
-                  </div>
-                  <br />
-                  {skills.map((skill, index) => (
-                    <div className="col-md-6" key={index}>
-                      <label className="labels">Skill {index + 1}</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Skill"
-                        value={skill}
-                        onChange={(e) => handleSkillChange(index, e.target.value)}
-                      />
-                    </div>
-                  ))}
-                </div>
+                <br />
 
-                
+              
                 {/* Hobbies */}
                 <div className="row mt-8">
                   <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
@@ -515,13 +723,95 @@ const ProfilePage  = () => {
                     </div>
                   ))}
                 </div>
+
+
+                {/* Certificate Companies */}
+                <div className=" row mt-9 py-3">
+                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
+                    <span>Certificates</span>
+                    <span className="border px-2 difcolor btnhov add-experience" onClick={addCertificate}>
+                      <i className="fa fa-plus"></i>
+                    </span>
+                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeCertificate}>
+                      <i className="fa fa-minus"></i>
+                    </span>
+                  </div>
+                  <br />
+                  {certificates.map((certificate, index) => (
+                    <div className="col-md-6" key={index}>
+                      <label className="labels">Certificate {index + 1}</label>
+                      <div className="d-flex align-items-center link-input-group">
+                        <select
+                          className="form-control"
+                          value={certificate.company}
+                          onChange={(e) => handleCertificateChange(index, 'company', e.target.value)}
+                        >
+                          <option value="">Select Company</option>
+                          {popularCertificateCompanies.map((company, companyIndex) => (
+                            <option key={companyIndex} value={company}>
+                            {company}
+                          </option>
+                          ))}
+                        </select>
+                      </div>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Certificate Link"
+                        value={certificate.certificateLink}
+                        onChange={(e) => handleCertificateChange(index, 'certificateLink', e.target.value)}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* links */}
+                <div className="row mt-10 py-3">
+                <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
+                  <span>Links</span>
+                  <span className="border px-2 difcolor btnhov add-experience" onClick={addLink}>
+                    <i className="fa fa-plus"></i>
+                  </span>
+                  <span className="border px-2 difcolor btnhov add-experience" onClick={removeLink}>
+                    <i className="fa fa-minus"></i>
+                  </span>
+                </div>
+                <br />
+                {links.map((link, index) => (
+                  <div className="col-md-6" key={index}>
+                    <label className="labels">Link {index + 1}</label>
+                    <div className="d-flex align-items-center link-input-group">
+                      <select
+                        className="form-control platform-select"
+                        value={link.platform}
+                        onChange={(e) => handleLinkChange(index, 'platform', e.target.value)}>
+                          <option value="">Select Platform</option>
+                          {platforms.map((platform, platformIndex) => (
+                                          <option key={platformIndex} value={platform}>
+                                            {platform}
+                                          </option>
+                                        ))}
+                      </select>
+                      <i className={`${getIconClass(link.platform)} icon-large`}></i>
+                    </div>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="URL"
+                      value={link.url}
+                      onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
+                    />
+                  </div>
+                ))}
+                </div>
                                 
                 <div className="mt-5 text-center"><button className="btn btn-primary profile-button" type="submit" disabled={per !== null && per < 100} >Save Profile</button></div>
             </div>
         </div>
 
-            {/* Experiences */}
+            
             <div className="col-md-4">
+              {/* Experiences */}
                 <div className="p-3 py-5">
                   <div className="d-flex justify-content-between align-items-center experience difcolor btnhov ">
                     <span>Experience</span>
@@ -585,8 +875,185 @@ const ProfilePage  = () => {
                     </React.Fragment>
                   ))}
                 </div>
+
+                {/* Skills */}
+                <div className=" row mt-7 p-3">
+                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
+                    <span>Skills</span>
+                    <span className="border px-2 difcolor btnhov add-experience" onClick={addSkill}>
+                      <i className="fa fa-plus"></i>
+                    </span>
+                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeSkill}>
+                      <i className="fa fa-minus"></i>
+                    </span>
+                  </div>
+                  <br />
+                  {skills.map((skill, index) => (
+                    <div className="col-md-6" key={index}>
+                      <label className="labels">Skill {index + 1}</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Skill"
+                        value={skill}
+                        onChange={(e) => handleSkillChange(index, e.target.value)}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/*Projets */}
+                <div className="row mt-7 p-3">
+                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
+                    <span>Projects</span>
+                    <span className="border px-2 difcolor btnhov add-experience" onClick={addProject}>
+                      <i className="fa fa-plus"></i>
+                    </span>
+                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeProject}>
+                      <i className="fa fa-minus"></i>
+                    </span>
+                  </div>
+                  <br />
+                  {projects.map((project, index) => (
+                    <React.Fragment key={index} className="py-3">
+                      <div className="col-md-12">
+                        <label className="labels ">Project Name {index+1}</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Project Name"
+                          value={project.projectName}
+                          onChange={(e) => handleProjectChange(index, 'projectName', e.target.value)}
+                        />
+                      </div>
+                      <div className="col-md-9">
+                        <label className="labels">Project Type</label>
+                        <select
+                          className="form-control"
+                          value={project.projectType}
+                          onChange={(e) => handleProjectChange(index, 'projectType', e.target.value)}
+                        >
+                          <option value="">Select Project Type</option>
+                          {projectTypes.map((type, typeIndex) => (
+                            <option key={typeIndex} value={type}>
+                              {type}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-md-12">
+                        <label className="labels">Description</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Description"
+                          value={project.description}
+                          onChange={(e) => handleProjectChange(index, 'description', e.target.value)}
+                        />
+                      </div>
+                      <br  />
+                      <br  />
+                      <br  />
+                    </React.Fragment>
+                  ))}
+                </div>
+            
             </div>
+
+            
     </form>
+    </div>
+
+    { numResume === 1 && <Resume1Component
+        name ={name} 
+        surname={surname}
+        email= {email}
+        phone={phone}
+        address={address}
+        state={state}
+        country={country}
+        education={education}
+        experience={experience}
+        profesummary={profesummary}
+        hobbies={hobbies}
+        languages={languages}
+        skills={skills}
+        file={file}
+        imgUrl={imgUrl}
+        certificates={certificates}
+        links={links}
+        projects={projects}
+        profession={profession}
+      /> }
+
+      { numResume === 1 && <Resume2Component 
+        name ={name} 
+        surname={surname}
+        email= {email}
+        phone={phone}
+        address={address}
+        state={state}
+        country={country}
+        education={education}
+        experience={experience}
+        profesummary={profesummary}
+        hobbies={hobbies}
+        languages={languages}
+        skills={skills}
+        file={file}
+        imgUrl={imgUrl}
+        certificates={certificates}
+        links={links}
+        projects={projects}
+        profession={profession}
+      /> }
+
+{ numResume === 1 && <Resume3Component 
+        name ={name} 
+        surname={surname}
+        email= {email}
+        phone={phone}
+        address={address}
+        state={state}
+        country={country}
+        education={education}
+        experience={experience}
+        profesummary={profesummary}
+        hobbies={hobbies}
+        languages={languages}
+        skills={skills}
+        file={file}
+        imgUrl={imgUrl}
+        certificates={certificates}
+        links={links}
+        projects={projects}
+        profession={profession}
+
+      /> }
+
+    { numResume === 1 && <Resume4Component 
+        name ={name} 
+        surname={surname}
+        email= {email}
+        phone={phone}
+        address={address}
+        state={state}
+        country={country}
+        education={education}
+        experience={experience}
+        profesummary={profesummary}
+        hobbies={hobbies}
+        languages={languages}
+        skills={skills}
+        file={file}
+        imgUrl={imgUrl}
+        certificates={certificates}
+        links={links}
+        projects={projects}
+        profession={profession}
+
+    /> }
+
     </div>
   );
 }

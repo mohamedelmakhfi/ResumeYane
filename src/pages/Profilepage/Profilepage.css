@@ -24,3 +24,19 @@
     color: black;
     cursor: not-allowed;
 }
+
+
+.link-input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .platform-select {
+    flex: 1;
+    margin-right: 10px; 
+  }
+  
+  .icon-large {
+    font-size: 24px;
+  }
+  
