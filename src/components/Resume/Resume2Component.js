@@ -53,10 +53,9 @@ const Resume2Component = (props) => {
                       ({link.platform})  {link.url}
                     </li>
                 ))}
-                    <br />                    <br />
-                    <br />
+                    
 
-                    <li className='address'>
+                    <li className='address mt-2' >
                     <i className='fas fa-map-marker-alt mx-2'></i>{props.country} , {props.state} / {props.address}
                   </li>
                 </ul>
@@ -176,9 +175,9 @@ const Resume2Component = (props) => {
 
                             <div className='col-md-6' key={index}>
                                 <div  className=" item">
-                                  <h3 className="level-title">{skill}</h3>
+                                  <h3 className="level-title">{skill.skill}</h3>
                                   <div className="progress level-bar">
-                                      <div className="progress-bar theme-progress-bar" role="progressbar"></div>
+                                      <div className="progress-bar theme-progress-bar" role="progressbar" style={{width: `${skill.level}%`}}></div>
                                   </div>
                                   <div>
                                   </div>
@@ -191,9 +190,9 @@ const Resume2Component = (props) => {
  
             </section>
 
-            <section className="skills-section section">
+            <section className="certificates-section section">
                 <h2 className="section-title"><span className="icon-holder"><i className="fa-solid fa-rocket"></i></span>Certificates</h2>
-                <div className="skillset">
+                <div className="certificateset">
                   <div className="row">
                       {props.certificates.map((certif, index) => (
 

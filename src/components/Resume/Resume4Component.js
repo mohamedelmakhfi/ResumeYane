@@ -130,19 +130,35 @@ const Resume4Component = (props) => {
 
 										<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Certificates</h2>
 
-										{props.certificates.map((cert,index) => (
-										<article key={index} class="resume-timeline-item position-relative ">
-											<div class="resume-timeline-item-header mb-2">
-												<div class="d-flex flex-column flex-md-row">
-													<h4 class="resume-position-title font-weight-bold mb-1">{cert.company}</h4>
-													<div class="resume-company-name ms-auto">{cert.certificateLink}</div>
-												</div>
-												
-											</div>
-											
-
-										</article>
-										))}
+										{props.certificates.map((cert, index) => {
+                    if (index % 2 === 0) {
+                        const nextCert = props.certificates[index + 1];
+                        return (
+                            <div key={index} className="row mb-3">
+                                <div className="col-6">
+                                    <div className="resume-certificate-company font-weight-bold">{cert.company}</div>
+                                    <div className="resume-certificate-link text-muted">
+                                        <a  target="_blank" rel="noopener noreferrer">
+                                            {cert.certificateLink}
+                                        </a>
+                                    </div>
+                                </div>
+                                {nextCert && (
+                                    <div className="col-6">
+                                        <div className="resume-certificate-company font-weight-bold">{nextCert.company}</div>
+                                        <div className="resume-certificate-link text-muted">
+                                            <a  target="_blank" rel="noopener noreferrer">
+                                                {nextCert.certificateLink}
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip odd-indexed items
+                    }
+                })}
 						    </div>
 
 					    </section>
@@ -155,9 +171,9 @@ const Resume4Component = (props) => {
                                     <ul className="list-unstyled mb-4">
                                     {props.skills.map((skill, index) => (
                                         <li className="mb-2" key={index} >
-                                            <div className="resume-skill-name">{skill}</div>
+                                            <div className="resume-skill-name">{skill.skill}</div>
                                             <div className="progress resume-progress">
-                                                <div className="progress-bar theme-progress-bar-dark" role="progressbar" style={{ width: "98%" }} aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div className="progress-bar theme-progress-bar-dark" role="progressbar" style={{width: `${skill.level}%` }} ></div>
                                             </div>
                                         </li>
                                     ))}

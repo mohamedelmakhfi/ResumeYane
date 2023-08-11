@@ -61,12 +61,17 @@ const Resume1Component = (props) => {
 
               <div>
                 <h5 className='text-uppercase bg-white text-dark py-2 rounded-pill'>Skills</h5>
-                <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
-                {props.skills.map((skill, index) => (
-                    <li key={index} className='list-item'>{skill}</li>
-                ))}
-                </ul>
+                <div className='row mt-3 mb-3'>
+                  {props.skills.map((skill, index) => (
+                    <div className='col-md-6 mb-2' key={index}>  
+                      <div className='progress resume-progress'>
+                        <div className='progress-bar bg-secondary' role='progressbar' style={{ width: `${skill.level}%` , color : "white" }} aria-valuemin='0' aria-valuemax='100'>{skill.skill}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
+
 
               <div>
                 <h5 className='text-uppercase bg-white text-dark py-2 rounded-pill'>Links</h5>
@@ -92,16 +97,18 @@ const Resume1Component = (props) => {
 
               <div>
                   <h5 className='text-uppercase bg-white text-dark py-2 rounded-pill'>Hobbies</h5>
-                  <div className="row">
+                  <div className="row mt-3 mb-3">
                       {props.hobbies.map((hobbie, index) => (
-                          <div key={index} className="col-md-6">
-                              <div className="list-item">
-                                {hobbie}
-                              </div>
+                          <div className='col-md-6 mb-2' key={index}>  
+                          <div className='progress resume-progress'>
+                            <div className='progress-bar bg-secondary' role='progressbar' style={{width : "100%" ,color : "white"}} aria-valuemin='0' aria-valuemax='100'>{hobbie}</div>
                           </div>
+                        </div>
                       ))}
                   </div>
               </div>
+
+        
 
 
           </div>
@@ -115,51 +122,98 @@ const Resume1Component = (props) => {
 
             <br />
 
-            <div className='text-center'>
+            <div className='text-left'>
               <h4 className='text-center'>Education</h4>
               <hr />
-                {props.education.map((edu,index) => (
-                  <p  key = {index}>school : {edu.school}   <br />
-                                    degree : {edu.degree}  <br />
-                                    de {edu.startDate} a {edu.endDate}  <br /> <br />
-                  </p>
-                ))}                
+              {props.education.map((edu, index) => {
+                    if (index % 2 === 0) {
+                        const nextEdu = props.education[index + 1];
+                        return (
+                            <div key={index} className="row mb-3">
+                                <div className="col-6">
+                                    <div className="resume-degree font-weight-bold">{edu.school}</div>
+                                    <div className="resume-degree-org text-muted">{edu.degree}</div>
+                                    <div className="resume-degree-time text-muted">
+                                        {edu.startDate} - {edu.endDate}
+                                    </div>
+                                </div>
+                                {nextEdu && (
+                                    <div className="col-6">
+                                        <div className="resume-degree font-weight-bold">{nextEdu.school}</div>
+                                        <div className="resume-degree-org text-muted">{nextEdu.degree}</div>
+                                        <div className="resume-degree-time text-muted">
+                                            {nextEdu.startDate} - {nextEdu.endDate}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip odd-indexed items
+                    }
+                })}       
             </div>
             
             
-            <div className='text-center'>
+            <div className='text-left'>
               <h4 className='text-center'>Work Experience</h4>
               <hr />
-                {props.experience.map((exp,index) => (
-                  <p  key = {index}>position : {exp.position}   <br />
-                                    company : {exp.company}  <br />
-                                    Work Summary : {exp.workSummary} <br />
-                                    de {exp.startDate} a {exp.endDate}  <br /> <br />
-                  </p>
-                ))}                
+              {props.experience.map((exp, index) => {
+        if (index % 2 === 0) {
+            const nextExp = props.experience[index + 1];
+            return (
+                <div key={index} className="row mb-3">
+                    <div className="col-6">
+                        <div className="resume-position font-weight-bold">{exp.position}</div>
+                        <div className="resume-company text-muted">{exp.company}</div>
+                        <div className="resume-summary text-muted">
+                            {exp.workSummary}
+                        </div>
+                        <div className="resume-exp-time text-muted">
+                            {exp.startDate} - {exp.endDate}
+                        </div>
+                    </div>
+                    {nextExp && (
+                        <div className="col-6">
+                            <div className="resume-position font-weight-bold">{nextExp.position}</div>
+                            <div className="resume-company text-muted">{nextExp.company}</div>
+                            <div className="resume-summary text-muted">
+                                {nextExp.workSummary}
+                            </div>
+                            <div className="resume-exp-time text-muted">
+                                {nextExp.startDate} - {nextExp.endDate}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        } else {
+            return null; // Skip odd-indexed items
+        }
+    })}         
             </div>
 
-            <div className=''>
+            <div className='d-flex justify-content-center flex-column'>
               <h4 className='text-center'>projects</h4>
               <hr />
                 {props.projects.map((projet,index) => (
                 <>
-                  <div className="d-flex justify-content-evenly">
-                    <h5> {projet.projectName}</h5>
-                    <h5> {projet.projectType}</h5>
+                  <div className=" col-md-12 row">
+                    <h5 className="col-md-6 "> {projet.projectName}</h5>
+                    <h5 className="col-md-6"> {projet.projectType}</h5>
                   </div>
-                  <h6 className="m-auto text-left" style={{maxWidth : '450px'}}> {projet.description}</h6>
+                  <h6 > {projet.description}</h6>
                   <br /></>              
                 ))}  
             </div>
 
-            <div className='text-center'>
+            <div className='text-left d-flex justify-content-center flex-column'>
               <h4 className='text-center'>Certificates</h4>
               <hr />
                 {props.certificates.map((certif,index) => (
-                  <div className="d-flex justify-content-evenly">
-                    <h6> {certif.company}</h6>
-                    <h6> {certif.certificateLink}</h6>
+                  <div className="col-md-12 row">
+                    <h6 className=" offset-md-2 col-md-6"> {certif.company}</h6>
+                    <h6 className="col-md-4"> {certif.certificateLink}</h6>
                     <br />             
                   </div>
                 ))}  

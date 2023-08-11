@@ -19,7 +19,7 @@
     background: #8d1c1c;
     position: absolute;
     right: 0;
-    max-width: 290px;
+    max-width: 300px;
     height: 100%;
     min-height: 800px;
     color: #fff;
@@ -223,7 +223,7 @@
     
   }
   .skillset .theme-progress-bar {
-    background: #6dbeb2;
+    background: #8d1c1c;
   }
   
 

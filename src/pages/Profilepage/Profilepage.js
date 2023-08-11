@@ -126,20 +126,13 @@ const ProfilePage  = () => {
       return acc;
     }, []);
 
-     // Prepare the skills data in an array format
-     const skillsData = skills.reduce((acc, skill) => {
-      if (skill.trim() !== '') {
-        acc.push(skill.trim());
-      }
-      return acc;
-    }, []);
     
 
   
     try {
       await setDoc(doc(db, "users", userId), {
         languages: languages, 
-        skills: arrayUnion(...skillsData),
+        skills: skills,
         hobbies: arrayUnion(...hobbiesData),
         education: education,
         experience: experience,
@@ -171,28 +164,29 @@ const ProfilePage  = () => {
   
   //**************************** skills parametrs *******************************
 
-                  const [numSkills, setNumSkills] = useState(0);
-                  const [skills, setSkills] = useState([]);
-
-                  const addSkill = () => {
-                    setNumSkills(prevNumSkills => prevNumSkills + 1);
-                    setSkills(prevSkills => [...prevSkills, '']);
-                  };
-
-                  const removeSkill = () => {
-                    if (numSkills > 0) {
-                      setNumSkills(prevNumSkills => prevNumSkills - 1);
-                      setSkills(prevSkills => prevSkills.slice(0, numSkills - 1));
-                    }
-                  };
-
-                  const handleSkillChange = (index, value) => {
-                    setSkills(prevSkills => {
-                      const newSkills = [...prevSkills];
-                      newSkills[index] = value;
-                      return newSkills;
-                    });
-                  };
+              const [numSkills, setNumSkills] = useState(1);
+              const [skills, setSkills] = useState([]);
+              
+              const addSkill = () => {
+                setNumSkills(prevNumSkills => prevNumSkills + 1);
+                setSkills([...skills, { skill: '', level: 0 }]);
+              };
+              
+              const removeSkill = () => {
+                if (skills.length > 1) {
+                  setNumSkills(prevNumSkills => prevNumSkills - 1);
+                  const updatedSkills = skills.slice(0, skills.length - 1);
+                  setSkills(updatedSkills);
+                }
+              };
+              
+              const handleSkillChange = (index, field, value) => {
+                setSkills(prevSkills => {
+                  const newSkills = [...prevSkills];
+                  newSkills[index][field] = value;
+                  return newSkills;
+                });
+              };
 
   //**************************** End skills parametrs *******************************
 
@@ -889,17 +883,34 @@ const popularCertificateCompanies = [
                   </div>
                   <br />
                   {skills.map((skill, index) => (
-                    <div className="col-md-6" key={index}>
-                      <label className="labels">Skill {index + 1}</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Skill"
-                        value={skill}
-                        onChange={(e) => handleSkillChange(index, e.target.value)}
-                      />
-                    </div>
-                  ))}
+                        <React.Fragment key={index}>
+                          <div className="col-md-6">
+                            <label className="labels">Skill {index + 1}</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Skill"
+                              value={skill.skill}
+                              onChange={(e) => handleSkillChange(index, 'skill', e.target.value)}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="labels">Level</label>
+                            <select
+                              className="form-control"
+                              value={skill.level}
+                              onChange={(e) => handleSkillChange(index, 'level', e.target.value)}>
+                              <option value={0}>select ur level</option>  
+                              <option value={40}>Beginner</option>
+                              <option value={55}>Intermediate</option>
+                              <option value={70}>Advanced </option>
+                              <option value={85}>Expert </option>
+                              <option value={100}>Master </option>
+                            </select>
+                          </div>
+
+                        </React.Fragment>
+                      ))}
                 </div>
 
                 {/*Projets */}

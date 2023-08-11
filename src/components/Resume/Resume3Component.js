@@ -186,45 +186,25 @@ const Resume3Component = (props) => {
 
               <aside className="resume-aside col-12 col-lg-4 col-xl-3 ">
                 <section className="skills-section py-3">
-                {props.skills.length < 6 && ( 
+                {props.skills.length <= 6 && ( 
                   <div className="item text-center">
                   <h4 className="item-title ">skills</h4>
                   {props.skills.map((skill, index) => (
             			<ul key={index} className="list-unstyled resume-skills-list">
-                    <li className="mb-2">{skill}</li>
+                    <li className="mb-2">{skill.skill}</li>
                     </ul>
 									))}
 									</div>
                 )}
-
-                  {props.skills.length >= 6 && ( 
-                    <div className="row text-center ">
-                                      <h4 className="item-title mb-3">skills</h4>
-
-                        {props.skills.map((skill, index) => {
-                              if (index % 2 === 0) {
-                                const nextSkill = props.skills[index + 1];
-                                return (
-                                    <div key={index} className="col-md-12">
-                                        <ul className="list-unstyled resume-skills-list">
-                                            <li className="mb-2">{skill} {nextSkill && <span>- {nextSkill}</span>}</li>
-                                        </ul>
-                                    </div>
-                                );
-                            }
-                            return null;
-                        })}
-                        
-                    </div>)}
                 </section>
 
               
 
-                <section className="education-section py-3 ">
+                <section className="languages-section py-3 ">
                   {/* ... (languages section) ... */}
                   <h3 className="text-uppercase resume-section-heading mb-4 text-center">Languages</h3>
                   {props.languages.map((language ,index) => (                     
-										<ul key = {index} className="list-unstyled resume-education-list mx-1">
+										<ul key = {index} className="list-unstyled resume-languages-list mx-1">
 											<li className="mb-3">
 												<div className="resume-degree font-weight-bold">{language.language} - ({language.proficiency}) </div>
 												
