@@ -1,0 +1,32 @@
+.pagination-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    background-color: rgb(12, 12, 168);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 200px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.pagination-button[disabled] {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.active-template {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin: 0 5px;
+}

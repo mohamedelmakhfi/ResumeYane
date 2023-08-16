@@ -9,12 +9,12 @@ const Header = () => {
       <nav className="navbar navbar-expand-md navbar-dark rounded">
         <div className="container">
           <Link to="/" className="navbar-brand text-dark">ResumeYane</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu">
+          <button className="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="mainmenu">
+          <div className="collapse navbar-collapse text-center m-4 " style={{backgroundColor : "azure"}} id="mainmenu">
             <ul className="navbar-nav ms-auto">
-            <Navitems><Link to="/" className="nav-link text-dark">Home</Link></Navitems>
+              <Navitems><Link to="/" className="nav-link text-dark">Home</Link></Navitems>
               <Navitems><Link to="/Templates" className="nav-link text-dark">ResumeTemplate</Link></Navitems>
               <Navitems><Link to="/Contactus " className="nav-link text-dark">Contactus</Link></Navitems>
               <Navitems><Link to="/Login" className="nav-link text-dark">login</Link></Navitems>

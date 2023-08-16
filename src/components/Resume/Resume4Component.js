@@ -29,31 +29,71 @@ const getIconClass = platform => {
 	}
   };
 const Resume4Component = (props) => {
-  return (
-    <div className='container '  style={{maxWidth : '1000px'}}>
+
+	  /********** font *********** */
+	  const fonttext = {
+		fontFamily : props.selectedFonttitre,
+	  }
+	
+	  /* ********* titles *********** */
+	  const TitleColor = {
+		color : props.titleColor,
+		...fonttext,
+	  }
+	
+	  /* ********* side 1 *********** */
+	  const Colortext1 = {
+		color : props.Colortext1,
+	  }
+	  
+	  const background1color = {
+		backgroundColor : props.background1color,
+		...Colortext1,
+	  }
+	
+	  /* ********* side 2 *********** */
+	  const Colortext2 = {
+		color : props.Colortext2,
+	  }
+	  const background2color = {
+		backgroundColor : props.background2color,
+		...Colortext2,
+	  }
+	
+	return (
+    <div className='container '  style={{maxWidth : '1000px' }}>
     <article className="resume-wrapper text-center position-relative">
 	    <div className="resume-wrapper-inner mx-auto text-start bg-white shadow-lg">
-		    <header className="resume-header pt-4 pt-md-0">
+		    <header className="resume-header pt-4 pt-md-0" style={{backgroundColor : background1color.backgroundColor === '#A80000' ? 'black' : background1color.backgroundColor}} >
 			    <div className="row">
-				    <div className="col-block col-md-auto resume-picture-holder text-center text-md-start m-2">
-                            <img className="picture" src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" }
-                             width={"250px"}  alt='profil' />
-                    </div>
+				<div className="col-block col-md-auto resume-picture-holder text-center text-md-start m-2" >
+					<img
+						className="picture p-3"
+						src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"}
+						width={"250px"}
+						alt='profil'
+						style={{
+							borderRadius: "50%", 
+							borderRight : `2px solid ${Colortext1.color}`
+						}}
+					/>
+				</div>
+
 				    <div className="col">
-					    <div className="row p-4 justify-content-center justify-content-md-between">
+					    <div className="row p-4 justify-content-center justify-content-md-between" style={Colortext1}>
 						    <div className="primary-info col-md-5">
-							    <h2 className="name mt-4 mb-2 text-dark ">{props.name} {props.surname}</h2>
+							    <h2 className="name mt-4 mb-2" style={{fontFamily : fonttext.fontFamily , color : TitleColor.color , fontWeight : "bold"}}>{props.name} {props.surname}</h2>
 							    <div className="title mb-3">{props.profession}</div>
 							    <ul className="list-unstyled">
-								    <li className="mb-2"><a className="text-link" href="#"><i className="far fa-envelope fa-fw me-2" data-fa-transform="grow-3"></i>{props.email}</a></li>
-								    <li><a className="text-link" href="#"><i className="fas fa-mobile-alt fa-fw me-2" data-fa-transform="grow-6"></i>{props.phone}</a></li>
+								    <li className="mb-2"><i className="far fa-envelope fa-fw me-2" data-fa-transform="grow-3"></i>{props.email}</li>
+								    <li><i className="fas fa-mobile-alt fa-fw me-2" data-fa-transform="grow-6"></i>{props.phone}</li>
 							    </ul>
 						    </div>
                             
 						    <div className="secondary-info col-md-7 mt-5">
 							    <ul className="resume-social list-unstyled">
 								{props.links.map((link, index) => (
-					                <li key={index} className="mb-3"><a className="text-link" href="#"><span className="fa-container text-center me-2"><i className={`${getIconClass(link.platform)} icon-large`}></i></span>{link.url}</a></li>
+					                <li key={index} className="mb-3"><span className="fa-container text-center me-2"><i className={`${getIconClass(link.platform)} icon-large`}></i></span>{link.url}</li>
 								))} 
 							    </ul>
 						    </div>
@@ -62,21 +102,20 @@ const Resume4Component = (props) => {
 				    </div>
 			    </div>
 		    </header>
-            <hr />
-		    <div className="resume-body p-5" style={{display : 'flex' , flexDirection : 'column'}}>
-			    <section className="resume-section summary-section mb-4">
-				    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Career Summary</h2>
+		    <div className="resume-body p-5" style={{display : 'flex' , flexDirection : 'column' , backgroundColor : background2color.backgroundColor}}>
+			    <section className="resume-section summary-section mb-4" style={background2color}>
+				    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Career Summary</h2>
 				    <div className="resume-section-content">
 					    <p className="mb-0">{props.profesummary}</p>
 				    </div>
 			    </section>
 			    <div className="row">
-				    <div className="resume-main col-12 col-lg-8 col-xl-9 pe-0 pe-lg-5">
+				    <div className="resume-main col-12 col-lg-8 col-xl-9 pe-0 pe-lg-5" style={background2color}>
 					    <section className="resume-section experience-section mb-5">
 
 						    <div className="resume-section-content">
 
-							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">education</h2>
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>education</h2>
                                 {props.education.map((edu,index) => (    
                                     <article className="resume-timeline-item position-relative pb-3" key = {index}>
 									    <div className="resume-timeline-item-header mb-2">
@@ -91,7 +130,7 @@ const Resume4Component = (props) => {
                                 ))}
                             <br />
 
-                            <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Work Experience</h2>
+                            <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Work Experience</h2>
                                 {props.experience.map((exp,index) => (
 								    <article className="resume-timeline-item position-relative pb-1" key = {index}>
 									    
@@ -110,7 +149,7 @@ const Resume4Component = (props) => {
                                 ))} 
                             <br />
 
-							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Projects</h2>
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Projects</h2>
 
 									{props.projects.map((projet,index) => (
 									<article key={index} class="resume-timeline-item position-relative ">
@@ -128,7 +167,7 @@ const Resume4Component = (props) => {
 								    </article>
 									))}
 
-										<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0">Certificates</h2>
+										<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Certificates</h2>
 
 										{props.certificates.map((cert, index) => {
                     if (index % 2 === 0) {
@@ -163,9 +202,9 @@ const Resume4Component = (props) => {
 
 					    </section>
 				    </div>
-				    <div className="resume-aside col-12 col-lg-4 col-xl-3 px-lg-4 pb-lg-4">
+				    <div className="resume-aside col-12 col-lg-4 col-xl-3 px-lg-4 pb-lg-4 p-3" style={{backgroundColor : background1color.backgroundColor === '#A80000' ? 'black' : background1color.backgroundColor , color : Colortext1.color}}>
 					    <section className="resume-section skills-section mb-5">
-						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Skills</h2>
+						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Skills</h2>
 						    <div className="resume-section-content">
                                 <div className="resume-skill-item">
                                     <ul className="list-unstyled mb-4">
@@ -173,7 +212,7 @@ const Resume4Component = (props) => {
                                         <li className="mb-2" key={index} >
                                             <div className="resume-skill-name">{skill.skill}</div>
                                             <div className="progress resume-progress">
-                                                <div className="progress-bar theme-progress-bar-dark" role="progressbar" style={{width: `${skill.level}%` }} ></div>
+                                                <div className="progress-bar theme-progress-bar-dark" role="progressbar" style={{width: `${skill.level}%` ,backgroundColor : TitleColor.color }} ></div>
                                             </div>
                                         </li>
                                     ))}
@@ -184,11 +223,11 @@ const Resume4Component = (props) => {
 				
 					    
 					    <section className="resume-section language-section mb-5">
-						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Language</h2>
+						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Language</h2>
 						    <div className="resume-section-content">
 							    <ul className="list-unstyled resume-lang-list">
                                     {props.languages.map((language ,index) => (
-                                        <li><span className="resume-lang-name font-weight-bold">{language.language}</span> <small className="text-muted font-weight-normal">({language.proficiency})</small></li>
+                                        <li><span className="resume-lang-name font-weight-bold">{language.language}</span> <small className=" font-weight-normal">({language.proficiency})</small></li>
                                     ))}
 							    </ul>
 						    </div>
@@ -196,7 +235,7 @@ const Resume4Component = (props) => {
 
 
 					    <section className="resume-section interests-section mb-5">
-							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Interests</h2>
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Interests</h2>
 							<div className="resume-section-content">
 								<ul className="list-unstyled">
 									{props.hobbies.map((hobbie, index) => {

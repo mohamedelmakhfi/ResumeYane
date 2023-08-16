@@ -8,12 +8,19 @@ import { arrayUnion, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
 import { FaRegCircleDown } from 'react-icons/fa6';
-import { Resume1Component , Resume2Component , Resume3Component, Resume4Component, Resume5Component } from '../../components/index';
+import { Resume1Component, Resume2Component , Resume2Componentcss, Resume3Component, Resume4Component } from '../../components/index';
+import ReactDOM from 'react-dom';
+import { ChromePicker } from 'react-color';
+import { Button } from 'bootstrap';
+
+
+
 
 
 
 const Loginprofil = () => {
 
+  
   const {dispatch} = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
 
@@ -58,16 +65,27 @@ const Loginprofil = () => {
 
   //changement resume
 
-  const [numResume, setNumresume] = useState(1);
+  const [numResume, setNumresume] = useState(2);
   const nextResume = () => {
-    setNumresume(prevNumResume => prevNumResume + 1);
-  };
+    if (numResume < 4) {
+        setNumresume(prevNumResume => prevNumResume + 1);
+    }
+};
 
-  const prevResume = () => {
-      setNumresume(prevNumResume => prevNumResume - 1);
-  };
+const prevResume = () => {
+    if (numResume > 1) {
+        setNumresume(prevNumResume => prevNumResume - 1);
+    }
+};
 
-  console.log(numResume)
+const resumeTemplates = [
+  { id: 1, name: "Resume 1" },
+  { id: 2, name: "Resume 2" },
+  { id: 3, name: "Resume 3" },
+  { id: 4, name: "Resume 4" }
+];
+
+
 
 
   /*********************** end initialise data  ****************************/
@@ -76,10 +94,8 @@ const Loginprofil = () => {
 
 
   const docUsers = doc(db,"users",userId);
-  const [userinfo, setUserinfo] = useState([]);
 
   const docinfo = doc(db,"infoperson",userId);
-  const [infoperso, setInfoperso] = useState([]);
 
 
   useEffect(()=> {  
@@ -87,7 +103,6 @@ const Loginprofil = () => {
       try {
           const data = await getDoc(docUsers);
           const filteredData = data.data();
-          setUserinfo(filteredData);
 
           setHobbies(filteredData.hobbies);
           setNumHobbies(filteredData.hobbies.length);
@@ -111,7 +126,6 @@ const Loginprofil = () => {
       try {
           const data = await getDoc(docinfo);
           const filteredData = data.data();
-          setInfoperso(filteredData);
 
           setName(filteredData?.name || '');
           setSurname(filteredData?.surname || '');
@@ -484,17 +498,14 @@ const popularCertificateCompanies = ['Coursera','edX','Udemy','Pluralsight','Cod
   //**************************** experience parametrs *******************************
 
 
-              const [numExperiences, setNumExperiences] = useState(1);
               const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
               
               const addExperience = () => {
-                setNumExperiences(prevNumExperiences => prevNumExperiences + 1);
                 setExperiences([...experience, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
               };
 
               const removeExperience = () => {
                 if (experience.length > 1) {
-                  setNumExperiences(prevNumExperiences => prevNumExperiences - 1);
                   const updatedExperience = experience.slice(0, experience.length - 1);
                   setExperiences(updatedExperience);
                 }
@@ -515,10 +526,72 @@ const popularCertificateCompanies = ['Coursera','edX','Udemy','Pluralsight','Cod
 
   /********************************* End Copy ****************************************** */
 
+{/******************************** Templates Colors ***********************************/}
 
+    const [titleColor, setTitleColor] = useState('#A80000');
+    const [Colortext1, setColortext1] = useState('#ffffff');
+    const [background1color, setBackground1Color] = useState('#A80000');
+    const [Colortext2,setColortext2]=useState('#000000');
+    const [background2color,setBackground2Color] = useState('#ffffff');
+
+    const colorSections = [
+      {
+        id: 'titleColor',
+        label: 'Couleur du titre',
+        color: titleColor,
+        setColor: setTitleColor,
+      },
+      {
+        id: 'Colortext1',
+        label: 'Couleur du Texte 1',
+        color: Colortext1,
+        setColor: setColortext1,
+      },
+      {
+        id: 'background1color',
+        label: 'Couleur de background 1',
+        color: background1color,
+        setColor: setBackground1Color,
+      },
+      {
+        id: 'Colortext2',
+        label: 'Couleur du Texte 2',
+        color: Colortext2,
+        setColor: setColortext2,
+      },
+      {
+        id: 'background2color',
+        label: 'Couleur de background 2',
+        color: background2color,
+        setColor: setBackground2Color,
+      },
+    ];
+
+{/****************************** end templates colors *************************************/}
+
+{/******************************  templates font *************************************/}
+
+const [selectedFonttitre, setSelectedFont] = useState('Arial');
+const [selectedFonttext, setSelectedFonttext] = useState('Arial');
+
+const fontOptions = [
+  'Arial', 'Helvetica', 'Times New Roman', 'Verdana', 'Georgia', 'Courier New', 'Palatino', 'Garamond',
+  'Tahoma', 'Lucida Console', 'Impact', 'Comic Sans MS', 'Bookman', 'Book Antiqua', 'Courier', 'Lucida Sans',
+  'Trebuchet MS', 'Arial Black', 'Century Gothic', 'Copperplate', 'Franklin Gothic', 'Geneva', 'Optima',
+  'Rockwell', 'Tahoma', 'Apple Chancery', 'Bradley Hand', 'Brush Script MT', 'Chalkduster', 'Cochin',
+  'Didot', 'Footlight MT', 'Futura', 'Marker Felt', 'Monaco', 'Papyrus', 'Snell Roundhand', 'Symbol',
+  'Webdings', 'Zapfino',
+];
+
+
+{/****************************** end templates font *************************************/}
+
+
+
+     
   return (
     <div className='mx-4' style={{display : 'flex' , flexDirection : 'column' ,gap : '40px'}}>
-      <div className='container rounded bg-light ' >
+      <div className='container  rounded bg-light ' >
         <MDBRow>
               <MDBCol>
                 <MDBBreadcrumb className="bg-white rounded-3 mt-4 p-3 mb-4 border border-primary">
@@ -576,7 +649,7 @@ const popularCertificateCompanies = ['Coursera','edX','Udemy','Pluralsight','Cod
                     <div className="row mt-3">
                         <div className="col-md-12"><label className="labels">Mobile Number</label><input type="text" className="form-control" placeholder="phone number" required onChange={(e) => setPhone(e.target.value)} value={phone}/></div>
                         <div className="col-md-12"><label className="labels">Address</label><input type="text" className="form-control" placeholder="enter address" required onChange={(e) => setAddress(e.target.value)} value={address}/></div>
-                        <div className="col-md-12"><label className="labels">Email ID</label><input type="text" className="form-control" placeholder="email id" required value={currentUser.email}/></div>
+                        <div className="col-md-12"><label className="labels">Email ID</label><input type="text" className="form-control" placeholder="email id" required onChange={(e) => setEmail(e.target.value)}  value={currentUser.email}/></div>
                         <div className="col-md-12"><label className="labels">Professional Summary </label><input className="form-control" required onChange={(e) => setProfsummary(e.target.value)} value={profesummary}/></div>
                     </div>
 
@@ -929,7 +1002,7 @@ const popularCertificateCompanies = ['Coursera','edX','Udemy','Pluralsight','Cod
                       </div>
                       <br />
                       {projects.map((project, index) => (
-                        <React.Fragment key={index} className="py-3">
+                        <React.Fragment key={index} >
                           <div className="col-md-12">
                             <label className="labels ">Project Name {index+1}</label>
                             <input
@@ -984,102 +1057,126 @@ const popularCertificateCompanies = ['Coursera','edX','Udemy','Pluralsight','Cod
 
       </div>
 
-                                                    {/* Resumes */}
-    
-      { numResume === 1 && <Resume1Component
-        name ={name} 
-        surname={surname}
-        email= {email}
-        phone={phone}
-        address={address}
-        state={state}
-        country={country}
-        education={education}
-        experience={experience}
-        profesummary={profesummary}
-        hobbies={hobbies}
-        languages={languages}
-        skills={skills}
-        file={file}
-        imgUrl={imgUrl}
-        certificates={certificates}
-        links={links}
-        projects={projects}
-        profession={profession}
+                                                  {/*parametrs */}
+      <div className='container rounded bg-light' > 
 
-      /> }
+      <div className='bg-white rounded-3 mt-4 p-3 mb-4 border border-primary'>
+            <h3 className='text-center' style={{color : titleColor}}>Template Section</h3>
+        <hr />
+        <div className="accordion" id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Change Color Template
+                </button>
+              </h2>
+              <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  <div className="row row-cols-1 row-cols-md-5 text-center">
+                    {colorSections.map((section, index) => (
+                      <div className="col mb-3" key={index}>
+                        <label htmlFor={section.id} className="form-label">
+                          {section.label}
+                        </label>
+                        <input
+                          type="color"
+                          id={section.id}
+                          value={section.color}
+                          onChange={(e) => section.setColor(e.target.value)}
+                          className="form-select"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="accordion-item ">
+              <h2 className="accordion-header " >
+                <button className="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Change font
+                </button>
+              </h2>
+              <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample" >
+                <div className="accordion-body">
+                <div className="mb-3 d-flex col-md-12">
+                  <select
+                    id="fontSelect"
+                    className="form-select"
+                    value={selectedFonttitre}
+                    onChange={(e) => setSelectedFont(e.target.value)}>
+                    {fontOptions.map((font, index) => (
+                      <option key={index} value={font} className='text-center'>
+                        {font}
+                      </option>
+                    ))}
+                  </select>
+                    <div className="text-center col-md-3" >
+                      <span className="input-group-text " style={{ fontFamily: selectedFonttitre }}>
+                      {name} - {surname} 
+                      </span>
+                    </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Change Template
+                </button>
+              </h2>
+              <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample" >
+                <div className="accordion-body">
+                <div className="pagination-buttons">
+                    <button onClick={prevResume} disabled={numResume === 1}>Précédent</button>
+                    {resumeTemplates.map(template => (
+                        <button
+                            key={template.id}
+                            onClick={() => setNumresume(template.id)}
+                            disabled={numResume === template.id}
+                            className={numResume === template.id ? "active-template" : ""}
+                        >
+                            {template.name}
+                        </button>
+                    ))}
+                    <button onClick={nextResume} disabled={numResume === 4}>Suivant</button>
+                </div>
+
+
+
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+        
+        </div>
+       
+                                    {/* Resumes */}
+        
+
+      { numResume === 1 && <Resume1Component name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession} titleColor={titleColor} Colortext1={Colortext1} background1color={background1color} Colortext2={Colortext2} background2color={background2color} selectedFonttitre={selectedFonttitre}/> } 
+
+      { numResume === 2 && <Resume2Component name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession} titleColor={titleColor} Colortext1={Colortext1} background1color={background1color} Colortext2={Colortext2} background2color={background2color} selectedFonttitre={selectedFonttitre}/> }
+      
+      { numResume === 3 && <Resume3Component   name ={name}  surname={surname} email= {email} phone={phone}   address={address}  state={state}  country={country} education={education}   experience={experience}  profesummary={profesummary}  hobbies={hobbies} languages={languages}   skills={skills}  file={file}  imgUrl={imgUrl} certificates={certificates}   links={links}  projects={projects}  profession={profession} titleColor={titleColor}   Colortext1={Colortext1}  background1color={background1color}  Colortext2={Colortext2} background2color={background2color}   selectedFonttitre={selectedFonttitre}  /> }
+
+      { numResume === 4 && <Resume4Component name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession} titleColor={titleColor} Colortext1={Colortext1} background1color={background1color} Colortext2={Colortext2} background2color={background2color} selectedFonttitre={selectedFonttitre}/> }
+
+                   
+      </div>
+                                                    
+    
 
       
-      { numResume === 1 && <Resume2Component 
-        name ={name} 
-        surname={surname}
-        email= {email}
-        phone={phone}
-        address={address}
-        state={state}
-        country={country}
-        education={education}
-        experience={experience}
-        profesummary={profesummary}
-        hobbies={hobbies}
-        languages={languages}
-        skills={skills}
-        file={file}
-        imgUrl={imgUrl}
-        certificates={certificates}
-        links={links}
-        projects={projects}
-        profession={profession}
-
-      /> }
-
-      { numResume === 1 && <Resume3Component 
-        name ={name} 
-        surname={surname}
-        email= {email}
-        phone={phone}
-        address={address}
-        state={state}
-        country={country}
-        education={education}
-        experience={experience}
-        profesummary={profesummary}
-        hobbies={hobbies}
-        languages={languages}
-        skills={skills}
-        file={file}
-        imgUrl={imgUrl}
-        certificates={certificates}
-        links={links}
-        projects={projects}
-        profession={profession}
-
-      /> }
-
-      { numResume === 1 && <Resume4Component 
-        name ={name} 
-        surname={surname}
-        email= {email}
-        phone={phone}
-        address={address}
-        state={state}
-        country={country}
-        education={education}
-        experience={experience}
-        profesummary={profesummary}
-        hobbies={hobbies}
-        languages={languages}
-        skills={skills}
-        file={file}
-        imgUrl={imgUrl}
-        certificates={certificates}
-        links={links}
-        projects={projects}
-        profession={profession}
-
-    /> }
-    
+      
     </div>
+
+
 
     
   )

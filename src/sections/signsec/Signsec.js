@@ -24,7 +24,7 @@ const Signsec = () => {
         .then((userCredential) => {
         const user = userCredential.user;
         dispatch({type:"SIGNUP" , payload:user})
-        navigate("/profilepage");
+        navigate("/Templates");
         })
         .catch((error) => {
             const errorCode = error.code;

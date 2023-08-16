@@ -1,5 +1,4 @@
 .wrapper {
-    background: #fff;
     max-width: 1000px;
     height: auto;
     min-height: 1250px;
@@ -16,7 +15,6 @@
     width: 200px;
   }
   .sidebar-wrapper {
-    background: #8d1c1c;
     position: absolute;
     right: 0;
     max-width: 300px;
@@ -121,7 +119,6 @@
   }
   
   .main-wrapper {
-    background: #fff;
     padding: 60px;
     padding-right: 350px;
   }
@@ -129,7 +126,6 @@
     text-transform: uppercase;
     font-size: 20px;
     font-weight: 500;
-    color: #8d1c1c;
     position: relative;
     margin-top: 0;
     margin-bottom: 10px;
@@ -148,7 +144,6 @@
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
-    background: #8d1c1c;
     text-align: center;
     font-size: 16px;
     position: relative;
@@ -222,10 +217,7 @@
     background-clip: padding-box;
     
   }
-  .skillset .theme-progress-bar {
-    background: #8d1c1c;
-  }
-  
+ 
 
   
   @media (max-width: 767.98px) {
