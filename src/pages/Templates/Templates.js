@@ -15,7 +15,7 @@ const Templates = () => {
   
 
   const cards = templ.map((tmp) => {
-      return <Cardtemplate  id={tmp.id} imageUrl={tmp.imageUrl} /> 
+      return <Cardtemplate key={tmp.id} id={tmp.id} imageUrl={tmp.imageUrl} /> 
   })
 
   return (

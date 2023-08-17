@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PersonalInfoSection = ({ name, setName, surname, setSurname, profession, setProfession, phone, setPhone, address, setAddress, authEmail, setEmail, profsummary, setProfsummary
+const PersonalInfoSection = ({ name, setName, surname, setSurname, profession, setProfession, phone, setPhone, address, setAddress, authEmail, profsummary, setProfsummary
 }) => {
   return (
     <>
@@ -70,7 +70,7 @@ const PersonalInfoSection = ({ name, setName, surname, setSurname, profession, s
             className="form-control"
             placeholder="email id"
             required
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={authEmail}
             value={authEmail}
           />
         </div>

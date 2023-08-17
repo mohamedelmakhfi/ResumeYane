@@ -7,17 +7,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { doc, getDoc , setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
-import ProfileImageForm from '../../components/ComponentForm/ProfileImageForm';
-import Educationform from '../../components/ComponentForm/Educationform';
-import LanguagesForm from '../../components/ComponentForm/LanguagesForm';
-import HobbiesForm from '../../components/ComponentForm/HobbiesFomr';
-import CertificatesForm from '../../components/ComponentForm/CertificatesFomr';
-import LinksForm from '../../components/ComponentForm/LinksForm';
-import ProfileSettingsForm from '../../components/ComponentForm/PersonalInfoForm';
-import ExperienceForm from '../../components/ComponentForm/ExperienceForm';
-import SkillForm from '../../components/ComponentForm/SkillsForm';
-import ProjectForm from '../../components/ComponentForm/ProjectsForm';
-import TemplateSettings from '../../components/ComponentForm/TemplateSettings';
+import { CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
+
 
 
 const Loginprofil = () => {
@@ -52,7 +43,7 @@ const Loginprofil = () => {
   
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState(userEmail);
+  const email = userEmail;
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [profesummary, setProfsummary] = useState('');
@@ -81,15 +72,12 @@ const prevResume = () => {
     }
 };
 
-const resumeTemplates = [
-  { id: 1, name: "Resume 1" },
-  { id: 2, name: "Resume 2" },
-  { id: 3, name: "Resume 3" },
-  { id: 4, name: "Resume 4" }
-];
-
-
-
+    const resumeTemplates = [
+      { id: 1, name: "Resume 1" },
+      { id: 2, name: "Resume 2" },
+      { id: 3, name: "Resume 3" },
+      { id: 4, name: "Resume 4" }
+    ];
 
   /*********************** end initialise data  ****************************/
 
@@ -97,29 +85,21 @@ const resumeTemplates = [
 
 
   const docUsers = doc(db,"users",userId);
-
   const docinfo = doc(db,"infoperson",userId);
-
 
   useEffect(()=> {  
     const getUsersinfo = async () => {
       try {
-          const data = await getDoc(docUsers);
-          const filteredData = data.data();
-
-          setHobbies(filteredData.hobbies);
-          setNumHobbies(filteredData.hobbies.length);
-          
-          setSkills(filteredData.skills);
-          setNumSkills(filteredData.skills.length);
-
-          setLanguages(filteredData.languages);
-          setEducation(filteredData.education);
-          setExperiences(filteredData.experience);
-          setProjects(filteredData.projects);
-          setCertificates(filteredData.certificates);
-
-
+        const data = await getDoc(docUsers);
+        const filteredData = data.data();
+  
+        setHobbies(filteredData.hobbies);
+        setSkills(filteredData.skills);
+        setLanguages(filteredData.languages);
+        setEducation(filteredData.education);
+        setExperiences(filteredData.experience);
+        setProjects(filteredData.projects);
+        setCertificates(filteredData.certificates);
       } catch (error) {
         console.error(error);
       }
@@ -127,27 +107,28 @@ const resumeTemplates = [
 
     const getPersonelinfo = async () => {
       try {
-          const data = await getDoc(docinfo);
-          const filteredData = data.data();
-
-          setName(filteredData?.name || '');
-          setSurname(filteredData?.surname || '');
-          setPhone(filteredData?.phone || '');
-          setAddress(filteredData?.address || '');
-          setProfsummary(filteredData?.profesummary || '');
-          setProfession(filteredData?.profession);
-          setCountry(filteredData?.country || '');
-          setState(filteredData?.state || '');
-          setImgurl(filteredData?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg');
-          setLinks(filteredData?.links );
-        } catch (error) {
+        const data = await getDoc(docinfo);
+        const filteredData = data.data();
+  
+        setName(filteredData?.name || '');
+        setSurname(filteredData?.surname || '');
+        setPhone(filteredData?.phone || '');
+        setAddress(filteredData?.address || '');
+        setProfsummary(filteredData?.profesummary || '');
+        setProfession(filteredData?.profession);
+        setCountry(filteredData?.country || '');
+        setState(filteredData?.state || '');
+        setImgurl(filteredData?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg');
+        setLinks(filteredData?.links );
+      } catch (error) {
         console.error(error);
       }
     }
+    
     getPersonelinfo();
     getUsersinfo();
 
-  },[])
+  },[docUsers, docinfo])
 
   /**************************** End get data ********************************** */
 
@@ -201,7 +182,6 @@ const resumeTemplates = [
 
   const handleAdd = async (e) => {
     e.preventDefault();
-
     
     try {
       await setDoc(doc(db, "users", userId), {
@@ -237,17 +217,14 @@ const resumeTemplates = [
   
   //**************************** skills parametrs *******************************
 
-              const [numSkills, setNumSkills] = useState(1);
               const [skills, setSkills] = useState([]);
               
               const addSkill = () => {
-                setNumSkills(prevNumSkills => prevNumSkills + 1);
                 setSkills([...skills, { skill: '', level: 0 }]);
               };
               
               const removeSkill = () => {
                 if (skills.length > 1) {
-                  setNumSkills(prevNumSkills => prevNumSkills - 1);
                   const updatedSkills = skills.slice(0, skills.length - 1);
                   setSkills(updatedSkills);
                 }
@@ -269,17 +246,14 @@ const resumeTemplates = [
            
 
 
-        const [numProjects, setNumProjects] = useState(1);
         const [projects, setProjects] = useState([{ projectName: '', projectType: '', description: '' },]);
 
         const addProject = () => {
-          setNumProjects(prevNumProjects => prevNumProjects + 1);
           setProjects([...projects, { projectName: '', projectType: '', description: '' }]);
         };
 
         const removeProject = () => {
           if (projects.length > 0) {
-            setNumProjects(prevNumProjects => prevNumProjects - 1);
             const updatedProjects = projects.slice(0, projects.length - 1);
             setProjects(updatedProjects);
           }
@@ -304,17 +278,14 @@ const resumeTemplates = [
 
 
 
-          const [numCertificates, setNumCertificates] = useState(1);
           const [certificates, setCertificates] = useState([{ company: '', certificateLink: '' }]);
 
           const addCertificate = () => {
-            setNumCertificates(prevNumCertificates => prevNumCertificates + 1);
             setCertificates([...certificates, { company: '', certificateLink: '' }]);
           };
 
           const removeCertificate = () => {
             if (certificates.length > 0) {
-              setNumCertificates(prevNumCertificates => prevNumCertificates - 1);
               setCertificates(certificates.slice(0, certificates.length - 1));
             }
           };
@@ -331,27 +302,16 @@ const resumeTemplates = [
 
 /************************************  end  Certificats parametrs ****************************/
 
-
-
-
-
   //****************************  Links parametrs *******************************
 
-  
-  
-  
-
-            const [numLinks, setNumLinks] = useState(1);
             const [links, setLinks] = useState([{ platform: '', url: '' },]);
 
             const addLink = () => {
-              setNumLinks(prevNumLinks => prevNumLinks + 1);
               setLinks([...links, { platform: '', url: '' }]);
             };
 
             const removeLink = () => {
               if (links.length > 0) {
-                setNumLinks(prevNumLinks => prevNumLinks - 1);
                 setLinks(links.slice(0, links.length - 1));
               }
             };
@@ -369,18 +329,15 @@ const resumeTemplates = [
 
     //**************************** Hobbies parametrs *******************************
 
-                  const [numHobbies, setNumHobbies] = useState();
                   const [hobbies, setHobbies] = useState([]);
                 
                   const addHobby = () => {
-                    setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
                     setHobbies(...hobbies);
                   };
                 
                   const removeHobby = () => {
                     if (hobbies.length > 1) {
-                      setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
-                      setHobbies(hobbies.slice(0, numHobbies - 1));
+                      setHobbies(hobbies.slice(0, hobbies.length - 1));
                     }
                   };
                 
@@ -397,17 +354,14 @@ const resumeTemplates = [
 
                   //**************************** languages parametrs *******************************
 
-                  const [numFields, setNumFields] = useState(1);
                   const [languages, setLanguages] = useState([{ language: '', proficiency: '' },]);
 
                   const addField = () => {
-                    setNumFields(prevNumFields => prevNumFields + 1);
                     setLanguages([...languages, { language: '', proficiency: '' }]); 
                   };
 
                   const removeField = () => {
                     if (languages.length > 1) {
-                      setNumFields(prevNumFields => prevNumFields - 1);
                       const updatedLanguages = languages.slice(0, languages.length - 1);
                       setLanguages(updatedLanguages);
                     }
@@ -427,17 +381,14 @@ const resumeTemplates = [
 
   //**************************** education parametrs *******************************
 
-                  const [numEducation, setNumEducation] = useState(1);
                   const [education, setEducation] = useState([{ school: '', degree: '', startDate: '', endDate: '' },]);
                   
                   const addEducation = () => {
-                    setNumEducation(prevNumEducation => prevNumEducation + 1);
                     setEducation([...education, { school: '', degree: '', startDate: '', endDate: '' }]);
                   };
 
                   const removeEducation = () => {
                     if (education.length > 1) {
-                      setNumEducation(prevNumEducation => prevNumEducation - 1);
                       const updatedEducation = education.slice(0, education.length - 1);
                       setEducation(updatedEducation);
                     }
@@ -513,51 +464,36 @@ const resumeTemplates = [
           </div>
             <div className="col-md-5 border-right">
                 <div className="p-3 py-5">
-
-                    <ProfileSettingsForm name={name} surname={surname} profession={profession} phone={phone} address={address} authEmail={email} profsummary={profesummary} country={country} state={state} setName={setName} setSurname={setSurname} setProfession={setProfession} setPhone={setPhone} setAddress={setAddress} setProfsummary={setProfsummary} setCountry={setCountry} setState={setState} />
+                    <PersonalInfoForm name={name} surname={surname} profession={profession} phone={phone} address={address} authEmail={email} profsummary={profesummary} country={country} state={state} setName={setName} setSurname={setSurname} setProfession={setProfession} setPhone={setPhone} setAddress={setAddress} setProfsummary={setProfsummary} setCountry={setCountry} setState={setState} />
                     {/* Education */}
                    <Educationform  education={education} handleEducationChange={handleEducationChange} addEducation={addEducation} removeEducation={removeEducation}/>
                     <br /><br />
-
                     {/* languages */}
                     <LanguagesForm languages={languages} handleLanguageChange={handleLanguageChange} addField={addField} removeField={removeField} />
-
                     <br /> <br />
-
                     {/* Hobbies */}
                     <HobbiesForm hobbies={hobbies}  handleHobbyChange={handleHobbyChange} addHobby={addHobby} removeHobby={removeHobby}/>
-                    
-
                     {/* Certificate Companies */}
                     <CertificatesForm certificates={certificates}  handleCertificateChange={handleCertificateChange} addCertificate={addCertificate} removeCertificate={removeCertificate} />
-
                     {/* links */}
                     <LinksForm links={links} handleLinkChange={handleLinkChange} addLink={addLink} removeLink={removeLink} />
-                    
-                    <br />
-                                    
+                    <br />                  
                 </div>
             </div>
-
-                
-                <div className="col-md-4">
+            
+            <div className="col-md-4">
                   {/* Experiences */}
                   <ExperienceForm experience={experience} addExperience={addExperience} removeExperience={removeExperience} handleExperienceChange={handleExperienceChange} />
-
                     {/* Skills */}
                     <SkillForm skills={skills} addSkill={addSkill} removeSkill={removeSkill} handleSkillChange={handleSkillChange} />
-                    
                     {/*Projets */}
                     <ProjectForm projects={projects} addProject={addProject} removeProject={removeProject} handleProjectChange={handleProjectChange} />
-
                     <br />
                     <br />
-
-                    
-                </div> 
+            
+            </div> 
 
                 <div className="mb-4 text-center"><button className="btn btn-primary profile-button" type="submit" disabled={per !== null && per < 100} >Save Profile</button></div>
-
         </form>
 
       </div>
@@ -569,12 +505,7 @@ const resumeTemplates = [
           name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
         />
 
-        
-          
-
-        
-
-                   
+       
     </div>
                                                     
   )

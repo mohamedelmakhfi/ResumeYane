@@ -1,0 +1,12 @@
+export { default as CertificatesForm } from './CertificatesForm';
+export { default as Educationform } from './Educationform';
+export { default as ExperienceForm } from './ExperienceForm';
+export { default as HobbiesForm } from './HobbiesForm';
+export { default as LanguagesForm } from './LanguagesForm';
+export { default as LinksForm } from './LinksForm';
+export { default as PersonalInfoForm } from './PersonalInfoForm';
+export { default as ProfileImageForm } from './ProfileImageForm';
+export { default as ProjectForm } from './ProjectForm';
+export { default as ResumeComponent } from './ResumeComponent';
+export { default as SkillForm } from './SkillForm';
+export { default as TemplateSettings } from './TemplateSettings';

@@ -1,33 +1,7 @@
+import { getIconClass } from "../../data/Datatemp"
 
 
-const getIconClass = platform => {
-	switch (platform) {
-	  case 'github':
-		return 'fab fa-github';
-	  case 'linkedin':
-		return 'fab fa-linkedin';
-	  case 'twitter':
-		return 'fab fa-twitter';
-	  case 'website':
-		return 'fas fa-globe';
-	  case 'instagram':
-		return 'fab fa-instagram';
-	  case 'facebook':
-		return 'fab fa-facebook';
-	  case 'stackoverflow':
-		return 'fab fa-stack-overflow';
-	  case 'youtube':
-		return 'fab fa-youtube';
-	  case 'medium':
-		return 'fab fa-medium';
-	  case 'pinterest':
-		return 'fab fa-pinterest';
-	  case 'twitch':
-		return 'fab fa-twitch';
-	  default:
-		return 'fas fa-link';
-	}
-  };
+const getIconClas = getIconClass ;
 const Resume4Component = (props) => {
 
 	  /********** font *********** */
@@ -93,7 +67,7 @@ const Resume4Component = (props) => {
 						    <div className="secondary-info col-md-7 mt-5">
 							    <ul className="resume-social list-unstyled">
 								{props.links.map((link, index) => (
-					                <li key={index} className="mb-3"><span className="fa-container text-center me-2"><i className={`${getIconClass(link.platform)} icon-large`}></i></span>{link.url}</li>
+					                <li key={index} className="mb-3"><span className="fa-container text-center me-2"><i className={`${getIconClas(link.platform)} icon-large`}></i></span>{link.url}</li>
 								))} 
 							    </ul>
 						    </div>
@@ -117,7 +91,7 @@ const Resume4Component = (props) => {
 
 							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>education</h2>
                                 {props.education.map((edu,index) => (    
-                                    <article className="resume-timeline-item position-relative pb-3" key = {index}>
+                                    <article className="resume-timeline-item position-relative pb-3" key={index}>
 									    <div className="resume-timeline-item-header mb-2">
 										    <div className="d-flex flex-column flex-md-row">
 										        <h4 className="resume-position-title font-weight-bold mb-1">School : {edu.school}</h4>
@@ -132,7 +106,7 @@ const Resume4Component = (props) => {
 
                             <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Work Experience</h2>
                                 {props.experience.map((exp,index) => (
-								    <article className="resume-timeline-item position-relative pb-1" key = {index}>
+								    <article className="resume-timeline-item position-relative pb-1" key={index}>
 									    
 									    <div className="resume-timeline-item-header mb-2">
 										    <div className="d-flex flex-column flex-md-row">
@@ -177,7 +151,7 @@ const Resume4Component = (props) => {
                                 <div className="col-6">
                                     <div className="resume-certificate-company font-weight-bold">{cert.company}</div>
                                     <div className="resume-certificate-link text-muted">
-                                        <a  target="_blank" rel="noopener noreferrer">
+                                        <a>
                                             {cert.certificateLink}
                                         </a>
                                     </div>
@@ -186,7 +160,7 @@ const Resume4Component = (props) => {
                                     <div className="col-6">
                                         <div className="resume-certificate-company font-weight-bold">{nextCert.company}</div>
                                         <div className="resume-certificate-link text-muted">
-                                            <a  target="_blank" rel="noopener noreferrer">
+                                            <a>
                                                 {nextCert.certificateLink}
                                             </a>
                                         </div>
@@ -227,7 +201,7 @@ const Resume4Component = (props) => {
 						    <div className="resume-section-content">
 							    <ul className="list-unstyled resume-lang-list">
                                     {props.languages.map((language ,index) => (
-                                        <li><span className="resume-lang-name font-weight-bold">{language.language}</span> <small className=" font-weight-normal">({language.proficiency})</small></li>
+                                        <li key={index}><span className="resume-lang-name font-weight-bold">{language.language}</span> <small className=" font-weight-normal">({language.proficiency})</small></li>
                                     ))}
 							    </ul>
 						    </div>
