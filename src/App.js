@@ -22,7 +22,6 @@ const App = () => {
 
   return (
     <>
-    
       <Router >
         <Container>
           <Routes>
@@ -35,10 +34,7 @@ const App = () => {
             <Route path='/Resumeform' element={<Resumeform />} />
           </Routes>
         </Container>
-        
         {/* Utilisation de RequireAuth ici pour les routes nécessitant une authentification */}
-
-        <AuthContextProvider>
           <Routes>
             <Route path='/Profilepage' element={
                           <RequireAuth> 
@@ -53,7 +49,6 @@ const App = () => {
             } />
             
           </Routes>
-          </AuthContextProvider>
         {/* </Container>*/}
         <Footer />
       </Router>

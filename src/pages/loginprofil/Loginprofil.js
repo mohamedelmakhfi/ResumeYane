@@ -4,11 +4,9 @@ import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc , setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
-import { FaRegCircleDown } from 'react-icons/fa6';
-import { Resume1Component, Resume2Component , Resume2Componentcss, Resume3Component, Resume4Component } from '../../components/index';
 import ProfileImageForm from '../../components/ComponentForm/ProfileImageForm';
 import Educationform from '../../components/ComponentForm/Educationform';
 import LanguagesForm from '../../components/ComponentForm/LanguagesForm';
@@ -27,16 +25,10 @@ const Loginprofil = () => {
   
   const {dispatch} = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
-  const [userId, setUserId] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
+  
+  const userId = currentUser.uid;
+  const userEmail = currentUser.email;
 
-  useEffect(() => {
-    if (currentUser) {
-      setUserId(currentUser.uid);
-      setUserEmail(currentUser.email);
-      console.log(currentUser.uid);
-    }
-  }, [currentUser]);
 
   const navigate = useNavigate();
 
@@ -46,7 +38,7 @@ const Loginprofil = () => {
     signOut(auth).then(() => {
       dispatch({type:"LOGOUT"})
       alert('Sign-out successful.');
-      navigate('//');
+      navigate('/');
 
     }).catch((error) => {
       alert(error);

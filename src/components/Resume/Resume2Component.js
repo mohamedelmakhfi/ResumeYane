@@ -84,13 +84,13 @@ const Resume2Component = (props) => {
                     <li className="col-md-12 mt-3 mb-1"><i className="fa-solid fa-envelope"></i>{props.email}</li>
                     <li className="col-md-12 mb-2"><i className="fa-solid fa-phone"></i>{props.phone}</li>
                     {props.links.map((link, index) => (
-                      <React.Fragment key={index} >
-                    <li  className='col-md-12 mb-1 text-sm'>
-                      <i className={`${getIconClass(link.platform)} `}></i> -
-                      ({link.platform})  {link.url}
-                    </li>
-                    </React.Fragment>
-                ))}
+                      <React.Fragment key={index}>
+                        <li className='col-md-12 mb-1 text-sm'>
+                          <i className={`${getIconClass(link.platform)} `}></i> -
+                          ({link.platform}) {link.url}
+                        </li>
+                      </React.Fragment>
+                    ))}
                     
 
                     <li className='address mt-2' >
@@ -102,14 +102,14 @@ const Resume2Component = (props) => {
           
             <div className="education-container  mx-4">
                 <h2 className="container-block-title" style={TitleColor}>Education</h2>
-                {props.education.map((edu,index) => (  
-                   <React.Fragment key={index} >                      
-                <div className="item">
-                    <h4 className="degree">{edu.school}</h4>
-                    <h5 className="meta" style={Colortext1}>{edu.degree}</h5>
-	                    <div className="time" style={Colortext1}>{edu.startDate} - {edu.endDate}</div>
-                </div>
-                </React.Fragment> 
+                {props.education.map((edu, index) => (
+                  <React.Fragment key={index}>
+                    <div className="item">
+                      <h4 className="degree">{edu.school}</h4>
+                      <h5 className="meta" style={Colortext1}>{edu.degree}</h5>
+                      <div className="time" style={Colortext1}>{edu.startDate} - {edu.endDate}</div>
+                    </div>
+                  </React.Fragment>
                 ))}
             </div>
 
@@ -117,11 +117,11 @@ const Resume2Component = (props) => {
             <div className="languages-container mt-3 mx-4">
                 <h2 className="container-block-title"style={TitleColor}>Languages</h2>
                 <ul className="list-unstyled interests-list">
-                {props.languages.map((language ,index) => (
-                  <React.Fragment key={index} >                      
+                {props.languages.map((language, index) => (
+                  <React.Fragment key={index}>
                     <li>{language.language} <span className="lang-desc">({language.proficiency})</span></li>
-                    </React.Fragment> 
-                    ))}
+                  </React.Fragment>
+                ))}
                 </ul>
             </div>
 
@@ -129,21 +129,21 @@ const Resume2Component = (props) => {
             <div className="interests-container mt-3 mx-4">
                 <h2 className="container-block-title"style={TitleColor}>Interests</h2>
                 <ul className="list-unstyled interests-list">
-                    {props.hobbies.map((hobbie, index) => (
-                      
-                            index % 3 === 0 && (
-                                <li key={index}>
-                                    {hobbie}
-                                    {props.hobbies[index + 1] && (
-                                        <span> - {props.hobbies[index + 1]}</span>
-                                    )}{props.hobbies[index + 2] && (
-                                      <span> - {props.hobbies[index + 2]}</span>
-                                  )}
-                                </li>
-                            )
-                           
-                        ))
-                    }
+                {props.hobbies.map((hobbie, index) => (
+                  index % 3 === 0 && (
+                    <React.Fragment key={index}>
+                      <li>
+                        {hobbie}
+                        {props.hobbies[index + 1] && (
+                          <span> - {props.hobbies[index + 1]}</span>
+                        )}
+                        {props.hobbies[index + 2] && (
+                          <span> - {props.hobbies[index + 2]}</span>
+                        )}
+                      </li>
+                    </React.Fragment>
+                  )
+                ))}
                 </ul>
             </div>
 
@@ -167,23 +167,21 @@ const Resume2Component = (props) => {
 
                 <h2 className="section-title" style={TitleColor}><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-briefcase"></i></span>Experiences</h2>
                 
-                {props.experience.map((exp,index) => (
-                  <React.Fragment  >
-                    <div  className="item">
-                    <div className="meta">
+                {props.experience.map((exp, index) => (
+                  <React.Fragment key={index}>
+                    <div className="item">
+                      <div className="meta">
                         <div className="upper-row">
-                            <h3 className="job-title">{exp.position}</h3>
-                            <div className="time" style={Colortext2}>{exp.startDate} - {exp.endDate}</div>
+                          <h3 className="job-title">{exp.position}</h3>
+                          <div className="time" style={Colortext2}>{exp.startDate} - {exp.endDate}</div>
                         </div>
                         <div className="company" style={Colortext2}>{exp.company}</div>
+                      </div>
+                      <div className="details">
+                        <p>{exp.workSummary}</p>
+                      </div>
                     </div>
-                    <div className="details">
-                        <p>{exp.workSummary}</p>  
-                    </div>
-                  
-                </div>
                   </React.Fragment>
-                
                 ))}
                 
                 
@@ -191,45 +189,42 @@ const Resume2Component = (props) => {
             
             <section className="section projects-section">
             <h2 className="section-title" style={TitleColor}><span className="icon-holder" style={TitleColor} ><i className="fa-solid fa-archive"></i></span>Projects</h2>
-                {props.projects.map((Projet,index) => (
-                  <React.Fragment  key = {index} >
-
-                  <div className="item">
-                    <div className="meta">
-                        <div className="upper-row">
-                            <h3 className="job-title">{Projet.projectName}</h3>
-                            <div className="time"  style={Colortext2}>{Projet.projectType}</div>
-                        </div>
-                        <div className="company" style={Colortext2}>{Projet.company}</div>
+            {props.projects.map((Projet, index) => (
+              <React.Fragment key={index}>
+                <div className="item">
+                  <div className="meta">
+                    <div className="upper-row">
+                      <h3 className="job-title">{Projet.projectName}</h3>
+                      <div className="time" style={Colortext2}>{Projet.projectType}</div>
                     </div>
-                    <div className="details">
-                        <p>{Projet.description}</p>  
-                    </div>
+                    <div className="company" style={Colortext2}>{Projet.company}</div>
                   </div>
-                  </React.Fragment>
-                
-                ))}
+                  <div className="details">
+                    <p>{Projet.description}</p>
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
             </section>
             
             <section className="skills-section section">
                 <h2 className="section-title" style={TitleColor}><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-rocket"></i></span>Skills &amp; Proficiency</h2>
                 <div className="skillset">
                   <div className="row">
-                      {props.skills.map((skill, index) => (
-                        <React.Fragment key={index} >
-                            <div className='col-md-6' >
-                                <div  className=" item">
-                                  <h3 className="level-title">{skill.skill}</h3>
-                                  <div className="progress level-bar">
-                                      <div className="progress-bar theme-progress-bar" role="progressbar" style={{width: `${skill.level}%`, backgroundColor : background1color.backgroundColor }}></div>
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                            </div>
-                            </React.Fragment>
-                          
-                      ))}
+                  {props.skills.map((skill, index) => (
+                    <React.Fragment key={index}>
+                      <div className='col-md-6'>
+                        <div className="item">
+                          <h3 className="level-title">{skill.skill}</h3>
+                          <div className="progress level-bar">
+                            <div className="progress-bar theme-progress-bar" role="progressbar" style={{ width: `${skill.level}%`, backgroundColor: background1color.backgroundColor }}></div>
+                          </div>
+                          <div>
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ))}
                   </div>
                 </div>
  
@@ -239,21 +234,20 @@ const Resume2Component = (props) => {
                 <h2 className="section-title" style={TitleColor} ><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-rocket"></i></span>Certificates</h2>
                 <div className="skillset">
                   <div className="row">
-                      {props.certificates.map((certif, index) => (
-                          <React.Fragment key={index} >                      
-                            <div className='col-md-6'>
-                                <div  className=" item">
-                                  <h3 className="level-title">{certif.company}</h3>
-                                  <div className="progress level-bar">
-                                      <div className="progress-bar theme-progress-bar  w-100" role="progressbar" style={background1color}>{certif.certificateLink}</div>
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                            </div>
-                          </React.Fragment>
-                          
-                      ))}
+                  {props.certificates.map((certif, index) => (
+                    <React.Fragment key={index}>
+                      <div className='col-md-6'>
+                        <div className="item">
+                          <h3 className="level-title">{certif.company}</h3>
+                          <div className="progress level-bar">
+                            <div className="progress-bar theme-progress-bar  w-100" role="progressbar" style={background1color}>{certif.certificateLink}</div>
+                          </div>
+                          <div>
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ))}
                   </div>
                 </div>
  

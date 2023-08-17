@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import './Logsec.css'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../firebase';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 
@@ -23,7 +23,7 @@ const Logsec = () => {
         .then((userCredential) => {
         const user = userCredential.user;
         dispatch({type:"LOGIN" , payload:user})
-        navigate("/loginprofil");
+        navigate("/Loginprofil");
         })
         .catch((error) => {
             setError(true);
@@ -44,11 +44,11 @@ const Logsec = () => {
 
                         <form onSubmit={handleLogin}>
                             <div className="form-floating mb-3">
-                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={e=>setEmail(e.target.value)}/>
+                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" autocomplete="username" onChange={e=>setEmail(e.target.value)}/>
                             <label htmlFor="floatingInput">Email address</label>
                             </div>
                             <div className="form-floating mb-3">
-                            <input type="password" className="form-control" id="floatingPassword" placeholder="Password" onChange={e=>setPassword(e.target.value)}/>
+                            <input type="password" className="form-control" id="floatingPassword" placeholder="Password" autoComplete='current-password' onChange={e=>setPassword(e.target.value)}/>
                             <label htmlFor="floatingPassword">Password</label>
                             </div>
 
