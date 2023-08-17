@@ -1,11 +1,6 @@
 import React from 'react';
 import './Resume2Component.css';
 
-
-
-
-
-
 const getIconClass = platform => {
     switch (platform) {
       case 'github':
@@ -35,7 +30,6 @@ const getIconClass = platform => {
     }
   };
 
-  
 
 const Resume2Component = (props) => {
 
@@ -69,8 +63,6 @@ const Resume2Component = (props) => {
     ...Colortext2,
   }
 
-  
-  
   
   return (
     

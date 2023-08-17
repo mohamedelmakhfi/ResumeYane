@@ -51,7 +51,10 @@ const ProfilePage  = () => {
   const [file, setFile] = useState("");
   const [imgUrl, setImgurl] = useState("");
   const [profession, setProfession] = useState("");
-  
+
+/***************************** recevoir rsesume id ****************************** */
+
+ 
 
 ///////////////////////////////////////
   const [per, setPer] = useState(null);
@@ -59,7 +62,7 @@ const ProfilePage  = () => {
 
  //changement resume
 
- const [numResume, setNumresume] = useState(3);
+ const [numResume, setNumresume] = useState(1);
  const nextResume = () => {
    if (numResume < 4) {
        setNumresume(prevNumResume => prevNumResume + 1);

@@ -4,7 +4,7 @@ import { Home , Contactus , Login, Signup, Templates, Forgotpassword, Resumeform
 import { BrowserRouter as Router , Route , Routes, Navigate } from 'react-router-dom'
 import { Footer } from './sections';
 import { useContext } from 'react';
-import { AuthContext } from './context/AuthContext';
+import { AuthContext, AuthContextProvider } from './context/AuthContext';
 
 
 
@@ -22,6 +22,7 @@ const App = () => {
 
   return (
     <>
+    
       <Router >
         <Container>
           <Routes>
@@ -34,18 +35,25 @@ const App = () => {
             <Route path='/Resumeform' element={<Resumeform />} />
           </Routes>
         </Container>
+        
+        {/* Utilisation de RequireAuth ici pour les routes nécessitant une authentification */}
+
+        <AuthContextProvider>
           <Routes>
             <Route path='/Profilepage' element={
                           <RequireAuth> 
                               <Profilepage />
                           </RequireAuth>    
             } />
-            <Route path='/loginprofil' element={
+            
+            <Route path='/Loginprofil' element={
                           <RequireAuth> 
                               <Loginprofil />
                           </RequireAuth>    
             } />
+            
           </Routes>
+          </AuthContextProvider>
         {/* </Container>*/}
         <Footer />
       </Router>

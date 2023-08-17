@@ -3,22 +3,28 @@ import Cardtemplate from '../../components/Cardtemplate/Cardtemplate';
 import { templates } from '../../data/Datatemp';
 import { Header } from '../../sections';
 import './Templates.css'
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 const Templates = () => {
 
   const templ = templates;
     
+  const {currentUser} = useContext(AuthContext);
+  const user = currentUser;
   
 
   const cards = templ.map((tmp) => {
-      return <Cardtemplate  imageUrl={tmp.imageUrl} /> 
+      return <Cardtemplate  id={tmp.id} imageUrl={tmp.imageUrl} /> 
   })
 
   return (
     <>
-    <Header />
-    <div className='Resumetmp'>
-    <div className="container mt-4 ">
+    {user === null ? (
+      <>
+        <Header />
+        <div className='Resumetmp'>
+          <div className="container mt-4 ">
        <h1 className="text-center mb-4 text-white"><span style={{"color":"blue" ,"fontWeight":"bold"}}>Resume</span> Templates :</h1>
         <hr style={{"backgroundColor":"white" , "height" : "10px" , "marginBottom" : "50px"}} />
         <div className="row justify-content-center align-items-center">
@@ -31,7 +37,20 @@ const Templates = () => {
           </Link>
         </div>
     </div>
+        </div>
+      </>
+    ) : (
+      <div className='Resumetmp'>
+        <div className="container mt-4 ">
+       <h1 className="text-center mb-4 text-white"><span style={{"color":"blue" ,"fontWeight":"bold"}}>Resume</span> Templates :</h1>
+        <hr style={{"backgroundColor":"white" , "height" : "10px" , "marginBottom" : "50px"}} />
+        <div className="row justify-content-center align-items-center">
+          {cards}
+        </div>
     </div>
+      </div>
+      
+    )}
     </>
   );
 };
