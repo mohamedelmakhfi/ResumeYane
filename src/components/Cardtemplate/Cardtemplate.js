@@ -11,7 +11,6 @@ const Cardtemplate = (props) => {
 
   const {currentUser} = useContext(AuthContext);
   const user = currentUser;
-  const userId = user.uid ;
   
   //const [resumeNbr,setResumenbr] = useState(0);
   const navigate = useNavigate();
@@ -21,17 +20,8 @@ const Cardtemplate = (props) => {
 
     try{
       //setResumenbr(props.id);
-
-      await setDoc(doc(db , "users" , userId), {
+      await setDoc(doc(db , "resume" , currentUser.uid), {
         resumeNbr : props.id,
-        languages: 'languages', 
-        skills: 'skills',
-        hobbies: 'hobbies',
-        education: 'education',
-        experience: 'experience',
-        certificates : 'certificates',
-        projects : 'projects',
-
       })
       navigate('/Profilepage');
     }catch(error){

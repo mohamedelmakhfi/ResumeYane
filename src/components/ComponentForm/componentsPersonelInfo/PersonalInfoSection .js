@@ -69,8 +69,8 @@ const PersonalInfoSection = ({ name, setName, surname, setSurname, profession, s
             type="text"
             className="form-control"
             placeholder="email id"
+            readOnly 
             required
-            onChange={authEmail}
             value={authEmail}
           />
         </div>

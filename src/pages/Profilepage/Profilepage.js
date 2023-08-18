@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
 
@@ -74,13 +74,14 @@ const resumeTemplates = [
 /**************************** get data ********************************** */
 
 
+const [numResume, setNumresume] = useState(1);
 
-const docUsers = doc(db,"users",userId);
+const dicResume = doc(db,"resume",userId);
 
   useEffect(()=> {  
-    const getUsersinfo = async () => {
+    const getResumeinfo = async () => {
       try {
-          const data = await getDoc(docUsers);
+          const data = await getDoc(dicResume);
           const filteredData = data.data();
           setNumresume(filteredData.resumeNbr);
         } catch (error) {
@@ -88,8 +89,8 @@ const docUsers = doc(db,"users",userId);
       }
     }
 
-    getUsersinfo();
-  },[docUsers])
+    getResumeinfo();
+  },[])
 
 
 
@@ -98,7 +99,6 @@ const docUsers = doc(db,"users",userId);
 
 
 //changement resume
-const [numResume, setNumresume] = useState();
 
 const nextResume = () => {
   if (numResume < 4) {
@@ -152,7 +152,7 @@ const prevResume = () => {
 
       };
       file && uploadFile();
-    },[file]);
+    },[]);
 
 
   //********************** End upload image *********************** */
@@ -161,16 +161,23 @@ const prevResume = () => {
   const handleAdd = async (e) => {
     e.preventDefault();
 
+    // Prepare the hobbies data in an array format
+    const hobbiesData = hobbies.reduce((acc, hobby) => {
+      if (hobby.trim() !== '') {
+        acc.push(hobby.trim());
+      }
+      return acc;
+    }, []);
+
     try {
       await setDoc(doc(db, "users", userId), {
         languages: languages, 
         skills: skills,
-        hobbies: hobbies,
+        hobbies: arrayUnion(...hobbiesData),
         education: education,
         experience: experience,
         certificates : certificates,
         projects : projects,
-        resumeNbr : numResume
 
       });
   
@@ -311,28 +318,28 @@ const prevResume = () => {
 
     //**************************** Hobbies parametrs *******************************
 
-                  const [numHobbies, setNumHobbies] = useState(0);
-                  const [hobbies, setHobbies] = useState([]);
-                
-                  const addHobby = () => {
-                    setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
-                    setHobbies(prevHobbies => [...prevHobbies, '']);
-                  };
-                
-                  const removeHobby = () => {
-                    if (numHobbies > 0) {
-                      setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
-                      setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
-                    }
-                  };
-                
-                  const handleHobbyChange = (index, value) => {
-                    setHobbies(prevHobbies => {
-                      const newHobbies = [...prevHobbies];
-                      newHobbies[index] = value;
-                      return newHobbies;
-                    });
-                  };
+              const [numHobbies, setNumHobbies] = useState();
+              const [hobbies, setHobbies] = useState([]);
+            
+              const addHobby = () => {
+                setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
+                setHobbies(prevHobbies => [...prevHobbies, '']);
+              };
+            
+              const removeHobby = () => {
+                if (numHobbies > 1) {
+                  setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
+                  setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
+                }
+              };
+            
+              const handleHobbyChange = (index, value) => {
+                setHobbies(prevHobbies => {
+                  const newHobbies = [...prevHobbies];
+                  newHobbies[index] = value;
+                  return newHobbies;
+                });
+              };
 
   //**************************** End Hobiiesparametrs *******************************
 
@@ -481,7 +488,7 @@ const prevResume = () => {
 
                                     {/*parametrs and Resumes */}
         
-          <TemplateSettings   numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
+          <TemplateSettings  userId={userId} numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
           name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
           />
     

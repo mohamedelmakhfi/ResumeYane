@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { doc, getDoc , setDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc , setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
 import { CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
@@ -59,7 +59,7 @@ const Loginprofil = () => {
 
   //changement resume
 
-  const [numResume, setNumresume] = useState(2);
+  const [numResume, setNumresume] = useState(1);
   const nextResume = () => {
     if (numResume < 4) {
         setNumresume(prevNumResume => prevNumResume + 1);
@@ -86,6 +86,8 @@ const prevResume = () => {
 
   const docUsers = doc(db,"users",userId);
   const docinfo = doc(db,"infoperson",userId);
+  const dicResume = doc(db,"resume",userId);
+
 
   useEffect(()=> {  
     const getUsersinfo = async () => {
@@ -124,11 +126,22 @@ const prevResume = () => {
         console.error(error);
       }
     }
-    
+
+    const getResumeinfo = async () => {
+      try {
+          const data = await getDoc(dicResume);
+          const filteredData = data.data();
+          setNumresume(filteredData.resumeNbr);
+        } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getResumeinfo();
     getPersonelinfo();
     getUsersinfo();
 
-  },[docUsers, docinfo])
+  },[])
 
   /**************************** End get data ********************************** */
 
@@ -174,7 +187,7 @@ const prevResume = () => {
 
       };
       file && uploadFile();
-    },[file]);
+    },[]);
 
 
   //********************** End upload image *********************** */
@@ -182,12 +195,19 @@ const prevResume = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    // Prepare the hobbies data in an array format
+    const hobbiesData = hobbies.reduce((acc, hobby) => {
+      if (hobby.trim() !== '') {
+        acc.push(hobby.trim());
+      }
+      return acc;
+    }, []);
     
     try {
       await setDoc(doc(db, "users", userId), {
         languages: languages, 
         skills: skills,
-        hobbies: hobbies,
+        hobbies: arrayUnion(...hobbiesData),
         education: education,
         experience: experience,
         certificates : certificates,
@@ -217,7 +237,7 @@ const prevResume = () => {
   
   //**************************** skills parametrs *******************************
 
-              const [skills, setSkills] = useState([]);
+              const [skills, setSkills] = useState([{ skill: '', level: 0 },]);
               
               const addSkill = () => {
                 setSkills([...skills, { skill: '', level: 0 }]);
@@ -278,7 +298,7 @@ const prevResume = () => {
 
 
 
-          const [certificates, setCertificates] = useState([{ company: '', certificateLink: '' }]);
+          const [certificates, setCertificates] = useState([{ company: '', certificateLink: '' },]);
 
           const addCertificate = () => {
             setCertificates([...certificates, { company: '', certificateLink: '' }]);
@@ -329,15 +349,18 @@ const prevResume = () => {
 
     //**************************** Hobbies parametrs *******************************
 
+                  const [numHobbies, setNumHobbies] = useState();
                   const [hobbies, setHobbies] = useState([]);
                 
                   const addHobby = () => {
-                    setHobbies(...hobbies);
+                    setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
+                    setHobbies(prevHobbies => [...prevHobbies, '']);
                   };
                 
                   const removeHobby = () => {
-                    if (hobbies.length > 1) {
-                      setHobbies(hobbies.slice(0, hobbies.length - 1));
+                    if (numHobbies > 1) {
+                      setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
+                      setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
                     }
                   };
                 
@@ -501,7 +524,7 @@ const prevResume = () => {
                                                   {/*parametrs and Resumes */}
        
 
-        <TemplateSettings   numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
+        <TemplateSettings userId={userId}  numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
           name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
         />
 

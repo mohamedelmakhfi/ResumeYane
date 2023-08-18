@@ -126,15 +126,15 @@ const Resume4Component = (props) => {
 							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Projects</h2>
 
 									{props.projects.map((projet,index) => (
-									<article key={index} class="resume-timeline-item position-relative ">
-									    <div class="resume-timeline-item-header mb-2">
-										    <div class="d-flex flex-column flex-md-row">
-										        <h3 class="resume-position-title font-weight-bold mb-1">{projet.projectName}</h3>
-										        <div class="resume-company-name ms-auto">{projet.projectType}</div>
+									<article key={index} className="resume-timeline-item position-relative ">
+									    <div className="resume-timeline-item-header mb-2">
+										    <div className="d-flex flex-column flex-md-row">
+										        <h3 className="resume-position-title font-weight-bold mb-1">{projet.projectName}</h3>
+										        <div className="resume-company-name ms-auto">{projet.projectType}</div>
 										    </div>
 										    
 									    </div>
-									    <div class="resume-timeline-item-desc">
+									    <div className="resume-timeline-item-desc">
 										    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
 									    </div>
 

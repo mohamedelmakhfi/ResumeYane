@@ -7,7 +7,6 @@ import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 const Templates = () => {
-
   const templ = templates;
     
   const {currentUser} = useContext(AuthContext);

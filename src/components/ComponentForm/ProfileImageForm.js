@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { FaRegCircleDown } from 'react-icons/fa6';
 import { AuthContext } from '../../context/AuthContext';
-import { auth } from '../../firebase';
 
 const ProfileImageForm = ({ file, imgUrl, setFile }) => {
   

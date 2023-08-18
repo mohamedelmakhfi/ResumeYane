@@ -1,34 +1,8 @@
+import { getIconClass } from "../../data/Datatemp"
 
 
 
-    const getIconClass = platform => {
-      switch (platform) {
-        case 'github':
-          return 'fab fa-github';
-        case 'linkedin':
-          return 'fab fa-linkedin';
-        case 'twitter':
-          return 'fab fa-twitter';
-        case 'website':
-          return 'fas fa-globe';
-        case 'instagram':
-          return 'fab fa-instagram';
-        case 'facebook':
-          return 'fab fa-facebook';
-        case 'stackoverflow':
-          return 'fab fa-stack-overflow';
-        case 'youtube':
-          return 'fab fa-youtube';
-        case 'medium':
-          return 'fab fa-medium';
-        case 'pinterest':
-          return 'fab fa-pinterest';
-        case 'twitch':
-          return 'fab fa-twitch';
-        default:
-          return 'fas fa-link';
-      }
-    };
+    const getIconClas = getIconClass;
 
 const Resume1Component = (props) => {
 
@@ -114,7 +88,7 @@ const Resume1Component = (props) => {
                 <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
                 {props.links.map((link, index) => (
                     <li key={index} className='list-item'>
-                      <i className={`${getIconClass(link.platform)} icon-large`}></i> -
+                      <i className={`${getIconClas(link.platform)} icon-large`}></i> -
                       ({link.platform})  {link.url}
 
                     </li>
@@ -126,7 +100,7 @@ const Resume1Component = (props) => {
                 <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Languages</h5>
                 <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
                 {props.languages.map((language ,index) => (
-                    <li key={index} className='list-item'>{language.language} ---- {language.proficiency}</li>
+                    <li key={index} className='list-item'>{language.language} --- {language.proficiency}</li>
                 ))}
                 </ul>
               </div>
@@ -174,7 +148,7 @@ const Resume1Component = (props) => {
                                     </div>
                                 </div>
                                 {nextEdu && (
-                                    <div className="col-6">
+                                    <div className="col-6" >
                                         <div className="resume-degree" style={{fontWeight : "bold"}}>{nextEdu.school}</div>
                                         <div className="resume-degree-org ">{nextEdu.degree}</div>
                                         <div className="resume-degree-time ">
@@ -233,13 +207,13 @@ const Resume1Component = (props) => {
               <h4 className='text-center' style={TitleColor}>projects</h4>
               <hr />
                 {props.projects.map((projet,index) => (
-                <>
+                <div key={index}>
                   <div className=" col-md-12 row" >
                     <h6 className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectName}</h6>
                     <h6 className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectType}</h6>
                   </div>
                   <h6 > {projet.description}</h6>
-                  <br /></>              
+                  <br /></div>              
                 ))}  
             </div>
 
@@ -247,7 +221,7 @@ const Resume1Component = (props) => {
               <h4 className='text-center' style={TitleColor}>Certificates</h4>
               <hr />
                 {props.certificates.map((certif,index) => (
-                  <div className="col-md-12 row">
+                  <div className="col-md-12 row" key={index}>
                     <h6 className=" offset-md-2 col-md-6"> {certif.company}</h6>
                     <h6 className="col-md-4"> {certif.certificateLink}</h6>
                     <br />             

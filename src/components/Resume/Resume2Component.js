@@ -1,34 +1,8 @@
 import React from 'react';
 import './Resume2Component.css';
+import { getIconClass } from '../../data/Datatemp';
 
-const getIconClass = platform => {
-    switch (platform) {
-      case 'github':
-        return 'fab fa-github';
-      case 'linkedin':
-        return 'fab fa-linkedin';
-      case 'twitter':
-        return 'fab fa-twitter';
-      case 'website':
-        return 'fas fa-globe';
-      case 'instagram':
-        return 'fab fa-instagram';
-      case 'facebook':
-        return 'fab fa-facebook';
-      case 'stackoverflow':
-        return 'fab fa-stack-overflow';
-      case 'youtube':
-        return 'fab fa-youtube';
-      case 'medium':
-        return 'fab fa-medium';
-      case 'pinterest':
-        return 'fab fa-pinterest';
-      case 'twitch':
-        return 'fab fa-twitch';
-      default:
-        return 'fas fa-link';
-    }
-  };
+const getIconClas = getIconClass ;
 
 
 const Resume2Component = (props) => {
@@ -86,7 +60,7 @@ const Resume2Component = (props) => {
                     {props.links.map((link, index) => (
                       <React.Fragment key={index}>
                         <li className='col-md-12 mb-1 text-sm'>
-                          <i className={`${getIconClass(link.platform)} `}></i> -
+                          <i className={`${getIconClas(link.platform)} `}></i> -
                           ({link.platform}) {link.url}
                         </li>
                       </React.Fragment>

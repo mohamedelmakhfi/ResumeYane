@@ -9,7 +9,7 @@ const fontOption = fontOptions ;
 
 const TemplateSettings = ({numResume, setNumresume, resumeTemplates, prevResume, nextResume ,
     name , surname , email , phone , address , state ,country ,education ,hobbies ,experience ,profession,
-    certificates , profesummary ,languages ,skills ,file , imgUrl ,links ,projects
+    certificates , profesummary ,languages ,skills ,file , imgUrl ,links ,projects ,userId
 }) => {
     
     const [titleColor, setTitleColor] = useState('#A80000');
@@ -56,7 +56,7 @@ const TemplateSettings = ({numResume, setNumresume, resumeTemplates, prevResume,
               <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" > Change Template</button></h2>
             <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div className="accordion-body">
-                <TemplateSection numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume} />
+                <TemplateSection userId={userId} numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume} />
               </div>
             </div>
           </div>
