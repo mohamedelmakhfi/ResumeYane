@@ -9,9 +9,10 @@ const SkillForm = ({ skills, addSkill, removeSkill, handleSkillChange }) => {
         <span className="border px-2 difcolor btnhov add-experience" onClick={addSkill}>
           <i className="fa fa-plus"></i>
         </span>
+        {skills.length > 0 && (
         <span className="border px-2 difcolor btnhov add-experience" onClick={removeSkill}>
           <i className="fa fa-minus"></i>
-        </span>
+        </span>)}
       </div>
       <br />
       {skills.map((skill, index) => (

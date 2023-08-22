@@ -44,7 +44,7 @@ const Logsec = () => {
 
                         <form onSubmit={handleLogin}>
                             <div className="form-floating mb-3">
-                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" autocomplete="username" onChange={e=>setEmail(e.target.value)}/>
+                            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" autoComplete="username" onChange={e=>setEmail(e.target.value)}/>
                             <label htmlFor="floatingInput">Email address</label>
                             </div>
                             <div className="form-floating mb-3">

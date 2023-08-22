@@ -1,29 +1,23 @@
 import './Loginprofil.css' ;
-
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { arrayUnion, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc , runTransaction, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
-import { FaRegCircleDown } from 'react-icons/fa6';
-
+import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
 
 
 const Loginprofil = () => {
-
+  
   const {dispatch} = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
-
-  const navigate = useNavigate();
-
-  console.log(currentUser.uid);
-
+  
   const userId = currentUser.uid;
   const userEmail = currentUser.email;
 
+  const navigate = useNavigate();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -38,12 +32,11 @@ const Loginprofil = () => {
 
   }
 
-
   /*********************** initialise data  ****************************/
 
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState(userEmail);
+  const email = userEmail;
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [profesummary, setProfsummary] = useState('');
@@ -51,66 +44,83 @@ const Loginprofil = () => {
   const [state, setState] = useState('');
   const [file, setFile] = useState("");
   const [imgUrl, setImgurl] = useState('');
+  const [profession ,setProfession] = useState("");
 
-
+  ///////////////////////////////////////
   const [per, setPer] = useState(null);
+  //////////////////////////////////////
+
+  //changement resume
+
+  const [numResume, setNumresume] = useState(1);
+  const nextResume = () => {
+    if (numResume < 4) {
+        setNumresume(prevNumResume => prevNumResume + 1);
+    }
+};
+
+const prevResume = () => {
+    if (numResume > 1) {
+        setNumresume(prevNumResume => prevNumResume - 1);
+    }
+};
+
+    const resumeTemplates = [
+      { id: 1, name: "Resume 1" },
+      { id: 2, name: "Resume 2" },
+      { id: 3, name: "Resume 3" },
+      { id: 4, name: "Resume 4" }
+    ];
 
   /*********************** end initialise data  ****************************/
-
 
 /**************************** get data ********************************** */
 
 
   const docUsers = doc(db,"users",userId);
-  const [userinfo, setUserinfo] = useState([]);
-
   const docinfo = doc(db,"infoperson",userId);
-  const [infoperso, setInfoperso] = useState([]);
-
+  const dicResume = doc(db,"resume",userId);
 
   useEffect(()=> {  
-    const getUsersinfo = async () => {
+    const fetchDonnees = async () => {
       try {
-          const data = await getDoc(docUsers);
-          const filteredData = data.data();
-          setUserinfo(filteredData);
+        
+        const [donneesUtilisateurs, donneesPersonnelles, donneesCV] = await Promise.all([
+          getDoc(docUsers),
+          getDoc(docinfo),
+          getDoc(dicResume)
+        ]);
+        
+        const donneesUtilisateursFiltrees = donneesUtilisateurs.data();
+        const donneesPersonnellesFiltrees = donneesPersonnelles.data();
+        const donneesCVFiltrees = donneesCV.data();
+  
+        setHobbies(donneesUtilisateursFiltrees.hobbies);
+        setSkills(donneesUtilisateursFiltrees.skills);
+        setLanguages(donneesUtilisateursFiltrees.languages);
+        setEducation(donneesUtilisateursFiltrees.education);
+        setExperiences(donneesUtilisateursFiltrees.experience);
+        setProjects(donneesUtilisateursFiltrees.projects);
+        setCertificates(donneesUtilisateursFiltrees.certificates);
 
-          setHobbies(filteredData.hobbies);
-          setNumHobbies(filteredData.hobbies.length);
-          
-          setSkills(filteredData.skills);
-          setNumSkills(filteredData.skills.length);
+        setName(donneesPersonnellesFiltrees?.name || '');
+        setSurname(donneesPersonnellesFiltrees?.surname || '');
+        setPhone(donneesPersonnellesFiltrees?.phone || '');
+        setAddress(donneesPersonnellesFiltrees?.address || '');
+        setProfsummary(donneesPersonnellesFiltrees?.profesummary || '');
+        setProfession(donneesPersonnellesFiltrees?.profession);
+        setCountry(donneesPersonnellesFiltrees?.country || '');
+        setState(donneesPersonnellesFiltrees?.state || '');
+        setImgurl(donneesPersonnellesFiltrees?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg');
+        setLinks(donneesPersonnellesFiltrees?.links );
+  
+        setNumresume(donneesCVFiltrees.resumeNbr);
 
-          setLanguages(filteredData.languages);
-          setEducation(filteredData.education);
-
-
-      } catch (error) {
+      }catch (error) {
         console.error(error);
       }
-    }
-
-    const getPersonelinfo = async () => {
-      try {
-          const data = await getDoc(docinfo);
-          const filteredData = data.data();
-          setInfoperso(filteredData);
-
-          setName(filteredData?.name || '');
-          setSurname(filteredData?.surname || '');
-          setPhone(filteredData?.phone || '');
-          setAddress(filteredData?.address || '');
-          setProfsummary(filteredData?.profesummary || '');
-          setCountry(filteredData?.country || '');
-          setState(filteredData?.state || '');
-          setImgurl(filteredData?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg')
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getPersonelinfo();
-    getUsersinfo();
-
+    };
+    fetchDonnees();
   },[])
 
   /**************************** End get data ********************************** */
@@ -165,63 +175,40 @@ const Loginprofil = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-
-    // Prepare the hobbies data in an array format
-    const hobbiesData = hobbies.reduce((acc, hobby) => {
-      if (hobby.trim() !== '') {
-        acc.push(hobby.trim());
-      }
-      return acc;
-    }, []);
-
-     // Prepare the skills data in an array format
-     const skillsData = skills.reduce((acc, skill) => {
-      if (skill.trim() !== '') {
-        acc.push(skill.trim());
-      }
-      return acc;
-    }, []);
     
+    // Prepare the hobbies data in an array format
+    const hobbiesData = hobbies.filter(hobby => hobby.trim() !== '');
 
-    // Prepare the experiences data in an object format
-    const experienceData = experiences.reduce((acc, exp, index) => {
-    if (exp.position !== '' && exp.company !== '' && exp.startDate !== '' && exp.endDate !== '') {
-      acc[`experience${index + 1}`] = {
-        position: exp.position,
-        company: exp.company,
-        startDate: exp.startDate,
-        endDate: exp.endDate,
-        workSummary: exp.workSummary,
-      };
-    }
-    return acc;
-    }, {});
-
-
-   
-  
+    
     try {
-      await setDoc(doc(db, "users", userId), {
-        languages: languages, 
-        skills: arrayUnion(...skillsData),
-        hobbies: arrayUnion(...hobbiesData),
-        education: education,
-        experience: experienceData,
+      await runTransaction(db, async (transaction) => {
+    
+        transaction.update(docUsers,{
+          certificates: certificates,
+          projects: projects ,
+          experience: experience,
+          education: education,
+          skills: skills,
+          languages: languages,
+          hobbies: hobbiesData,
+        });
+    
+        transaction.update(docinfo, {
+          name: name,
+          surname: surname,
+          email: userEmail,
+          phone: phone,
+          address: address,
+          profesummary: profesummary,
+          state: state,
+          country: country,
+          img: imgUrl,
+          links: links,
+          profession: profession,
+        });
       });
-  
-      await setDoc(doc(db, "infoperson", userId), {
-        name: name,
-        surname: surname,
-        email: userEmail,
-        phone: phone,
-        address: address,
-        profesummary: profesummary,
-        state: state,
-        country: country,
-        img: imgUrl,
-      });
-  
-      alert("Submit réussi !");
+    
+      alert("Submit réussi !"); 
     }catch (error) {
       alert("Submit échoué !");
       console.error("Erreur lors de la soumission du formulaire :", error);
@@ -230,46 +217,127 @@ const Loginprofil = () => {
   
   //**************************** skills parametrs *******************************
 
-                    const [numSkills, setNumSkills] = useState();
-                    const [skills, setSkills] = useState([]);
-
-                    const addSkill = () => {
-                      setNumSkills(prevNumSkills => prevNumSkills + 1);
-                      setSkills(prevSkills => [...prevSkills, '']);
-                    };
-
-                    const removeSkill = () => {
-                      if (numSkills > 1) {
-                        setNumSkills(prevNumSkills => prevNumSkills - 1);
-                        setSkills(prevSkills => prevSkills.slice(0, numSkills - 1));
-                      }
-                    };
-
-                    const handleSkillChange = (index, value) => {
-                      setSkills(prevSkills => {
-                        const newSkills = [...prevSkills];
-                        newSkills[index] = value;
-                        return newSkills;
-                      });
-                    };
+              const [skills, setSkills] = useState([{ skill: '', level: 0 },]);
+              
+              const addSkill = () => {
+                setSkills([...skills, { skill: '', level: 0 }]);
+              };
+              
+              const removeSkill = () => {
+                if (skills.length > 0) {
+                  const updatedSkills = skills.slice(0, skills.length - 1);
+                  setSkills(updatedSkills);
+                }
+              };
+              
+              const handleSkillChange = (index, field, value) => {
+                setSkills(prevSkills => {
+                  const newSkills = [...prevSkills];
+                  newSkills[index][field] = value;
+                  return newSkills;
+                });
+              };
+  
 
   //**************************** End skills parametrs *******************************
 
 
+/************************************* Projets parametrs *************************************/
+           
+
+
+        const [projects, setProjects] = useState([]);
+
+        const addProject = () => {
+          setProjects([...projects, { projectName: '', projectType: '', description: '' }]);
+        };
+
+        const removeProject = () => {
+          if (projects.length > 0) {
+            const updatedProjects = projects.slice(0, projects.length - 1);
+            setProjects(updatedProjects);
+          }
+        };
+
+        const handleProjectChange = (index, field, value) => {
+          setProjects(prevProjects => {
+            const newProjects = [...prevProjects];
+            newProjects[index][field] = value;
+            return newProjects;
+          });
+        };
+
+
+/************************************* Projets parametrs *************************************/
+
+
+
+/************************************   Certificats parametrs ****************************/
+  
+
+
+
+
+          const [certificates, setCertificates] = useState([{ company: '', certificateLink: '' },]);
+
+          const addCertificate = () => {
+            setCertificates([...certificates, { company: '', certificateLink: '' }]);
+          };
+
+          const removeCertificate = () => {
+            if (certificates.length > 0) {
+              setCertificates(certificates.slice(0, certificates.length - 1));
+            }
+          };
+
+          const handleCertificateChange = (index, field, value) => {
+            setCertificates(prevCertificates => {
+              const newCertificates = [...prevCertificates];
+              newCertificates[index][field] = value;
+              return newCertificates;
+            });
+          };
+
+
+
+/************************************  end  Certificats parametrs ****************************/
+
+  //****************************  Links parametrs *******************************
+
+            const [links, setLinks] = useState([{ platform: '', url: '' },]);
+
+            const addLink = () => {
+              setLinks([...links, { platform: '', url: '' }]);
+            };
+
+            const removeLink = () => {
+              if (links.length > 0) {
+                setLinks(links.slice(0, links.length - 1));
+              }
+            };
+
+            const handleLinkChange = (index, field, value) => {
+              setLinks(prevLinks => {
+                const newLinks = [...prevLinks];
+                newLinks[index][field] = value;
+                return newLinks;
+              });
+            };
+
+  //**************************** End Links parametrs *******************************
+
+
     //**************************** Hobbies parametrs *******************************
 
-                  const [numHobbies, setNumHobbies] = useState();
                   const [hobbies, setHobbies] = useState([]);
                 
                   const addHobby = () => {
-                    setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
                     setHobbies(prevHobbies => [...prevHobbies, '']);
                   };
                 
                   const removeHobby = () => {
-                    if (numHobbies > 1) {
-                      setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
-                      setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
+                    if (hobbies.length > 0) {
+                      setHobbies(prevHobbies => prevHobbies.slice(0, hobbies.length - 1));
                     }
                   };
                 
@@ -286,17 +354,14 @@ const Loginprofil = () => {
 
                   //**************************** languages parametrs *******************************
 
-                  const [numFields, setNumFields] = useState(1);
                   const [languages, setLanguages] = useState([{ language: '', proficiency: '' },]);
 
                   const addField = () => {
-                    setNumFields(prevNumFields => prevNumFields + 1);
                     setLanguages([...languages, { language: '', proficiency: '' }]); 
                   };
 
                   const removeField = () => {
                     if (languages.length > 1) {
-                      setNumFields(prevNumFields => prevNumFields - 1);
                       const updatedLanguages = languages.slice(0, languages.length - 1);
                       setLanguages(updatedLanguages);
                     }
@@ -316,17 +381,14 @@ const Loginprofil = () => {
 
   //**************************** education parametrs *******************************
 
-                  const [numEducation, setNumEducation] = useState(1);
                   const [education, setEducation] = useState([{ school: '', degree: '', startDate: '', endDate: '' },]);
                   
                   const addEducation = () => {
-                    setNumEducation(prevNumEducation => prevNumEducation + 1);
                     setEducation([...education, { school: '', degree: '', startDate: '', endDate: '' }]);
                   };
 
                   const removeEducation = () => {
                     if (education.length > 1) {
-                      setNumEducation(prevNumEducation => prevNumEducation - 1);
                       const updatedEducation = education.slice(0, education.length - 1);
                       setEducation(updatedEducation);
                     }
@@ -344,19 +406,16 @@ const Loginprofil = () => {
 
   //**************************** experience parametrs *******************************
 
-
-              const [numExperiences, setNumExperiences] = useState(1);
-              const [experiences, setExperiences] = useState(Array(1).fill({ position: '', company: '', startDate: '', endDate: '', workSummary: '' }));
-
+              const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
+              
               const addExperience = () => {
-                setNumExperiences(prevNumExperiences => prevNumExperiences + 1);
-                setExperiences(prevExperiences => [...prevExperiences, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
+                setExperiences([...experience, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
               };
 
               const removeExperience = () => {
-                if (numExperiences > 1) {
-                  setNumExperiences(prevNumExperiences => prevNumExperiences - 1);
-                  setExperiences(prevExperiences => prevExperiences.slice(0, numExperiences - 1));
+                if (experience.length > 0) {
+                  const updatedExperience = experience.slice(0, experience.length - 1);
+                  setExperiences(updatedExperience);
                 }
               };
 
@@ -368,316 +427,48 @@ const Loginprofil = () => {
                 });
               };
 
-    
   //****************************  end experience parametrs *******************************
 
-
-
   /********************************* End Copy ****************************************** */
-
-
+  const [currentStep, setCurrentStep] = useState(1);
   return (
-    <div className='container rounded bg-light mt-5 mb-5'>
-    <MDBRow>
-          <MDBCol>
-            <MDBBreadcrumb className="bg-white rounded-3 mt-4 p-3 mb-4 border border-primary">
-              <MDBBreadcrumbItem>
-                <Link to='/'>Home</Link>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                User profile
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                {name}
-              </MDBBreadcrumbItem>
-            </MDBBreadcrumb>
-          </MDBCol>
-    </MDBRow>
-        
+    <div className='mx-4' style={{display : 'flex' }}>
+    <div className="container rounded bg-light" style={{ maxWidth: '1000px' }}>
+      <div className="col-md-3 border-right d-flex flex-row" >
+        {/* Boutons pour naviguer entre les étapes */}
+        <button className="btn btn-primary" onClick={() => setCurrentStep(1)}>Step 1</button>
+        <button className="btn btn-primary" onClick={() => setCurrentStep(2)}>Step 2</button>
+        {/* Ajoutez d'autres boutons pour les étapes suivantes */}
+      </div>
 
-    <form className="row" onSubmit={handleAdd}>
-        <div className="col-md-3 border-right">
-            <div className="d-flex flex-column align-items-center text-center p-3 py-5">
-              <img className="rounded-circle mt-5" width="150px" 
-                src={ file ? URL.createObjectURL(file) : imgUrl }
-                alt='profil'
-              />
+      <div className="p-3 py-5">
+  {currentStep === 1 && <PersonalInfoForm name={name} surname={surname} profession={profession} phone={phone} address={address} authEmail={email} profsummary={profesummary} country={country} state={state} setName={setName} setSurname={setSurname} setProfession={setProfession} setPhone={setPhone} setAddress={setAddress} setProfsummary={setProfsummary} setCountry={setCountry} setState={setState} />}
+  {currentStep === 2 && <Educationform education={education} handleEducationChange={handleEducationChange} addEducation={addEducation} removeEducation={removeEducation} />}
+  {/* Ajoutez d'autres conditions pour les autres étapes */}
+  
+  <div className="d-flex justify-content-between mt-3">
+    {currentStep > 1 && (
+      <button className="btn btn-secondary" onClick={() => setCurrentStep(currentStep - 1)}>Précédent</button>
+    )}
+    {currentStep < 4 && (
+      <button className="btn btn-primary" onClick={() => setCurrentStep(currentStep + 1)}>Suivant</button>
+    )}
+  </div>
+</div>
 
-              <div className="formInput m-4">
-                <label htmlFor="file">
-                  Image: <FaRegCircleDown /> 
-                </label>
-                <input
-                  type="file"
-                  id="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  style={{ display: "none" }}
-                />
-              </div>
-              <hr style={{"backgroundColor" : "blue" , "width" : "170px" , "height" : "px" }} />
-              <span className="text-primary">{currentUser.email}</span>
-              <span className='mt-3'><button className='btn1' onClick={handleLogout}>Log out</button></span></div>
-        </div>
-        <div className="col-md-5 border-right">
-            <div className="p-3 py-5">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h4 className="text-right"><span className='difcolor btnhov strong'>Profile </span>Settings</h4>
-                </div>
 
-                {/* info personels */}
-                <div className="row mt-2">
-                    <div className="col-md-6"><label className="labels">Name</label><input type="text" className="form-control" placeholder="first name"  required onChange={(e) => setName(e.target.value)} value={name}/></div>
-                    <div className="col-md-6"><label className="labels">Surname</label><input type="text" className="form-control"  placeholder="surname" required onChange={(e) => setSurname(e.target.value)} value={surname}/></div>
-                </div>
-                <div className="row mt-3">
-                    <div className="col-md-12"><label className="labels">Mobile Number</label><input type="text" className="form-control" placeholder="phone number" required onChange={(e) => setPhone(e.target.value)} value={phone}/></div>
-                    <div className="col-md-12"><label className="labels">Address</label><input type="text" className="form-control" placeholder="enter address" required onChange={(e) => setAddress(e.target.value)} value={address}/></div>
-                    <div className="col-md-12"><label className="labels">Email ID</label><input type="text" className="form-control" placeholder="email id" required value={currentUser.email}/></div>
-                    <div className="col-md-12"><label className="labels">Professional Summary </label><input className="form-control" required onChange={(e) => setProfsummary(e.target.value)} value={profesummary}/></div>
-                </div>
+    </div>  
 
-                {/* country */}                
-                <div className="row mt-4">
-                    <div className="col-md-6"><label className="labels">Country</label><input type="text" className="form-control" placeholder="country" required onChange={(e) => setCountry(e.target.value)} value={country} /></div>
-                    <div className="col-md-6"><label className="labels">State/Region</label><input type="text" className="form-control"  placeholder="state" required onChange={(e) => setState(e.target.value)} value={state} /></div>
-                </div>
+                                                  {/*parametrs and Resumes */}
+       
+    <div>
+        <TemplateSettings userId={userId}  numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
+          name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
+        /></div>
 
-                {/* Education */}
-                <div className="row mt-5">
-                    <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
-                      <span>Education</span>
-                      <span className="border px-2 btnhov add-experience" onClick={addEducation}>
-                        <i className="fa fa-plus"></i>
-                      </span>
-                      <span className="border px-2 btnhov add-experience" onClick={removeEducation}>
-                        <i className="fa fa-minus"></i>
-                      </span>
-                    </div>
-                    <br />
-                    
-                    {education.map((edu, index) => (
-                      <React.Fragment key={index}>
-                        <div className="col-md-6">
-                          <label className="labels">School {index + 1}</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="School"
-                            value={edu.school}
-                            onChange={(e) => handleEducationChange(index, 'school', e.target.value)}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="labels">Degree</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Degree"
-                            value={edu.degree}
-                            onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
-                          />
-                        </div>
-                        
-                        <div className="col-md-6">
-                          <label className="labels">Start Date</label>
-                          <input
-                            type="date"
-                            className="form-control"
-                            value={edu.startDate}
-                            onChange={(e) => handleEducationChange(index, 'startDate', e.target.value)}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="labels">End Date</label>
-                          <input
-                            type="date"
-                            className="form-control"
-                            value={edu.endDate}
-                            onChange={(e) => handleEducationChange(index, 'endDate', e.target.value)}
-                          />
-                        </div>
-                      </React.Fragment>
-                    ))}
-                </div>
-                <br />
-                <br />
-
-                {/* languages */}
-                <div className="row mt-6">
-                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
-                    <span>Languages</span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={addField}>
-                      <i className="fa fa-plus"></i>
-                    </span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeField}>
-                      <i className="fa fa-minus"></i>
-                    </span>
-                  </div>
-                  <br />
-                  {languages.map((lang, index) => (
-                    <React.Fragment key={index}>
-                      <div className="col-md-6">
-                        <label className="labels">language {index+1}</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="language"
-                          value={lang.language}
-                          onChange={(e) => handleLanguageChange(index, 'language', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="labels">proficiency</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="proficiency"
-                          value={lang.proficiency}
-                          onChange={(e) => handleLanguageChange(index, 'proficiency', e.target.value)}
-                        />
-                      </div>
-                    </React.Fragment>
-                    ))}
-                </div>
-                
-                <br />
-                <br />
-
-                {/* Skills */}
-                <div className="row mt-7">
-                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
-                    <span>Skills</span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={addSkill}>
-                      <i className="fa fa-plus"></i>
-                    </span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeSkill}>
-                      <i className="fa fa-minus"></i>
-                    </span>
-                  </div>
-                  <br />
-                  {skills.map((skill, index) => (
-                    <div className="col-md-6" key={index}>
-                      <label className="labels">Skill {index + 1}</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Skill"
-                        value={skill}
-                        onChange={(e) => handleSkillChange(index, e.target.value)}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <br />
-                <br />
-
-                {/* Hobbies */}
-                <div className="row mt-8">
-                  <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
-                    <span>Hobbies</span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={addHobby}>
-                      <i className="fa fa-plus"></i>
-                    </span>
-                    <span className="border px-2 difcolor btnhov add-experience" onClick={removeHobby}>
-                      <i className="fa fa-minus"></i>
-                    </span>
-                  </div>
-                  <br />
-                  {hobbies.map((hobby, index) => (
-                    <div className="col-md-6" key={index}>
-                      <label className="labels">Hobby {index + 1}</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Hobby"
-                        value={hobby}
-                        onChange={(e) => handleHobbyChange(index, e.target.value)}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <br />
-                <br />
-                                
-                <div className="mt-5 text-center"><button className="btn btn-primary profile-button" type="submit" disabled={per !== null && per < 100} >Save Profile</button></div>
-            </div>
-        </div>
-
-            {/* Experiences */}
-            <div className="col-md-4">
-                <div className="p-3 py-5">
-                  <div className="d-flex justify-content-between align-items-center experience difcolor btnhov ">
-                    <span>Experience</span>
-                    <span className="border px-2 add-experience" onClick={addExperience}>
-                      <i className="fa fa-plus"></i>
-                    </span>
-                    <span className="border px-2 add-experience" onClick={removeExperience}>
-                      <i className="fa fa-minus"></i>
-                    </span>
-                  </div>
-                  
-                  <br />
-                  {experiences.map((exp, index) => (
-                    
-                    <React.Fragment key={index}>
-                      <div className="col-md-12">
-                        <br />
-
-                        <label className="labels">Position Title {index + 1}</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Position Title"
-                          value={exp.position}
-                          onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-12">
-                        <label className="labels">Company Name</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Company Name"
-                          value={exp.company}
-                          onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="labels">Start Date</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          value={exp.startDate}
-                          onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label className="labels">End Date</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          value={exp.endDate}
-                          onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
-                        />
-                      </div>
-                      <div className="col-md-12">
-                        <label className="labels">Work Summary</label>
-                        <input
-                          className="form-control"
-                          placeholder="Work Summary"
-                          value={exp.workSummary}
-                          onChange={(e) => handleExperienceChange(index, 'workSummary', e.target.value)}
-                        />
-                      </div>
-                    </React.Fragment>
-                  ))}
-                  
-                </div>
-            </div>
-            
-    </form>
+       
     </div>
+                                                    
   )
 }
 

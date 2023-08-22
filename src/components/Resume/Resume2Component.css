@@ -1,7 +1,7 @@
 .wrapper {
     max-width: 1000px;
     height: auto;
-    min-height: 1250px;
+    min-height: 1450px;
     margin: 0 auto;
     position: relative;
     -webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -19,7 +19,7 @@
     right: 0;
     max-width: 300px;
     height: 100%;
-    min-height: 800px;
+    min-height: 1450px;
     color: #fff;
     word-wrap: break-word;
  
@@ -121,6 +121,8 @@
   .main-wrapper {
     padding: 60px;
     padding-right: 350px;
+    min-height: 1450px;
+
   }
   .main-wrapper .section-title {
     text-transform: uppercase;

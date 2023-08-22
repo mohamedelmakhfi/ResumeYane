@@ -1,27 +1,8 @@
-import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { getIconClass } from "../../data/Datatemp";
-import JsPDF, { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
-const getIconClas = getIconClass;
-
-/**const generatePDF = () => {
-  const report = new JsPDF('portrait','pt','a4');
-  
-
-  report.html(document.querySelector('#cvContainer')).then(() => {
-      report.save('report.pdf');
-  });
-
-  
-    // Utilise html2canvas pour capturer le contenu en tant qu'image
-    const cvContainer = document.querySelector('#cvContainer');
-    html2canvas(cvContainer).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png'); // Convertit l'image en données base64
-    report.addImage(imgData, 'PNG', 0, 0, 595, 842); // Ajoute l'image au PDF
-    report.save('report.pdf');
-});
-   
-}*/
+const getIconClas = getIconClass ;
 
 const generatePDF = () => {
 	const cvContainer = document.querySelector('#cvContainer');
@@ -45,21 +26,17 @@ const generatePDF = () => {
 
 const Resume1Component = (props) => {
 
+ 
 
   /********** font *********** */
   const fonttext = {
     fontFamily : props.selectedFonttitre,
   }
 
-  const smallerFont = {
-        fontSize: '10px', // Ajuste la taille de police
-    };
-    
   /* ********* titles *********** */
   const TitleColor = {
     color : props.titleColor,
     ...fonttext,
-    ...smallerFont,
   }
 
   /* ********* side 1 *********** */
@@ -82,7 +59,11 @@ const Resume1Component = (props) => {
   }
 
   const a4Width = 595; // Largeur en points
-  const a4Height = 900; // Hauteur en points
+  const a4Height = 842; // Hauteur en points
+
+  const smallerFont = {
+      fontSize: '10px', // Ajuste la taille de police
+  };
 
   const smallerImageSize = {
       width: '100px', // Ajuste la taille de l'image
@@ -95,22 +76,22 @@ const Resume1Component = (props) => {
 
   return (
     <>
-    <div className='container ' >
+    <div className='container '   >
       
-        <div className='row' id='cvContainer' style={{ maxWidth: `${a4Width}px`, minWidth : `${a4Width}px` , maxHeight: `${a4Height}px` , minHeight : `${a4Height}px`, margin: '0 auto' }}>
+        <div className='row' id="cvContainer" style={{ maxWidth : '1000px' , minHeight : '1420px' , margin : ' auto'}}>
           <div className='col-lg-4 text-center py-4' style={background1color}>
               <div className='Header-left'>
-                <img className="img-thumbnail rounded-circle mb-2 " style={smallerImageSize}  
-                    src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" }
+                <img className="img-thumbnail rounded-circle mb-2 " width={"250px"}  
+                    src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" } 
                     alt='profil'
                 />
-                <h4 className='display-7 mt-2' style={{...fonttext , ...smallerFont}}> {props.name} {props.surname}</h4>
-                <h4 className='lead text-sm mb-4' style={smallerFont}>{props.profession}</h4>
+                <h4 className='display-7 mt-2' style={fonttext}> {props.name} {props.surname}</h4>
+                <h4 className='lead text-sm mb-4'>{props.profession}</h4>
               </div>
 
               <div>
-                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor , ...smallerFont}}>Contact</h5>
-                <ul className='list-unstyled text-white50 ml-5 py-2 text-left' style={smallerParagraph}>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Contact</h5>
+                <ul className='list-unstyled text-white50 ml-5 py-2 text-left'>
                   <li className='list-item'>
                     <i className='fas fa-mobile-alt mx-4'></i>{props.phone}
                   </li>
@@ -126,11 +107,11 @@ const Resume1Component = (props) => {
               </div>
 
               <div>
-                <h5 className='text-uppercase  py-2 rounded-pill' style={{...smallerFont , color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Skills</h5>
-                <div className='row mt-3 mb-3' >
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Skills</h5>
+                <div className='row mt-3 mb-3'>
                   {props.skills.map((skill, index) => (
                     <div className='col-md-6 mb-2' key={index}>  
-                      <div className='progress resume-progress' style={smallerParagraph}>
+                      <div className='progress resume-progress'>
                         <div className='progress-bar ' role='progressbar' style={{ width: `${skill.level}%`, backgroundColor : background1color.backgroundColor , color : background2color.backgroundColor , border : '1px solid'}} aria-valuemin='0' aria-valuemax='100'>{skill.skill}</div>
                       </div>
                     </div>
@@ -140,11 +121,11 @@ const Resume1Component = (props) => {
 
 
               <div>
-                <h5 className='text-uppercase  py-2 rounded-pill' style={{...smallerFont , color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Links</h5>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Links</h5>
                 <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
                 {props.links.map((link, index) => (
-                    <li key={index} className='list-item' style={smallerParagraph}>
-                      <i className={`${getIconClas(link.platform)} icon-small`}></i> -
+                    <li key={index} className='list-item'>
+                      <i className={`${getIconClas(link.platform)} icon-large`}></i> -
                       ({link.platform})  {link.url}
 
                     </li>
@@ -153,20 +134,20 @@ const Resume1Component = (props) => {
               </div>
 
               <div>
-                <h5 className='text-uppercase  py-2 rounded-pill' style={{...smallerFont , color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Languages</h5>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Languages</h5>
                 <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
                 {props.languages.map((language ,index) => (
-                    <li key={index} className='list-item' style={smallerParagraph}>{language.language} --- {language.proficiency}</li>
+                    <li key={index} className='list-item'>{language.language} --- {language.proficiency}</li>
                 ))}
                 </ul>
               </div>
 
               <div>
-                  <h5 className='text-uppercase  py-2 rounded-pill' style={{...smallerFont , color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Hobbies</h5>
+                  <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Hobbies</h5>
                   <div className="row mt-3 mb-3">
                       {props.hobbies.map((hobbie, index) => (
                           <div className='col-md-6 mb-2' key={index}>  
-                          <div className='progress resume-progress' style={smallerParagraph}>
+                          <div className='progress resume-progress'>
                             <div className='progress-bar' role='progressbar' style={{width : "100%" , backgroundColor : background1color.backgroundColor , color : background2color.backgroundColor , border : '2px solid'}} aria-valuemin='0' aria-valuemax='100'>{hobbie}</div>
                           </div>
                         </div>
@@ -183,7 +164,7 @@ const Resume1Component = (props) => {
             <div className='header-right'>
                 <h4 className='text-center' style={TitleColor}>Professional Summary</h4>
                 <hr />
-                <p style={smallerParagraph}>{props.profesummary}</p>
+                <p>{props.profesummary}</p>
             </div>
 
             <br />
@@ -195,7 +176,7 @@ const Resume1Component = (props) => {
                     if (index % 2 === 0) {
                         const nextEdu = props.education[index + 1];
                         return (
-                            <div key={index} className="row mb-3" style={smallerParagraph}>
+                            <div key={index} className="row mb-3">
                                 <div className="col-6">
                                     <div className="resume-degree" style={{fontWeight : "bold"}}>{edu.school}</div>
                                     <div className="resume-degree-org ">{edu.degree}</div>
@@ -228,7 +209,7 @@ const Resume1Component = (props) => {
         if (index % 2 === 0) {
             const nextExp = props.experience[index + 1];
             return (
-                <div key={index} className="row mb-3" style={smallerParagraph}>
+                <div key={index} className="row mb-3">
                     <div className="col-6">
                         <div className="resume-position " style={{fontWeight : "bold"}}>{exp.position}</div>
                         <div className="resume-company ">{exp.company}</div>
@@ -263,12 +244,12 @@ const Resume1Component = (props) => {
               <h4 className='text-center' style={TitleColor}>projects</h4>
               <hr />
                 {props.projects.map((projet,index) => (
-                <div key={index} >
-                  <div className=" col-md-12 row" style={smallerParagraph}>
-                    <p className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectName}</p>
-                    <p className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectType}</p>
+                <div key={index}>
+                  <div className=" col-md-12 row" >
+                    <h6 className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectName}</h6>
+                    <h6 className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectType}</h6>
                   </div>
-                  <h6 style={smallerParagraph}> {projet.description}</h6>
+                  <h6 > {projet.description}</h6>
                   <br /></div>              
                 ))}  
             </div>
@@ -277,9 +258,9 @@ const Resume1Component = (props) => {
               <h4 className='text-center' style={TitleColor}>Certificates</h4>
               <hr />
                 {props.certificates.map((certif,index) => (
-                  <div className="col-md-12 row" style={smallerParagraph} key={index}>
-                    <p className=" offset-md-2 col-md-6"> {certif.company}</p>
-                    <p className="col-md-4"> {certif.certificateLink}</p>
+                  <div className="col-md-12 row" key={index}>
+                    <h6 className=" offset-md-2 col-md-6"> {certif.company}</h6>
+                    <h6 className="col-md-4"> {certif.certificateLink}</h6>
                     <br />             
                   </div>
                 ))}  

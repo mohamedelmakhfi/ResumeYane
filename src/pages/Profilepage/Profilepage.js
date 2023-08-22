@@ -5,9 +5,9 @@ import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore"; 
+import { arrayUnion, doc, getDoc, runTransaction, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
+import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
 
 
 
@@ -48,7 +48,7 @@ const ProfilePage  = () => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [file, setFile] = useState("");
-  const [imgUrl, setImgurl] = useState("");
+  const [imgUrl, setImgurl] = useState('https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg');
   const [profession, setProfession] = useState("");
 
 /***************************** recevoir rsesume id ****************************** */
@@ -157,45 +157,45 @@ const prevResume = () => {
 
   //********************** End upload image *********************** */
 
+  const docUsers = doc(db,"users",userId);
+  const docinfo = doc(db,"infoperson",userId);
 
   const handleAdd = async (e) => {
     e.preventDefault();
-
+    
     // Prepare the hobbies data in an array format
-    const hobbiesData = hobbies.reduce((acc, hobby) => {
-      if (hobby.trim() !== '') {
-        acc.push(hobby.trim());
-      }
-      return acc;
-    }, []);
+    const hobbiesData = hobbies.filter(hobby => hobby.trim() !== '');
 
+    
     try {
-      await setDoc(doc(db, "users", userId), {
-        languages: languages, 
-        skills: skills,
-        hobbies: arrayUnion(...hobbiesData),
-        education: education,
-        experience: experience,
-        certificates : certificates,
-        projects : projects,
-
+      await runTransaction(db, async (transaction) => {
+    
+        transaction.update(docUsers,{
+          certificates: certificates,
+          projects: projects ,
+          experience: experience,
+          education: education,
+          skills: skills,
+          languages: languages,
+          hobbies: hobbiesData,
+        });
+    
+        transaction.update(docinfo, {
+          name: name,
+          surname: surname,
+          email: userEmail,
+          phone: phone,
+          address: address,
+          profesummary: profesummary,
+          state: state,
+          country: country,
+          img: imgUrl,
+          links: links,
+          profession: profession,
+        });
       });
-  
-      await setDoc(doc(db, "infoperson", userId), {
-        name: name,
-        surname: surname,
-        email: userEmail,
-        phone: phone,
-        address: address,
-        profesummary: profesummary,
-        state: state,
-        country: country,
-        img: imgUrl,
-        links : links ,
-        profession : profession,
-      });
-  
-      alert("Submit réussi !");
+    
+      alert("Submit réussi !"); 
     }catch (error) {
       alert("Submit échoué !");
       console.error("Erreur lors de la soumission du formulaire :", error);
@@ -318,18 +318,15 @@ const prevResume = () => {
 
     //**************************** Hobbies parametrs *******************************
 
-              const [numHobbies, setNumHobbies] = useState();
               const [hobbies, setHobbies] = useState([]);
             
               const addHobby = () => {
-                setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
                 setHobbies(prevHobbies => [...prevHobbies, '']);
               };
             
               const removeHobby = () => {
-                if (numHobbies > 1) {
-                  setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
-                  setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
+                if (hobbies.length > 0) {
+                  setHobbies(prevHobbies => prevHobbies.slice(0, hobbies.length - 1));
                 }
               };
             
@@ -406,7 +403,7 @@ const prevResume = () => {
               };
 
               const removeExperience = () => {
-                if (experience.length > 1) {
+                if (experience.length > 0) {
                   const updatedExperience = experience.slice(0, experience.length - 1);
                   setExperiences(updatedExperience);
                 }
@@ -427,28 +424,14 @@ const prevResume = () => {
     return (
     <div className='mx-4' style={{display : 'flex' , flexDirection : 'column' ,gap : '40px'}}>
     <div className='container rounded bg-light'>
-      <MDBRow>
-          <MDBCol>
-            <MDBBreadcrumb className="bg-white rounded-3 mt-4 p-3 mb-4 border border-primary">
-              <MDBBreadcrumbItem>
-                <Link to='/'>Home</Link>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                User profile
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                {name}
-              </MDBBreadcrumbItem>
-            </MDBBreadcrumb>
-          </MDBCol>
-      </MDBRow>
+      <BreadcrumbComponent name={name} />
         
 
     <form className="row" onSubmit={handleAdd}>
-        <div className="col-md-3 border-right d-flex flex-column">
-        <ProfileImageForm file={file} imgUrl={imgUrl} setFile={setFile} />
+    <div className="col-md-3 border-right d-flex flex-column">
+              <ProfileImageForm file={file} imgUrl={imgUrl} setFile={setFile} />
               <span className='d-flex justify-content-center'><button className='btn1' onClick={handleLogout}>Log out</button></span>
-        </div>
+          </div>
 
         <div className="col-md-5 border-right">
                 <div className="p-3 py-5">
@@ -488,9 +471,9 @@ const prevResume = () => {
 
                                     {/*parametrs and Resumes */}
         
-          <TemplateSettings  userId={userId} numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
+         <TemplateSettings userId={userId}  numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
           name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
-          />
+        />
     
     </div>
   );

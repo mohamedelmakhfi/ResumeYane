@@ -14,9 +14,10 @@ const ProjectForm = ({ projects, addProject, removeProject, handleProjectChange 
         <span className="border px-2 difcolor btnhov add-experience" onClick={addProject}>
           <i className="fa fa-plus"></i>
         </span>
+        {projects.length > 0 && (
         <span className="border px-2 difcolor btnhov add-experience" onClick={removeProject}>
           <i className="fa fa-minus"></i>
-        </span>
+        </span>)}
       </div>
       <br />
       {projects.map((project, index) => (

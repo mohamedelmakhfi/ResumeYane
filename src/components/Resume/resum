@@ -1,0 +1,1021 @@
+import { getIconClass } from "../../data/Datatemp";
+
+const getIconClas = getIconClass ;
+
+const generatePDF = () => {
+	const cvContainer = document.querySelector('#cvContainer');
+  
+	if (cvContainer) {
+	  const dpi = 300; // Set your desired DPI value
+	  const scale = dpi / 96; // Calculate scale factor based on DPI
+  
+	  html2canvas(cvContainer, { scale: scale }).then(canvas => {
+		const imgData = canvas.toDataURL('image/jpeg', 1.0); // Use JPEG format with higher quality
+  
+		const pdf = new jsPDF('p', 'mm', 'a4'); // Create a new PDF document
+		const imgWidth = 210; // A4 width in mm
+		const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate image height to maintain aspect ratio
+		pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight); // Add image to PDF
+		pdf.save('cv.pdf'); // Save the PDF
+	  });
+	}
+  }
+
+
+const Resume1Component = (props) => {
+
+ 
+
+  /********** font *********** */
+  const fonttext = {
+    fontFamily : props.selectedFonttitre,
+  }
+
+  /* ********* titles *********** */
+  const TitleColor = {
+    color : props.titleColor,
+    ...fonttext,
+  }
+
+  /* ********* side 1 *********** */
+  const Colortext1 = {
+    color : props.Colortext1,
+  }
+  
+  const background1color = {
+    backgroundColor : props.background1color,
+    ...Colortext1,
+  }
+
+  /* ********* side 2 *********** */
+  const Colortext2 = {
+    color : props.Colortext2,
+  }
+  const background2color = {
+    backgroundColor : props.background2color,
+    ...Colortext2,
+  }
+
+  const a4Width = 595; // Largeur en points
+  const a4Height = 842; // Hauteur en points
+
+  const smallerFont = {
+      fontSize: '10px', // Ajuste la taille de police
+  };
+
+  const smallerImageSize = {
+      width: '100px', // Ajuste la taille de l'image
+  };
+
+  const smallerParagraph = {
+      fontSize: '8px', // Ajuste la taille des paragraphes
+  };
+  
+
+  return (
+    <>
+    <div className='container ' id="cvContainer"  >
+      
+        <div className='row' style={{ width: `${a4Width}px`, height: `${a4Height}px`, margin: '0 auto' }}>
+          <div className='col-lg-4 text-center py-4' style={background1color}>
+              <div className='Header-left'>
+                <img className="img-thumbnail rounded-circle mb-2 " width={"250px"}  
+                    src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" } 
+                    alt='profil'
+                />
+                <h4 className='display-7 mt-2' style={fonttext}> {props.name} {props.surname}</h4>
+                <h4 className='lead text-sm mb-4'>{props.profession}</h4>
+              </div>
+
+              <div>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Contact</h5>
+                <ul className='list-unstyled text-white50 ml-5 py-2 text-left'>
+                  <li className='list-item'>
+                    <i className='fas fa-mobile-alt mx-4'></i>{props.phone}
+                  </li>
+                  <li className='list-item'>
+                    <i className='fas fa-envelope-open-text mx-4'></i>{props.email}
+                  </li>
+                  <li className='list-item'>
+                    <i className='fas fa-map-marker-alt mx-4'></i>{props.country} , {props.state} <br /> {props.address}
+                  </li>
+                  
+                </ul> 
+                
+              </div>
+
+              <div>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Skills</h5>
+                <div className='row mt-3 mb-3'>
+                  {props.skills.map((skill, index) => (
+                    <div className='col-md-6 mb-2' key={index}>  
+                      <div className='progress resume-progress'>
+                        <div className='progress-bar ' role='progressbar' style={{ width: `${skill.level}%`, backgroundColor : background1color.backgroundColor , color : background2color.backgroundColor , border : '1px solid'}} aria-valuemin='0' aria-valuemax='100'>{skill.skill}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+
+              <div>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Links</h5>
+                <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
+                {props.links.map((link, index) => (
+                    <li key={index} className='list-item'>
+                      <i className={`${getIconClas(link.platform)} icon-large`}></i> -
+                      ({link.platform})  {link.url}
+
+                    </li>
+                ))}
+                </ul>
+              </div>
+
+              <div>
+                <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Languages</h5>
+                <ul className='list text-white-80 ml-5 py-2 text-left text-capitalize'>
+                {props.languages.map((language ,index) => (
+                    <li key={index} className='list-item'>{language.language} --- {language.proficiency}</li>
+                ))}
+                </ul>
+              </div>
+
+              <div>
+                  <h5 className='text-uppercase  py-2 rounded-pill' style={{color : TitleColor.color , fontFamily : fonttext.fontFamily , backgroundColor : background2color.backgroundColor}}>Hobbies</h5>
+                  <div className="row mt-3 mb-3">
+                      {props.hobbies.map((hobbie, index) => (
+                          <div className='col-md-6 mb-2' key={index}>  
+                          <div className='progress resume-progress'>
+                            <div className='progress-bar' role='progressbar' style={{width : "100%" , backgroundColor : background1color.backgroundColor , color : background2color.backgroundColor , border : '2px solid'}} aria-valuemin='0' aria-valuemax='100'>{hobbie}</div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+              </div>
+
+        
+
+
+          </div>
+
+          <div className='col-lg-8 py-4 px-5' style={background2color}>
+            <div className='header-right'>
+                <h4 className='text-center' style={TitleColor}>Professional Summary</h4>
+                <hr />
+                <p>{props.profesummary}</p>
+            </div>
+
+            <br />
+
+            <div className='text-left'>
+              <h4 className='text-center' style={TitleColor}>Education</h4>
+              <hr />
+              {props.education.map((edu, index) => {
+                    if (index % 2 === 0) {
+                        const nextEdu = props.education[index + 1];
+                        return (
+                            <div key={index} className="row mb-3">
+                                <div className="col-6">
+                                    <div className="resume-degree" style={{fontWeight : "bold"}}>{edu.school}</div>
+                                    <div className="resume-degree-org ">{edu.degree}</div>
+                                    <div className="resume-degree-time ">
+                                        {edu.startDate} - {edu.endDate}
+                                    </div>
+                                </div>
+                                {nextEdu && (
+                                    <div className="col-6" >
+                                        <div className="resume-degree" style={{fontWeight : "bold"}}>{nextEdu.school}</div>
+                                        <div className="resume-degree-org ">{nextEdu.degree}</div>
+                                        <div className="resume-degree-time ">
+                                            {nextEdu.startDate} - {nextEdu.endDate}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip odd-indexed items
+                    }
+                })}       
+            </div>
+            
+            
+            <div className='text-left'>
+              <h4 className='text-center' style={TitleColor}>Work Experience</h4>
+              <hr />
+              {props.experience.map((exp, index) => {
+        if (index % 2 === 0) {
+            const nextExp = props.experience[index + 1];
+            return (
+                <div key={index} className="row mb-3">
+                    <div className="col-6">
+                        <div className="resume-position " style={{fontWeight : "bold"}}>{exp.position}</div>
+                        <div className="resume-company ">{exp.company}</div>
+                        <div className="resume-summary ">
+                            {exp.workSummary}
+                        </div>
+                        <div className="resume-exp-time ">
+                            {exp.startDate} - {exp.endDate}
+                        </div>
+                    </div>
+                    {nextExp && (
+                        <div className="col-6">
+                            <div className="resume-position " style={{fontWeight : "bold"}}>{nextExp.position}</div>
+                            <div className="resume-company ">{nextExp.company}</div>
+                            <div className="resume-summary ">
+                                {nextExp.workSummary}
+                            </div>
+                            <div className="resume-exp-time ">
+                                {nextExp.startDate} - {nextExp.endDate}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        } else {
+            return null; // Skip odd-indexed items
+        }
+    })}         
+            </div>
+
+            <div className='d-flex justify-content-center flex-column'>
+              <h4 className='text-center' style={TitleColor}>projects</h4>
+              <hr />
+                {props.projects.map((projet,index) => (
+                <div key={index}>
+                  <div className=" col-md-12 row" >
+                    <h6 className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectName}</h6>
+                    <h6 className="col-md-6" style={{fontWeight : "bold"}}> {projet.projectType}</h6>
+                  </div>
+                  <h6 > {projet.description}</h6>
+                  <br /></div>              
+                ))}  
+            </div>
+
+            <div className='text-left d-flex justify-content-center flex-column'>
+              <h4 className='text-center' style={TitleColor}>Certificates</h4>
+              <hr />
+                {props.certificates.map((certif,index) => (
+                  <div className="col-md-12 row" key={index}>
+                    <h6 className=" offset-md-2 col-md-6"> {certif.company}</h6>
+                    <h6 className="col-md-4"> {certif.certificateLink}</h6>
+                    <br />             
+                  </div>
+                ))}  
+            </div>
+
+          </div>
+        </div>
+        
+        <button onClick={generatePDF} type="button">Export PDF</button>
+
+    </div>
+    </>
+  );
+}
+
+export default Resume1Component
+
+
+
+/********************************************************************************************************************************* */
+
+
+import React from 'react';
+import './Resume2Component.css';
+import { getIconClass } from '../../data/Datatemp';
+
+const getIconClas = getIconClass ;
+
+
+const Resume2Component = (props) => {
+
+  /********** font *********** */
+  const fonttext = {
+    fontFamily : props.selectedFonttitre,
+  }
+
+  /* ********* titles *********** */
+  const TitleColor = {
+    color : props.titleColor,
+    ...fonttext,
+  }
+
+  /* ********* side 1 *********** */
+  const Colortext1 = {
+    color : props.Colortext1,
+  }
+  
+  const background1color = {
+    backgroundColor : props.background1color,
+    ...Colortext1,
+  }
+
+  /* ********* side 2 *********** */
+  const Colortext2 = {
+    color : props.Colortext2,
+  }
+  const background2color = {
+    backgroundColor : props.background2color,
+    ...Colortext2,
+  }
+
+  
+  return (
+    
+    <div className="container">
+      
+      <div className="wrapper mt-lg-5">
+        <div className="sidebar-wrapper mb-1" style={background1color}>
+            <div className="profile-container">
+                <img className="profile"
+                    src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" }
+                    alt='profil'
+                />
+                <h1 className="name" style={{color : Colortext1.color , fontFamily : fonttext.fontFamily}}>{props.name} {props.surname} </h1>
+                <h3 className="tagline" style={Colortext1}>{props.profession}</h3>
+            </div>
+            
+            <div className="contact-container mb-3 mx-4">
+                <ul className="list-unstyled row">
+                    <li className="col-md-12 mt-3 mb-1"><i className="fa-solid fa-envelope"></i>{props.email}</li>
+                    <li className="col-md-12 mb-2"><i className="fa-solid fa-phone"></i>{props.phone}</li>
+                    {props.links.map((link, index) => (
+                      <React.Fragment key={index}>
+                        <li className='col-md-12 mb-1 text-sm'>
+                          <i className={`${getIconClas(link.platform)} `}></i> -
+                          ({link.platform}) {link.url}
+                        </li>
+                      </React.Fragment>
+                    ))}
+                    
+
+                    <li className='address mt-2' >
+                    <i className='fas fa-map-marker-alt mx-2'></i>{props.country} , {props.state} / {props.address}
+                  </li>
+                </ul>
+            </div>
+
+          
+            <div className="education-container  mx-4">
+                <h2 className="container-block-title" style={TitleColor}>Education</h2>
+                {props.education.map((edu, index) => (
+                  <React.Fragment key={index}>
+                    <div className="item">
+                      <h4 className="degree">{edu.school}</h4>
+                      <h5 className="meta" style={Colortext1}>{edu.degree}</h5>
+                      <div className="time" style={Colortext1}>{edu.startDate} - {edu.endDate}</div>
+                    </div>
+                  </React.Fragment>
+                ))}
+            </div>
+
+             
+            <div className="languages-container mt-3 mx-4">
+                <h2 className="container-block-title"style={TitleColor}>Languages</h2>
+                <ul className="list-unstyled interests-list">
+                {props.languages.map((language, index) => (
+                  <React.Fragment key={index}>
+                    <li>{language.language} <span className="lang-desc">({language.proficiency})</span></li>
+                  </React.Fragment>
+                ))}
+                </ul>
+            </div>
+
+            
+            <div className="interests-container mt-3 mx-4">
+                <h2 className="container-block-title"style={TitleColor}>Interests</h2>
+                <ul className="list-unstyled interests-list">
+                {props.hobbies.map((hobbie, index) => (
+                  index % 3 === 0 && (
+                    <React.Fragment key={index}>
+                      <li>
+                        {hobbie}
+                        {props.hobbies[index + 1] && (
+                          <span> - {props.hobbies[index + 1]}</span>
+                        )}
+                        {props.hobbies[index + 2] && (
+                          <span> - {props.hobbies[index + 2]}</span>
+                        )}
+                      </li>
+                    </React.Fragment>
+                  )
+                ))}
+                </ul>
+            </div>
+
+
+            
+
+            
+
+        </div>
+        
+        <div className="main-wrapper" style={background2color}>
+            
+            <section className="section summary-section">
+                <h2 className="section-title" style={{fontFamily : TitleColor.fontFamily , color : TitleColor.color}}><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-user"></i></span>Career Profile</h2>
+                <div className="summary">
+                    <p>{props.profesummary}</p>
+                </div>
+            </section>
+            
+            <section className="section experiences-section">
+
+                <h2 className="section-title" style={TitleColor}><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-briefcase"></i></span>Experiences</h2>
+                
+                {props.experience.map((exp, index) => (
+                  <React.Fragment key={index}>
+                    <div className="item">
+                      <div className="meta">
+                        <div className="upper-row">
+                          <h3 className="job-title">{exp.position}</h3>
+                          <div className="time" style={Colortext2}>{exp.startDate} - {exp.endDate}</div>
+                        </div>
+                        <div className="company" style={Colortext2}>{exp.company}</div>
+                      </div>
+                      <div className="details">
+                        <p>{exp.workSummary}</p>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ))}
+                
+                
+            </section>
+            
+            <section className="section projects-section">
+            <h2 className="section-title" style={TitleColor}><span className="icon-holder" style={TitleColor} ><i className="fa-solid fa-archive"></i></span>Projects</h2>
+            {props.projects.map((Projet, index) => (
+              <React.Fragment key={index}>
+                <div className="item">
+                  <div className="meta">
+                    <div className="upper-row">
+                      <h3 className="job-title">{Projet.projectName}</h3>
+                      <div className="time" style={Colortext2}>{Projet.projectType}</div>
+                    </div>
+                    <div className="company" style={Colortext2}>{Projet.company}</div>
+                  </div>
+                  <div className="details">
+                    <p>{Projet.description}</p>
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
+            </section>
+            
+            <section className="skills-section section">
+                <h2 className="section-title" style={TitleColor}><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-rocket"></i></span>Skills &amp; Proficiency</h2>
+                <div className="skillset">
+                  <div className="row">
+                  {props.skills.map((skill, index) => (
+                    <React.Fragment key={index}>
+                      <div className='col-md-6'>
+                        <div className="item">
+                          <h3 className="level-title">{skill.skill}</h3>
+                          <div className="progress level-bar">
+                            <div className="progress-bar theme-progress-bar" role="progressbar" style={{ width: `${skill.level}%`, backgroundColor: background1color.backgroundColor }}></div>
+                          </div>
+                          <div>
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ))}
+                  </div>
+                </div>
+ 
+            </section>
+
+            <section className="skills-section section">
+                <h2 className="section-title" style={TitleColor} ><span className="icon-holder" style={TitleColor}><i className="fa-solid fa-rocket"></i></span>Certificates</h2>
+                <div className="skillset">
+                  <div className="row">
+                  {props.certificates.map((certif, index) => (
+                    <React.Fragment key={index}>
+                      <div className='col-md-6'>
+                        <div className="item">
+                          <h3 className="level-title">{certif.company}</h3>
+                          <div className="progress level-bar">
+                            <div className="progress-bar theme-progress-bar  w-100" role="progressbar" style={background1color}>{certif.certificateLink}</div>
+                          </div>
+                          <div>
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ))}
+                  </div>
+                </div>
+ 
+            </section>
+            
+        </div>
+      </div>
+    
+
+    </div>
+    
+  )
+}
+
+export default Resume2Component
+
+/************************************************************************************************************************************************ */
+
+import React from 'react';
+import { getIconClass } from '../../data/Datatemp';
+  const getIconClas = getIconClass ;
+
+
+const Resume3Component = (props) => {
+
+    /********** font *********** */
+    const fonttext = {
+      fontFamily : props.selectedFonttitre,
+    }
+  
+    /* ********* titles *********** */
+    const TitleColor = {
+      color : props.titleColor,
+      ...fonttext,
+    }
+  
+    /* ********* side 1 *********** */
+    const Colortext1 = {
+      color : props.Colortext1,
+    }
+    
+    const background1color = {
+      backgroundColor : props.background1color,
+      ...Colortext1,
+    }
+  
+    /* ********* side 2 *********** */
+    const Colortext2 = {
+      color : props.Colortext2,
+    }
+    const background2color = {
+      backgroundColor : props.background2color,
+      ...Colortext2,
+    }
+  
+  return (
+    <>
+      <div className=" container " style={{maxWidth : '1000px' , backgroundColor : background1color.backgroundColor === '#A80000' ? '#D9D9D9' : background1color.backgroundColor}} >
+        <article className="resume-wrapper mx-auto p-5 mb-5 my-5 shadow-lg">
+
+          <div className="resume-header p-4" style={{color : Colortext2.color , background : background2color.backgroundColor}}>
+            {/* ... (header content) ... */}
+            <div className="row align-items-center">
+						<div className="resume-title col-12 col-md-6 col-lg-6 col-xl-6">
+							<h2 className="resume-name mb-0 text-uppercase" style={TitleColor}>{props.name} {props.surname}</h2>
+							<div className="resume-tagline mb-3 mb-md-0" style={{fontWeight : "bold" , fontSize : '19px'}}>{props.profession}</div>
+						</div>
+						<div className="resume-contact col-12 col-md-6 col-lg-6 offset-md-1 col-xl-5">
+							<ul className="list-unstyled mb-0">
+								<li className="mb-2"><i className="fas fa-phone-square fa-fw fa-lg me-2 "></i>{props.phone}</li>
+								<li className="mb-2"><i className="fas fa-envelope-square fa-fw fa-lg me-2"></i>{props.email}</li>
+								<li className="mb-0"><i className="fas fa-map-marker-alt fa-fw fa-lg me-2"></i>{props.country} , {props.state} <br /> {props.address}</li>
+							</ul>
+						</div>
+					</div>
+          </div>
+
+          <hr />
+
+          <div className="resume-intro py-3" >
+            {/* ... (intro content) ... */}
+            <div className="align-items-center " style={{display : 'flex' , flexDirection : 'row'}}>
+              <div className="text-left">
+                  <img className="resume-profile-image mb-3 mb-md-0 me-md-5  ms-md-0 rounded mx-auto" src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" }
+                  width={"200px"}  alt='profil' />
+              </div>
+              
+              <div className="text-start">
+                <p className="mb-0" style={{color : Colortext1.color === '#ffffff' ? '#000000' : '#ffffff'}}>
+                {props.profesummary}
+                </p>
+              </div>
+					</div>
+
+          </div>
+
+          <hr />
+
+          <div className="resume-body" style={{color : Colortext1.color === '#ffffff' ? '#000000' : '#ffffff'}}>
+            <div className="row">
+              <div className="resume-main col-12 col-lg-8 col-xl-9 pe-0 pe-lg-5">
+
+              <section className="education-section py-3">
+                <h3 className="text-uppercase resume-section-heading mb-4" style={TitleColor}>Education</h3>
+                {props.education.map((edu, index) => {
+                    if (index % 2 === 0) {
+                        const nextEdu = props.education[index + 1];
+                        return (
+                            <div key={index} className="row mb-3">
+                                <div className="col-12 col-md-5 col-lg-6">
+                                    <div className="resume-degree "style={{fontWeight : "bold" , fontSize : '19px'}}>{edu.school}</div>
+                                    <div className="resume-degree-org">{edu.degree}</div>
+                                    <div className="resume-degree-time">
+                                        {edu.startDate} - {edu.endDate}
+                                    </div>
+                                </div>
+                                {nextEdu && (
+                                    <div className="col-12 col-md-6 col-lg-6">
+                                        <div className="resume-degree " style={{fontWeight : "bold" , fontSize : '19px'}}>{nextEdu.school}</div>
+                                        <div className="resume-degree-org ">{nextEdu.degree}</div>
+                                        <div className="resume-degree-time ">
+                                            {nextEdu.startDate} - {nextEdu.endDate}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip odd-indexed items
+                    }
+                })}
+            </section>
+
+
+
+
+                <section className="work-section py-3">
+                  {/* ... (work experiences section) ... */}
+                  <h3 className="text-uppercase resume-section-heading mb-4" style={TitleColor}>Work Experiences</h3>
+                  {props.experience.map((exp,index) => (        
+                    <div key = {index} className="item ">
+                      <div className="item-heading row align-items-center ">
+                        <h4 className=" col-12 col-md-5 col-lg-6 " style={{fontWeight : "bold" , fontSize : '19px'}}>{exp.position}</h4>
+                        <div className="item-meta col-12 col-md-5 col-lg-6 text-start text-md-end">| {exp.company} <br /> | {exp.startDate} - {exp.endDate}</div>
+                        <div className="item-content"><p>{exp.workSummary}</p></div>
+                      </div>
+                      
+                    </div>
+                  ))}
+                </section>
+
+
+                <section className="project-section py-3">
+                  {/* ... (projects section) ... */}
+                  <h3 className="text-uppercase resume-section-heading mb-4" style={TitleColor}>Projects</h3>
+
+								<div className="item mb-3">
+                {props.projects.map((projet,index) => (
+                  <div key={index}>
+									<div className="item-heading row align-items-center mb-2">
+										<h4 className="item-title col-12 col-md-6 col-lg-8 mb-2" style={{fontWeight : "bold" , fontSize : '19px'}}> {projet.projectName}</h4>
+										<div className="item-meta col-12 col-md-6 col-lg-4  text-start text-md-end"> {projet.projectType}</div>
+										
+									</div>
+									<div className="item-content">
+										<p> {projet.description}</p>
+									</div>
+                  </div>
+                  ))} 
+								</div>
+                </section>
+
+
+                <section className="certificate-section py-3">
+                <h3 className="text-uppercase resume-section-heading mb-4" style={TitleColor}>Certificates</h3>
+                {props.certificates.map((cert, index) => {
+                    if (index % 2 === 0) {
+                        const nextCert = props.certificates[index + 1];
+                        return (
+                            <div key={index} className="row mb-3">
+                                <div className="col-6">
+                                    <div className="resume-certificate-company font-weight-bold">{cert.company}</div>
+                                    <div className="resume-certificate-link text-muted">
+                                        <a  target="_blank" rel="noopener noreferrer">
+                                            {cert.certificateLink}
+                                        </a>
+                                    </div>
+                                </div>
+                                {nextCert && (
+                                    <div className="col-6">
+                                        <div className="resume-certificate-company font-weight-bold">{nextCert.company}</div>
+                                        <div className="resume-certificate-link text-muted">
+                                            <a  target="_blank" rel="noopener noreferrer">
+                                                {nextCert.certificateLink}
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip odd-indexed items
+                    }
+                })}
+            </section>
+              </div>
+
+              <aside className="resume-aside col-12 col-lg-4 col-xl-3 " style={background2color}>
+                <section className="skills-section py-3">
+                  <div className="item text-center">
+                  <h4 className="item-title " style={TitleColor}>skills</h4>
+                  {props.skills.map((skill, index) => (
+            			<ul key={index} className="list-unstyled resume-skills-list">
+                    <li className="mb-2">{skill.skill}</li>
+                    </ul>
+									))}
+									</div>
+                </section>
+
+              
+
+                <section className="languages-section py-3 ">
+                  {/* ... (languages section) ... */}
+                  <h3 className="text-uppercase resume-section-heading mb-4 text-center" style={TitleColor}>Languages</h3>
+                  {props.languages.map((language ,index) => (                     
+										<ul key = {index} className="list-unstyled resume-languages-list mx-1">
+											<li className="mb-3">
+												<div className="resume-degree font-weight-bold">{language.language} - ({language.proficiency}) </div>
+												
+											</li>
+										</ul>
+                    ))}
+                </section>
+
+                <section className="skills-section py-3 text-center">
+										<h3 className="text-uppercase resume-section-heading mb-4" style={TitleColor}>Interests</h3>
+                    {props.hobbies.map((hobbie ,index) => (
+										<ul key={index} className="list-unstyled resume-interests-list mb-0">
+											<li className="mb-2">{hobbie}</li>
+										</ul>
+                    ))} 
+									</section>
+               
+
+                
+              </aside>
+            </div>
+          </div>
+
+          <hr />
+
+          <div className="resume-footer text-center">
+            {/* ... (footer content) ... */}
+            <ul className="resume-social-list list-inline mx-auto mb-0 d-inline-block text-muted">
+            {props.links.map((link, index) => (
+							<li key={index} className="list-inline-item mb-lg-0 me-lg-3" style={{color : background2color.backgroundColor}}><i className={`${getIconClas(link.platform)} icon-large`} data-fa-transform="down-4"></i><span className="d-none d-lg-inline-block text-muted">{link.url}</span></li>
+            ))}
+						</ul>
+
+          </div>
+
+        </article>
+      </div>
+    </>
+  );
+}
+
+export default Resume3Component;
+
+
+/************************************************************************************************************************************************************************************************* */
+
+import { getIconClass } from "../../data/Datatemp"
+
+
+const getIconClas = getIconClass ;
+const Resume4Component = (props) => {
+
+	  /********** font *********** */
+	  const fonttext = {
+		fontFamily : props.selectedFonttitre,
+	  }
+	
+	  /* ********* titles *********** */
+	  const TitleColor = {
+		color : props.titleColor,
+		...fonttext,
+	  }
+	
+	  /* ********* side 1 *********** */
+	  const Colortext1 = {
+		color : props.Colortext1,
+	  }
+	  
+	  const background1color = {
+		backgroundColor : props.background1color,
+		...Colortext1,
+	  }
+	
+	  /* ********* side 2 *********** */
+	  const Colortext2 = {
+		color : props.Colortext2,
+	  }
+	  const background2color = {
+		backgroundColor : props.background2color,
+		...Colortext2,
+	  }
+	
+	return (
+    <div className='container '  style={{maxWidth : '1000px' }}>
+    <article className="resume-wrapper text-center position-relative">
+	    <div className="resume-wrapper-inner mx-auto text-start bg-white shadow-lg">
+		    <header className="resume-header pt-4 pt-md-0" style={{backgroundColor : background1color.backgroundColor === '#A80000' ? 'black' : background1color.backgroundColor}} >
+			    <div className="row">
+				<div className="col-block col-md-auto resume-picture-holder text-center text-md-start m-2" >
+					<img
+						className="picture p-3"
+						src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"}
+						width={"250px"}
+						alt='profil'
+						style={{
+							borderRadius: "50%", 
+							borderRight : `2px solid ${Colortext1.color}`
+						}}
+					/>
+				</div>
+
+				    <div className="col">
+					    <div className="row p-4 justify-content-center justify-content-md-between" style={Colortext1}>
+						    <div className="primary-info col-md-5">
+							    <h2 className="name mt-4 mb-2" style={{fontFamily : fonttext.fontFamily , color : TitleColor.color , fontWeight : "bold"}}>{props.name} {props.surname}</h2>
+							    <div className="title mb-3">{props.profession}</div>
+							    <ul className="list-unstyled">
+								    <li className="mb-2"><i className="far fa-envelope fa-fw me-2" data-fa-transform="grow-3"></i>{props.email}</li>
+								    <li><i className="fas fa-mobile-alt fa-fw me-2" data-fa-transform="grow-6"></i>{props.phone}</li>
+							    </ul>
+						    </div>
+                            
+						    <div className="secondary-info col-md-7 mt-5">
+							    <ul className="resume-social list-unstyled">
+								{props.links.map((link, index) => (
+					                <li key={index} className="mb-3"><span className="fa-container text-center me-2"><i className={`${getIconClas(link.platform)} icon-large`}></i></span>{link.url}</li>
+								))} 
+							    </ul>
+						    </div>
+					    </div>
+					    
+				    </div>
+			    </div>
+		    </header>
+		    <div className="resume-body p-5" style={{display : 'flex' , flexDirection : 'column' , backgroundColor : background2color.backgroundColor}}>
+			    <section className="resume-section summary-section mb-4" style={background2color}>
+				    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Career Summary</h2>
+				    <div className="resume-section-content">
+					    <p className="mb-0">{props.profesummary}</p>
+				    </div>
+			    </section>
+			    <div className="row">
+				    <div className="resume-main col-12 col-lg-8 col-xl-9 pe-0 pe-lg-5" style={background2color}>
+					    <section className="resume-section experience-section mb-5">
+
+						    <div className="resume-section-content">
+
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>education</h2>
+                                {props.education.map((edu,index) => (    
+                                    <article className="resume-timeline-item position-relative pb-3" key={index}>
+									    <div className="resume-timeline-item-header mb-2">
+										    <div className="d-flex flex-column flex-md-row">
+										        <h4 className="resume-position-title font-weight-bold mb-1">School : {edu.school}</h4>
+										        <div className="resume-company-name ms-auto">Degree : {edu.degree}</div>
+										    </div>
+										    <div className="resume-position-time">{edu.startDate} - {edu.endDate}</div>
+									    </div>
+									   
+								    </article>
+                                ))}
+                            <br />
+
+                            <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Work Experience</h2>
+                                {props.experience.map((exp,index) => (
+								    <article className="resume-timeline-item position-relative pb-1" key={index}>
+									    
+									    <div className="resume-timeline-item-header mb-2">
+										    <div className="d-flex flex-column flex-md-row">
+										        <h4 className="resume-position-title font-weight-bold mb-1">{exp.position}</h4>
+										        <div className="resume-company-name ms-auto">{exp.company}</div>
+										    </div>
+										    <div className="resume-position-time">{exp.startDate} - {exp.endDate}</div>
+									    </div>
+									    <div className="resume-timeline-item-desc">
+										    <p>{exp.workSummary}</p>
+									    </div>
+
+								    </article>
+                                ))} 
+                            <br />
+
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Projects</h2>
+
+									{props.projects.map((projet,index) => (
+									<article key={index} className="resume-timeline-item position-relative ">
+									    <div className="resume-timeline-item-header mb-2">
+										    <div className="d-flex flex-column flex-md-row">
+										        <h3 className="resume-position-title font-weight-bold mb-1">{projet.projectName}</h3>
+										        <div className="resume-company-name ms-auto">{projet.projectType}</div>
+										    </div>
+										    
+									    </div>
+									    <div className="resume-timeline-item-desc">
+										    <p>Role description goes here ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
+									    </div>
+
+								    </article>
+									))}
+
+										<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-0" style={TitleColor}>Certificates</h2>
+
+										{props.certificates.map((cert, index) => {
+                    if (index % 2 === 0) {
+                        const nextCert = props.certificates[index + 1];
+                        return (
+                            <div key={index} className="row mb-3">
+                                <div className="col-6">
+                                    <div className="resume-certificate-company font-weight-bold">{cert.company}</div>
+                                    <div className="resume-certificate-link text-muted">
+                                        <a>
+                                            {cert.certificateLink}
+                                        </a>
+                                    </div>
+                                </div>
+                                {nextCert && (
+                                    <div className="col-6">
+                                        <div className="resume-certificate-company font-weight-bold">{nextCert.company}</div>
+                                        <div className="resume-certificate-link text-muted">
+                                            <a>
+                                                {nextCert.certificateLink}
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip odd-indexed items
+                    }
+                })}
+						    </div>
+
+					    </section>
+				    </div>
+				    <div className="resume-aside col-12 col-lg-4 col-xl-3 px-lg-4 pb-lg-4 p-3" style={{backgroundColor : background1color.backgroundColor === '#A80000' ? 'black' : background1color.backgroundColor , color : Colortext1.color}}>
+					    <section className="resume-section skills-section mb-5">
+						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Skills</h2>
+						    <div className="resume-section-content">
+                                <div className="resume-skill-item">
+                                    <ul className="list-unstyled mb-4">
+                                    {props.skills.map((skill, index) => (
+                                        <li className="mb-2" key={index} >
+                                            <div className="resume-skill-name">{skill.skill}</div>
+                                            <div className="progress resume-progress">
+                                                <div className="progress-bar theme-progress-bar-dark" role="progressbar" style={{width: `${skill.level}%` ,backgroundColor : TitleColor.color }} ></div>
+                                            </div>
+                                        </li>
+                                    ))}
+                                    </ul>
+                                </div>
+						    </div>
+					    </section>
+				
+					    
+					    <section className="resume-section language-section mb-5">
+						    <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Language</h2>
+						    <div className="resume-section-content">
+							    <ul className="list-unstyled resume-lang-list">
+                                    {props.languages.map((language ,index) => (
+                                        <li key={index}><span className="resume-lang-name font-weight-bold">{language.language}</span> <small className=" font-weight-normal">({language.proficiency})</small></li>
+                                    ))}
+							    </ul>
+						    </div>
+					    </section>
+
+
+					    <section className="resume-section interests-section mb-5">
+							<h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3" style={TitleColor}>Interests</h2>
+							<div className="resume-section-content">
+								<ul className="list-unstyled">
+									{props.hobbies.map((hobbie, index) => {
+										if (index % 2 === 0) {
+											const nextHobbie = props.hobbies[index + 1];
+											return (
+												<li className="mb-2" key={index}>
+													{hobbie} {nextHobbie &&  <span>&bull; {nextHobbie}</span>}
+												</li>
+											);
+										}
+										return null;
+									})}
+								</ul>
+							</div>
+						</section>
+
+					    
+				    </div>
+			    </div>
+		    </div>
+		    
+		    
+	    </div>
+    </article> 
+    </div>
+  )
+}
+
+export default Resume4Component

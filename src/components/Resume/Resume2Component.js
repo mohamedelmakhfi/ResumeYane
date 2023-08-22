@@ -1,8 +1,28 @@
 import React from 'react';
 import './Resume2Component.css';
 import { getIconClass } from '../../data/Datatemp';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const getIconClas = getIconClass ;
+const generatePDF = () => {
+	const cvContainer = document.querySelector('#cvContainer');
+  
+	if (cvContainer) {
+	  const dpi = 300; // Set your desired DPI value
+	  const scale = dpi / 96; // Calculate scale factor based on DPI
+  
+	  html2canvas(cvContainer, { scale: scale }).then(canvas => {
+		const imgData = canvas.toDataURL('image/jpeg', 1.0); // Use JPEG format with higher quality
+  
+		const pdf = new jsPDF('p', 'mm', 'a4'); // Create a new PDF document
+		const imgWidth = 210; // A4 width in mm
+		const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate image height to maintain aspect ratio
+		pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight); // Add image to PDF
+		pdf.save('cv.pdf'); // Save the PDF
+	  });
+	}
+  }
 
 
 const Resume2Component = (props) => {
@@ -42,7 +62,7 @@ const Resume2Component = (props) => {
     
     <div className="container">
       
-      <div className="wrapper mt-lg-5">
+      <div className="wrapper mt-lg-5" id='cvContainer'>
         <div className="sidebar-wrapper mb-1" style={background1color}>
             <div className="profile-container">
                 <img className="profile"
@@ -146,7 +166,7 @@ const Resume2Component = (props) => {
                     <div className="item">
                       <div className="meta">
                         <div className="upper-row">
-                          <h3 className="job-title">{exp.position}</h3>
+                          <h3 className="job-title" style={Colortext2}>{exp.position}</h3>
                           <div className="time" style={Colortext2}>{exp.startDate} - {exp.endDate}</div>
                         </div>
                         <div className="company" style={Colortext2}>{exp.company}</div>
@@ -168,7 +188,7 @@ const Resume2Component = (props) => {
                 <div className="item">
                   <div className="meta">
                     <div className="upper-row">
-                      <h3 className="job-title">{Projet.projectName}</h3>
+                      <h3 className="job-title" style={Colortext2}>{Projet.projectName}</h3>
                       <div className="time" style={Colortext2}>{Projet.projectType}</div>
                     </div>
                     <div className="company" style={Colortext2}>{Projet.company}</div>
@@ -189,14 +209,14 @@ const Resume2Component = (props) => {
                     <React.Fragment key={index}>
                       <div className='col-md-6'>
                         <div className="item">
-                          <h3 className="level-title">{skill.skill}</h3>
-                          <div className="progress level-bar">
-                            <div className="progress-bar theme-progress-bar" role="progressbar" style={{ width: `${skill.level}%`, backgroundColor: background1color.backgroundColor }}></div>
-                          </div>
+                          <h3 className="level-title">{skill.skill} </h3>
+                          <div className='row'>
+                          <div className="progress-bar  " style={{height: "8px",width: `${skill.level}%` ,backgroundColor : TitleColor.color}} ></div>
+                          </div></div>
                           <div>
                           </div>
                         </div>
-                      </div>
+                      
                     </React.Fragment>
                   ))}
                   </div>
@@ -230,6 +250,7 @@ const Resume2Component = (props) => {
         </div>
       </div>
     
+      <button className='btn ' onClick={generatePDF} type="button">Export PDF</button>
 
     </div>
     

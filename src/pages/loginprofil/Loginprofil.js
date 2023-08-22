@@ -1,18 +1,15 @@
 import './Loginprofil.css' ;
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { arrayUnion, doc, getDoc , setDoc } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc , runTransaction, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { MDBRow ,MDBBreadcrumbItem ,MDBBreadcrumb ,MDBCol} from 'mdb-react-ui-kit';
-import { CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
-
+import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
 
 
 const Loginprofil = () => {
-
   
   const {dispatch} = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
@@ -20,9 +17,7 @@ const Loginprofil = () => {
   const userId = currentUser.uid;
   const userEmail = currentUser.email;
 
-
   const navigate = useNavigate();
-
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -37,10 +32,8 @@ const Loginprofil = () => {
 
   }
 
-
   /*********************** initialise data  ****************************/
 
-  
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const email = userEmail;
@@ -88,59 +81,46 @@ const prevResume = () => {
   const docinfo = doc(db,"infoperson",userId);
   const dicResume = doc(db,"resume",userId);
 
-
   useEffect(()=> {  
-    const getUsersinfo = async () => {
+    const fetchDonnees = async () => {
       try {
-        const data = await getDoc(docUsers);
-        const filteredData = data.data();
+        
+        const [donneesUtilisateurs, donneesPersonnelles, donneesCV] = await Promise.all([
+          getDoc(docUsers),
+          getDoc(docinfo),
+          getDoc(dicResume)
+        ]);
+        
+        const donneesUtilisateursFiltrees = donneesUtilisateurs.data();
+        const donneesPersonnellesFiltrees = donneesPersonnelles.data();
+        const donneesCVFiltrees = donneesCV.data();
   
-        setHobbies(filteredData.hobbies);
-        setSkills(filteredData.skills);
-        setLanguages(filteredData.languages);
-        setEducation(filteredData.education);
-        setExperiences(filteredData.experience);
-        setProjects(filteredData.projects);
-        setCertificates(filteredData.certificates);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+        setHobbies(donneesUtilisateursFiltrees.hobbies);
+        setSkills(donneesUtilisateursFiltrees.skills);
+        setLanguages(donneesUtilisateursFiltrees.languages);
+        setEducation(donneesUtilisateursFiltrees.education);
+        setExperiences(donneesUtilisateursFiltrees.experience);
+        setProjects(donneesUtilisateursFiltrees.projects);
+        setCertificates(donneesUtilisateursFiltrees.certificates);
 
-    const getPersonelinfo = async () => {
-      try {
-        const data = await getDoc(docinfo);
-        const filteredData = data.data();
+        setName(donneesPersonnellesFiltrees?.name || '');
+        setSurname(donneesPersonnellesFiltrees?.surname || '');
+        setPhone(donneesPersonnellesFiltrees?.phone || '');
+        setAddress(donneesPersonnellesFiltrees?.address || '');
+        setProfsummary(donneesPersonnellesFiltrees?.profesummary || '');
+        setProfession(donneesPersonnellesFiltrees?.profession);
+        setCountry(donneesPersonnellesFiltrees?.country || '');
+        setState(donneesPersonnellesFiltrees?.state || '');
+        setImgurl(donneesPersonnellesFiltrees?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg');
+        setLinks(donneesPersonnellesFiltrees?.links );
   
-        setName(filteredData?.name || '');
-        setSurname(filteredData?.surname || '');
-        setPhone(filteredData?.phone || '');
-        setAddress(filteredData?.address || '');
-        setProfsummary(filteredData?.profesummary || '');
-        setProfession(filteredData?.profession);
-        setCountry(filteredData?.country || '');
-        setState(filteredData?.state || '');
-        setImgurl(filteredData?.img || 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg');
-        setLinks(filteredData?.links );
-      } catch (error) {
+        setNumresume(donneesCVFiltrees.resumeNbr);
+
+      }catch (error) {
         console.error(error);
       }
-    }
-
-    const getResumeinfo = async () => {
-      try {
-          const data = await getDoc(dicResume);
-          const filteredData = data.data();
-          setNumresume(filteredData.resumeNbr);
-        } catch (error) {
-        console.error(error);
-      }
-    }
-
-    getResumeinfo();
-    getPersonelinfo();
-    getUsersinfo();
-
+    };
+    fetchDonnees();
   },[])
 
   /**************************** End get data ********************************** */
@@ -187,7 +167,7 @@ const prevResume = () => {
 
       };
       file && uploadFile();
-    },[]);
+    },[file]);
 
 
   //********************** End upload image *********************** */
@@ -195,40 +175,40 @@ const prevResume = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    
     // Prepare the hobbies data in an array format
-    const hobbiesData = hobbies.reduce((acc, hobby) => {
-      if (hobby.trim() !== '') {
-        acc.push(hobby.trim());
-      }
-      return acc;
-    }, []);
+    const hobbiesData = hobbies.filter(hobby => hobby.trim() !== '');
+
     
     try {
-      await setDoc(doc(db, "users", userId), {
-        languages: languages, 
-        skills: skills,
-        hobbies: arrayUnion(...hobbiesData),
-        education: education,
-        experience: experience,
-        certificates : certificates,
-        projects : projects,
+      await runTransaction(db, async (transaction) => {
+    
+        transaction.update(docUsers,{
+          certificates: certificates,
+          projects: projects ,
+          experience: experience,
+          education: education,
+          skills: skills,
+          languages: languages,
+          hobbies: hobbiesData,
+        });
+    
+        transaction.update(docinfo, {
+          name: name,
+          surname: surname,
+          email: userEmail,
+          phone: phone,
+          address: address,
+          profesummary: profesummary,
+          state: state,
+          country: country,
+          img: imgUrl,
+          links: links,
+          profession: profession,
+        });
       });
-  
-      await setDoc(doc(db, "infoperson", userId), {
-        name: name,
-        surname: surname,
-        email: userEmail,
-        phone: phone,
-        address: address,
-        profesummary: profesummary,
-        state: state,
-        country: country,
-        img: imgUrl,
-        links : links ,
-        profession : profession,
-      });
-  
-      alert("Submit réussi !");
+    
+      alert("Submit réussi !"); 
     }catch (error) {
       alert("Submit échoué !");
       console.error("Erreur lors de la soumission du formulaire :", error);
@@ -244,7 +224,7 @@ const prevResume = () => {
               };
               
               const removeSkill = () => {
-                if (skills.length > 1) {
+                if (skills.length > 0) {
                   const updatedSkills = skills.slice(0, skills.length - 1);
                   setSkills(updatedSkills);
                 }
@@ -266,7 +246,7 @@ const prevResume = () => {
            
 
 
-        const [projects, setProjects] = useState([{ projectName: '', projectType: '', description: '' },]);
+        const [projects, setProjects] = useState([]);
 
         const addProject = () => {
           setProjects([...projects, { projectName: '', projectType: '', description: '' }]);
@@ -349,18 +329,15 @@ const prevResume = () => {
 
     //**************************** Hobbies parametrs *******************************
 
-                  const [numHobbies, setNumHobbies] = useState();
                   const [hobbies, setHobbies] = useState([]);
                 
                   const addHobby = () => {
-                    setNumHobbies(prevNumHobbies => prevNumHobbies + 1);
                     setHobbies(prevHobbies => [...prevHobbies, '']);
                   };
                 
                   const removeHobby = () => {
-                    if (numHobbies > 1) {
-                      setNumHobbies(prevNumHobbies => prevNumHobbies - 1);
-                      setHobbies(prevHobbies => prevHobbies.slice(0, numHobbies - 1));
+                    if (hobbies.length > 0) {
+                      setHobbies(prevHobbies => prevHobbies.slice(0, hobbies.length - 1));
                     }
                   };
                 
@@ -429,7 +406,6 @@ const prevResume = () => {
 
   //**************************** experience parametrs *******************************
 
-
               const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
               
               const addExperience = () => {
@@ -437,7 +413,7 @@ const prevResume = () => {
               };
 
               const removeExperience = () => {
-                if (experience.length > 1) {
+                if (experience.length > 0) {
                   const updatedExperience = experience.slice(0, experience.length - 1);
                   setExperiences(updatedExperience);
                 }
@@ -451,34 +427,14 @@ const prevResume = () => {
                 });
               };
 
-    
   //****************************  end experience parametrs *******************************
 
-
-
   /********************************* End Copy ****************************************** */
-
-
-
      
   return (
     <div className='mx-4' style={{display : 'flex' , flexDirection : 'column' ,gap : '40px'}}>
       <div className='container  rounded bg-light ' >
-        <MDBRow>
-              <MDBCol>
-                <MDBBreadcrumb className="bg-white rounded-3 mt-4 p-3 mb-4 border border-primary">
-                  <MDBBreadcrumbItem>
-                    <Link to='/'>Home</Link>
-                  </MDBBreadcrumbItem>
-                  <MDBBreadcrumbItem>
-                    User profile
-                  </MDBBreadcrumbItem>
-                  <MDBBreadcrumbItem>
-                    {name}
-                  </MDBBreadcrumbItem>
-                </MDBBreadcrumb>
-              </MDBCol>
-        </MDBRow>
+        <BreadcrumbComponent name={name} />
           
         <form className="row" onSubmit={handleAdd}>
           <div className="col-md-3 border-right d-flex flex-column">
@@ -523,10 +479,10 @@ const prevResume = () => {
 
                                                   {/*parametrs and Resumes */}
        
-
+    <div>
         <TemplateSettings userId={userId}  numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
           name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
-        />
+        /></div>
 
        
     </div>

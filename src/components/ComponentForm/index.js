@@ -10,3 +10,4 @@ export { default as ProjectForm } from './ProjectForm';
 export { default as ResumeComponent } from './ResumeComponent';
 export { default as SkillForm } from './SkillForm';
 export { default as TemplateSettings } from './TemplateSettings';
+export { default as BreadcrumbComponent } from './BreadcrumbComponent';

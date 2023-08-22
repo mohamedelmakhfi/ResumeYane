@@ -9,9 +9,10 @@ const ExperienceForm = ({ experience, addExperience, removeExperience, handleExp
         <span className="border px-2 add-experience" onClick={addExperience}>
           <i className="fa fa-plus"></i>
         </span>
+        {experience.length > 0 && (
         <span className="border px-2 add-experience" onClick={removeExperience}>
           <i className="fa fa-minus"></i>
-        </span>
+        </span>)}
       </div>
 
       <br />
