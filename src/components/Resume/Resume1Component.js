@@ -1,6 +1,6 @@
 import html2canvas from "html2canvas";
 import { getIconClass } from "../../data/Datatemp";
-import JsPDF, { jsPDF } from 'jspdf';
+import { jsPDF } from 'jspdf';
 
 const getIconClas = getIconClass;
 
@@ -43,6 +43,8 @@ const generatePDF = () => {
   }
 
 
+
+
 const Resume1Component = (props) => {
 
 
@@ -52,7 +54,7 @@ const Resume1Component = (props) => {
   }
 
   const smallerFont = {
-        fontSize: '10px', // Ajuste la taille de police
+        fontSize: '11px', // Ajuste la taille de police
     };
     
   /* ********* titles *********** */
@@ -89,13 +91,13 @@ const Resume1Component = (props) => {
   };
 
   const smallerParagraph = {
-      fontSize: '8px', // Ajuste la taille des paragraphes
+      fontSize: '9px', // Ajuste la taille des paragraphes
   };
   
 
   return (
     <>
-    <div className='container ' >
+    <div className='container mt-3' >
       
         <div className='row' id='cvContainer' style={{ maxWidth: `${a4Width}px`, minWidth : `${a4Width}px` , maxHeight: `${a4Height}px` , minHeight : `${a4Height}px`, margin: '0 auto' }}>
           <div className='col-lg-4 text-center py-4' style={background1color}>
@@ -288,9 +290,9 @@ const Resume1Component = (props) => {
           </div>
         </div>
         
-        <button onClick={generatePDF} type="button">Export PDF</button>
-
     </div>
+    <button onClick={generatePDF} className="btn btn-secondary mt-3 mb-3 mx-auto d-block" type="button">Export PDF</button>
+
     </>
   );
 }

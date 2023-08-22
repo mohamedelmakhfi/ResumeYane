@@ -1,13 +1,14 @@
 import './Profilepage.css';
-import {MDBCol,MDBRow,MDBBreadcrumb,MDBBreadcrumbItem} from 'mdb-react-ui-kit';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth, db, storage } from '../../firebase';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { arrayUnion, doc, getDoc, runTransaction, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, runTransaction } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
+import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, ResumeComponent, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
+import { ColorSection, FontSection, TemplateSection } from '../../components/ComponentForm/componenetsTemplatesSetting';
+import { fontOptions } from '../../data/Datatemp';
 
 
 
@@ -118,41 +119,41 @@ const prevResume = () => {
 
   //********************** upload image *********************** */
 
-    useEffect(()=> {
-      const uploadFile = () => {
-        const storageRef = ref(storage, file.name);
-        const uploadTask = uploadBytesResumable(storageRef, file);
+  useEffect(()=> {
+    const uploadFile = () => {
+      const storageRef = ref(storage, file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
 
-        uploadTask.on('state_changed', 
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            setPer(progress);
-            switch (snapshot.state) {
-              case 'paused':
-                console.log('Upload is paused');
-                break;
-              case 'running':
-                console.log('Upload is running');
-                break;
-              default  :
-                break;
-            }
-          }, 
-          (error) => {
-            console.log(error);
-          }, 
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              setImgurl(downloadURL) ;  
-            });
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          setPer(progress);
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+            default  :
+              break;
           }
-        );
+        }, 
+        (error) => {
+          console.log(error);
+        }, 
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgurl(downloadURL) ;  
+          });
+        }
+      );
 
-      };
-      file && uploadFile();
-    },[]);
+    };
+    file && uploadFile();
+  },[file]);
 
 
   //********************** End upload image *********************** */
@@ -166,11 +167,10 @@ const prevResume = () => {
     // Prepare the hobbies data in an array format
     const hobbiesData = hobbies.filter(hobby => hobby.trim() !== '');
 
-    
     try {
       await runTransaction(db, async (transaction) => {
     
-        transaction.update(docUsers,{
+        transaction.set(docUsers,{
           certificates: certificates,
           projects: projects ,
           experience: experience,
@@ -180,7 +180,7 @@ const prevResume = () => {
           hobbies: hobbiesData,
         });
     
-        transaction.update(docinfo, {
+        transaction.set(docinfo, {
           name: name,
           surname: surname,
           email: userEmail,
@@ -197,7 +197,7 @@ const prevResume = () => {
     
       alert("Submit réussi !"); 
     }catch (error) {
-      alert("Submit échoué !");
+      alert(error);
       console.error("Erreur lors de la soumission du formulaire :", error);
     }
   };
@@ -420,61 +420,116 @@ const prevResume = () => {
     
   //****************************  end experience parametrs *******************************
 
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const [titleColor, setTitleColor] = useState('#A80000');
+  const [Colortext1, setColortext1] = useState('#ffffff');
+  const [background1color, setBackground1Color] = useState('#A80000');
+  const [Colortext2,setColortext2]=useState('#000000');
+  const [background2color,setBackground2Color] = useState('#ffffff');
+  const [selectedFonttitre, setSelectedFont] = useState('Arial');
+  const colorSections = [ {   id: 'titleColor',   label: 'Couleur du titre',   color: titleColor,   setColor: setTitleColor }, {   id: 'Colortext1',   label: 'Couleur du Texte 1',   color: Colortext1,   setColor: setColortext1 }, {   id: 'background1color',   label: 'Couleur de background 1',   color: background1color,   setColor: setBackground1Color }, {   id: 'Colortext2',   label: 'Couleur du Texte 2',   color: Colortext2,   setColor: setColortext2 }, {   id: 'background2color',   label: 'Couleur de background 2',   color: background2color,   setColor: setBackground2Color }];
+
+
+
+
 
     return (
-    <div className='mx-4' style={{display : 'flex' , flexDirection : 'column' ,gap : '40px'}}>
-    <div className='container rounded bg-light'>
-      <BreadcrumbComponent name={name} />
-        
+<div className='mx-5' style={{display : 'flex', gap : '12px' }}>
+      <div className="container rounded bg-light" style={{ maxWidth: '1000px' }}>
 
-    <form className="row" onSubmit={handleAdd}>
-    <div className="col-md-3 border-right d-flex flex-column">
-              <ProfileImageForm file={file} imgUrl={imgUrl} setFile={setFile} />
-              <span className='d-flex justify-content-center'><button className='btn1' onClick={handleLogout}>Log out</button></span>
-          </div>
+      <BreadcrumbComponent name={name} handleLogout={handleLogout} />
 
-        <div className="col-md-5 border-right">
-                <div className="p-3 py-5">
-                    <PersonalInfoForm name={name} surname={surname} profession={profession} phone={phone} address={address} authEmail={email} profsummary={profesummary} country={country} state={state} setName={setName} setSurname={setSurname} setProfession={setProfession} setPhone={setPhone} setAddress={setAddress} setProfsummary={setProfsummary} setCountry={setCountry} setState={setState} />
-                    {/* Education */}
-                   <Educationform  education={education} handleEducationChange={handleEducationChange} addEducation={addEducation} removeEducation={removeEducation}/>
-                    <br /><br />
-                    {/* languages */}
-                    <LanguagesForm languages={languages} handleLanguageChange={handleLanguageChange} addField={addField} removeField={removeField} />
-                    <br /> <br />
-                    {/* Hobbies */}
-                    <HobbiesForm hobbies={hobbies}  handleHobbyChange={handleHobbyChange} addHobby={addHobby} removeHobby={removeHobby}/>
-                    {/* Certificate Companies */}
-                    <CertificatesForm certificates={certificates}  handleCertificateChange={handleCertificateChange} addCertificate={addCertificate} removeCertificate={removeCertificate} />
-                    {/* links */}
-                    <LinksForm links={links} handleLinkChange={handleLinkChange} addLink={addLink} removeLink={removeLink} />
-                    <br />                  
+      <form className="row" onSubmit={handleAdd}>
+        <div className="p-3 py-5">
+          {currentStep === 0 && 
+          <div className="col-md-12 border-right d-flex flex-column">
+          <ProfileImageForm file={file} imgUrl={imgUrl} setFile={setFile}  handleLogout={handleLogout} setCurrentStep={setCurrentStep}/>
+          </div> }
+          {currentStep === 1 && <PersonalInfoForm name={name} surname={surname} profession={profession} phone={phone} address={address} authEmail={email} profsummary={profesummary} country={country} state={state} setName={setName} setSurname={setSurname} setProfession={setProfession} setPhone={setPhone} setAddress={setAddress} setProfsummary={setProfsummary} setCountry={setCountry} setState={setState} />}
+          {currentStep === 2 && <Educationform education={education} handleEducationChange={handleEducationChange} addEducation={addEducation} removeEducation={removeEducation} />}
+          {currentStep === 3 && <LanguagesForm languages={languages} handleLanguageChange={handleLanguageChange} addField={addField} removeField={removeField} />}
+          {currentStep === 4 && <HobbiesForm hobbies={hobbies}  handleHobbyChange={handleHobbyChange} addHobby={addHobby} removeHobby={removeHobby}/> }
+          {currentStep === 5 && <CertificatesForm certificates={certificates}  handleCertificateChange={handleCertificateChange} addCertificate={addCertificate} removeCertificate={removeCertificate} /> }
+          {currentStep === 6 && <LinksForm links={links} handleLinkChange={handleLinkChange} addLink={addLink} removeLink={removeLink} /> }
+          {currentStep === 7 && <ExperienceForm experience={experience} addExperience={addExperience} removeExperience={removeExperience} handleExperienceChange={handleExperienceChange} />}
+          {currentStep === 8 && <SkillForm skills={skills} addSkill={addSkill} removeSkill={removeSkill} handleSkillChange={handleSkillChange} /> }
+          {currentStep === 9 && <ProjectForm projects={projects} addProject={addProject} removeProject={removeProject} handleProjectChange={handleProjectChange} />}
+          {currentStep ===10 && 
+          <div className='container rounded bg-light' >
+          
+          <div className='bg-white rounded-3 mt-4 p-3 mb-4 border border-primary'>
+              <h3 className='text-center'><span className='difcolor'>Template </span>Section</h3>
+          <hr />
+          <div className="accordion" id="accordionExample">
+          <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Change Color Template</button>
+              </h2>
+              <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  <div className="row row-cols-1 row-cols-md-5 text-center">
+                    {colorSections.map((section, index) => (
+                      <ColorSection key={index} id={section.id} label={section.label} color={section.color} setColor={section.setColor}/>
+                    ))}
+                  </div>
                 </div>
+              </div>
             </div>
 
-            <div className="col-md-4">
-                  {/* Experiences */}
-                  <ExperienceForm experience={experience} addExperience={addExperience} removeExperience={removeExperience} handleExperienceChange={handleExperienceChange} />
-                    {/* Skills */}
-                    <SkillForm skills={skills} addSkill={addSkill} removeSkill={removeSkill} handleSkillChange={handleSkillChange} />
-                    {/*Projets */}
-                    <ProjectForm projects={projects} addProject={addProject} removeProject={removeProject} handleProjectChange={handleProjectChange} />
-                    <br />
-                    <br />
-            
+            <div className="accordion-item ">
+              <h2 className="accordion-header "><button className="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >Change font</button></h2>
+              <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  <FontSection fonts={fontOptions} selectedFont={selectedFonttitre} setSelectedFont={setSelectedFont} name={name} surname={surname} />
+                </div>
+              </div>
             </div>
 
-            <div className="mb-4 text-center"><button className="btn btn-primary profile-button" type="submit" disabled={per !== null && per < 100} >Save Profile</button></div>
+            <div className="accordion-item">
+              <h2 className="accordion-header">
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" > Change Template</button></h2>
+              <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  <TemplateSection userId={userId} numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume} />
+                </div>
+              </div>
+            </div>
+        </div>
+          </div> 
+          <button className="btn btn-secondary" onClick={() => setCurrentStep(0)}>Back</button>
 
-    </form>
+          
+          </div>}
+
+          <div className="d-flex justify-content-between mt-3">
+            {currentStep > 0 && currentStep <= 9 &&(
+              <button className="btn btn-secondary" onClick={(e) => {
+                e.preventDefault();
+                setCurrentStep(currentStep - 1)
+              }}>Précédent</button>
+            )}
+            {currentStep < 9 && (
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                setCurrentStep(currentStep + 1)
+              }}>Suivant</button>
+            )}
+
+          </div>
+          
+        </div>
+        <div className="mb-4 text-center"><button className="btn btn-primary profile-button" type="submit" disabled={per !== null && per < 100} >Save Profile</button></div>
+      </form>
+      </div>  
+
+                                                  {/*parametrs and Resumes */}
+       
+    <div className='container rounded bg-light'>
+    <ResumeComponent name={name} surname={surname} email={email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession} titleColor={titleColor} Colortext1={Colortext1} background1color={background1color} Colortext2={Colortext2} background2color={background2color} selectedFonttitre={selectedFonttitre} numResume={numResume} />
     </div>
 
-                                    {/*parametrs and Resumes */}
-        
-         <TemplateSettings userId={userId}  numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume}
-          name ={name}  surname={surname} email= {email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession}
-        />
-    
+       
     </div>
   );
 }

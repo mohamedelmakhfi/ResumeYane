@@ -6,6 +6,7 @@ const PersonalInfoForm = ({ name, surname, profession, phone, address, authEmail
 }) => {
   return (
     <div>
+      
       <ProfileSettingsHeader />
 
       {/* info personels */}

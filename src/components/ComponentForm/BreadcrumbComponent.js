@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MDBRow, MDBCol, MDBBreadcrumb, MDBBreadcrumbItem } from 'mdb-react-ui-kit';
 
-const BreadcrumbComponent = ({ name }) => {
+const BreadcrumbComponent = ({ name , handleLogout}) => {
   return (
     <MDBRow>
       <MDBCol>
@@ -12,6 +12,7 @@ const BreadcrumbComponent = ({ name }) => {
           </MDBBreadcrumbItem>
           <MDBBreadcrumbItem>User profile</MDBBreadcrumbItem>
           <MDBBreadcrumbItem>{name}</MDBBreadcrumbItem>
+          <MDBBreadcrumbItem onClick={handleLogout}><span className='difcolor' style={{cursor : 'pointer'}}>Log out</span></MDBBreadcrumbItem>
         </MDBBreadcrumb>
       </MDBCol>
     </MDBRow>

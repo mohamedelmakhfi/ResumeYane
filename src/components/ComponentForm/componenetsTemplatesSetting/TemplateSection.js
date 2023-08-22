@@ -19,22 +19,22 @@ const TemplateSection = ({ numResume, setNumresume, resumeTemplates, prevResume,
 
   return (
     <div className="pagination-buttons">
-      <button onClick={prevResume} disabled={numResume === 1}>
+      {/*<button onClick={prevResume} disabled={numResume === 1}>
         Précédent
-      </button>
+      </button>*/}
       {resumeTemplates.map(template => (
         <button
           key={template.id}
           onClick={(e) => handleAdd(e, template.id)}
           disabled={numResume === template.id}
-          className={numResume === template.id ? "active-template" : ""}
+          className={numResume === template.id ? "active-template" : "inactive-template"}
         >
           {template.name}
         </button>
       ))}
-      <button onClick={nextResume} disabled={numResume === 4}>
+      {/*<button onClick={nextResume} disabled={numResume === 4}>
         Suivant
-      </button>
+      </button>*/}
     </div>
   );
 };

@@ -95,7 +95,7 @@ const Resume3Component = (props) => {
   
 
   return (
-    <div className="container">
+    <div className="container mt-3">
       
         <div className="resume-wrapper mx-auto p-5 " id='cvContainer' style={{backgroundColor : background1color.backgroundColor === '#A80000' ? '#D9D9D9' : background1color.backgroundColor , maxWidth: `${a4Width}px`, minWidth : `${a4Width}px` , maxHeight: `${a4Height}px` , minHeight : `${a4Height}px`, margin: '0 auto' }}>
 
@@ -299,7 +299,7 @@ const Resume3Component = (props) => {
           </div>
 
         </div>
-        <button onClick={generatePDF} type="button">Export PDF</button>
+        <button onClick={generatePDF} className="btn btn-secondary mt-3 mb-3 mx-auto d-block" type="button">Export PDF</button>
       </div>
 
    

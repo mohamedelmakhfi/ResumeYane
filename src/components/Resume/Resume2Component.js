@@ -250,7 +250,7 @@ const Resume2Component = (props) => {
         </div>
       </div>
     
-      <button className='btn ' onClick={generatePDF} type="button">Export PDF</button>
+      <button onClick={generatePDF} className="btn btn-secondary mt-3 mb-3 mx-auto d-block" type="button">Export PDF</button>
 
     </div>
     
