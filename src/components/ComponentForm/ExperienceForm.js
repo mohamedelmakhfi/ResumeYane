@@ -3,7 +3,7 @@ import React from 'react';
 
 const ExperienceForm = ({ experience, addExperience, removeExperience, handleExperienceChange}) => {
   return (
-    <div className="p-3 py-5">
+    <div className="p-3 ">
       <div className="d-flex justify-content-between align-items-center experience difcolor btnhov ">
         <span>Experience</span>
         <span className="border px-2 add-experience" onClick={addExperience}>

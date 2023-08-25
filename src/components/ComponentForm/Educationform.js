@@ -2,7 +2,7 @@ import React from 'react'
 
 const Educationform = ({ education, handleEducationChange, addEducation, removeEducation }) => {
   return (
-    <div className="row mt-5">
+    <div className="row ">
     <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
       <span>Education</span>
       <span className="border px-2 btnhov add-experience" onClick={addEducation}>

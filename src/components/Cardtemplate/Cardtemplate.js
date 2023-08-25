@@ -34,17 +34,17 @@ const Cardtemplate = (props) => {
     <>
     {user === null ? (
       <>
-      <div  className="col-md-4 mb-4">
+      <div  className="col-md-4 mx-4 d-flex align-items-center justify-content-center ">
             <div
-              className={`card text-black bg-blue`}
-              style={{ height: '450px', position: 'relative', overflow: 'hidden' }}>
+              className={`card carddd text-black bg-blue`}
+              >
 
               <img
                 id={props.id}
                 src={props.imageUrl}
                 alt={`Template `}
                 className="card-img"
-                style={{ height: '100%', objectFit: 'cover' }}
+                style={{ height: '110%', objectFit: 'cover' }}
               />
               <div className="overlay d-flex align-items-center justify-content-center">
                 <Link to="/Login" className="btn template btn-primary">Create this resume</Link>
@@ -53,13 +53,13 @@ const Cardtemplate = (props) => {
           </div>
       </>
     ) : (
-      <div  className="col-md-4 mb-4">
+      <div  className="col-md-4 mx-4 d-flex align-items-center justify-content-center ">
             <div
-              className={`card text-black bg-blue`}
-              style={{ height: '450px', position: 'relative', overflow: 'hidden' }}>
+              className={`card  carddd text-black bg-blue`}
+              >
 
               <img
-                id={props.id} 
+                id={props.id}
                 src={props.imageUrl}
                 alt={`Template `}
                 className="card-img"

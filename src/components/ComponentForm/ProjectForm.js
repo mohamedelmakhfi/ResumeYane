@@ -8,7 +8,7 @@ const projectType = projectTypes ;
 const ProjectForm = ({ projects, addProject, removeProject, handleProjectChange }) => {
   
   return (
-    <div className="row mt-7 p-3">
+    <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
         <span>Projects</span>
         <span className="border px-2 difcolor btnhov add-experience" onClick={addProject}>

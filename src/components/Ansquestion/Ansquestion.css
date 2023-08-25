@@ -1,0 +1,17 @@
+/* Ajuster la composante pour les petits écrans */
+@media (max-width: 767.98px) {
+    .Thirdsec-text p {
+      font-size: 15px; /* Réduire la taille de la police */
+    }
+  }
+  
+  /* Rétablir la composante pour les écrans moyens et grands */
+  @media (min-width: 768px) {
+    .Thirdsec-text {
+      padding: 20px; /* Rétablir l'espacement interne */
+    }
+    .Thirdsec-text p {
+      font-size: 18px; /* Rétablir la taille de la police */
+    }
+  }
+  

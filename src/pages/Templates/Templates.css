@@ -3,3 +3,28 @@
     border-radius: 50px;
     margin-top: 40px;
 }
+
+.secrenmedia {
+    display: flex;
+    flex-wrap: wrap; /* Permettre le passage à la ligne des éléments */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Ajuster la direction flex pour les petits écrans */
+@media (max-width: 767.98px) {
+    .secrenmedia {
+      flex-direction: column; /* Utiliser la disposition verticale pour les petits écrans */
+      align-items: center; /* Centrer horizontalement les éléments */
+    }
+  }
+  
+  /* Rétablir la direction flex pour les écrans moyens et grands */
+  @media (min-width: 768px) {
+    .secrenmedia {
+      flex-direction: row; /* Rétablir la disposition horizontale pour les écrans moyens et grands */
+      justify-content: center; /* Centrer horizontalement les éléments */
+    }
+  }
+  
+  

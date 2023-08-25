@@ -5,3 +5,27 @@
     padding: 30px;
     flex: 1 33%;
 }
+
+/* Ajuster les cartes pour les petits écrans */
+@media (max-width: 767.98px) {
+    .card {
+      width: 100%; /* Utiliser la largeur complète disponible */
+      max-width: 350px; /* Définir une largeur maximale pour les cartes */
+      margin-bottom: 20px; /* Ajouter un espace entre les cartes */
+    }
+    .card-title{
+        font-size: 18px;
+    }
+    .card-para{
+        font-size: 13px;
+    }
+  }
+  
+  /* Rétablir les cartes pour les écrans moyens et grands */
+  @media (min-width: 768px) {
+    .card {
+      width: 350px;
+      margin-bottom: 0; /* Rétablir la marge entre les cartes */
+    }
+  }
+  

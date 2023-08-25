@@ -9,7 +9,6 @@
   }
   
   .bg-image {
-    background-color: rgb(255, 255, 255);
     border-radius: 30px 30px 30px 30px;
     background-image: url('../../assets/images/login.jpg');
   }
@@ -19,9 +18,8 @@
   }
   
   .btn-login {
-    font-size: 0.9rem;
-    letter-spacing: 0.05rem;
-    padding: 0.75rem 1rem;
+    font-size: 18px;
+    width: 350px;
   }
   
   .haha {
@@ -33,4 +31,13 @@
   .error {
     font-size: 15px;
     color: red;
+  }
+
+
+  @media (max-width: 1200px) {
+    .btn-login {
+      font-size: 10px; /* Réduire la taille de la police pour les petits écrans */
+      padding: 8px 10px; /* Réduire l'espace interne du bouton pour les petits écrans */
+      width: 250px;
+    }
   }

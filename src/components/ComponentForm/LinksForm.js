@@ -8,7 +8,7 @@ const getIconClas = getIconClass ;
 
 const LinksForm = ({ links, handleLinkChange, addLink, removeLink}) => {
   return (
-    <div className="row mt-9 py-3">
+    <div className="row mt-9 p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
         <span>Links</span>
         <span className="border px-2 difcolor btnhov add-experience" onClick={addLink}>

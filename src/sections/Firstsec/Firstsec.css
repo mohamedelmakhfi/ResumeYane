@@ -10,18 +10,13 @@
     justify-content: center;
     text-align: center;
 }
-
+ 
 .hero-title{
     font-size: 50px;
     margin-top: 50px;
     margin-bottom: 20px;
 }
 
-.btnn{
-    max-width: 400px;
-    font-size: 20px;
-    border-radius: 40px;
-}
 
 .difcolor {
     color: rgb(50, 31, 227);
@@ -29,7 +24,7 @@
 }
 
 .hero-subtitle{
-    font-size: 20px;
+    font-size: 30px;
 }
 .two{
     margin-bottom: 20px;
@@ -39,4 +34,38 @@
     width: 60%;
     max-width: 100%;
     height: auto;
+}
+
+/* Pour les petits écrans */
+@media (max-width: 767.98px) {
+  .hero-main {
+    padding: 30px;
+  }
+  .hero-title {
+    font-size: 18px;
+    margin-top: 30px;
+  }
+  .hero-subtitle{
+    font-size: 10px;
+  }
+  .image1 {
+    width: 80%;       
+    margin-top: 20px; 
+  }
+}
+
+
+/* Pour les écrans moyens et grands */
+@media (min-width: 768px) {
+  .hero-main {
+    padding: 50px;   
+  }
+  .hero-title {
+    font-size: 50px; 
+    margin-top: 50px;
+  }
+  .image1 {
+    width: 60%;    
+    margin-top: 0; 
+  }
 }

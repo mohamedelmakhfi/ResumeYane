@@ -6,7 +6,7 @@ const popularCertificateCompanie = popularCertificateCompanies ;
 
 const CertificatesForm = ({ certificates, handleCertificateChange, addCertificate, removeCertificate}) => {
   return (
-    <div className="row mt-8 py-3">
+    <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
         <span>Certificates</span>
         <span className="border px-2 difcolor btnhov add-experience" onClick={addCertificate}>

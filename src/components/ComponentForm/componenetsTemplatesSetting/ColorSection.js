@@ -2,8 +2,8 @@ import React from 'react';
 
 const ColorSection = ({ id, label, color, setColor }) => {
   return (
-    <div className="col mb-3">
-      <label htmlFor={id} className="form-label">
+    <div className="col mb-2">
+      <label htmlFor={id} className="form-label textttt">
         {label}
       </label>
       <input
@@ -11,7 +11,7 @@ const ColorSection = ({ id, label, color, setColor }) => {
         id={id}
         value={color}
         onChange={(e) => setColor(e.target.value)}
-        className="form-select"
+        className="form-select "
       />
     </div>
   );

@@ -1,11 +1,24 @@
-.btn{
-    width: 400px;
+.btn {
+    width: 100%; /* Utiliser la largeur complète disponible */
+    max-width: 400px; /* Définir une largeur maximale pour le bouton */
     font-size: 18px;
     border-radius: 40px;
     font-weight: bold;
-}
-
-.btn:hover {
-    background-color:#3c8dbc ;
-    color: black ;
-}
+    padding: 10px 20px; /* Ajouter un peu d'espace interne au bouton */
+    transition: background-color 0.3s, color 0.3s; /* Ajouter une transition fluide */
+  }
+  
+  /* Style au survol du bouton */
+  .btn:hover {
+    background-color: #3c8dbc;
+    color: black;
+  }
+  
+  /* Style pour les petits écrans */
+  @media (max-width: 767.98px) {
+    .btn {
+      font-size: 10px; /* Réduire la taille de la police pour les petits écrans */
+      padding: 8px 10px; /* Réduire l'espace interne du bouton pour les petits écrans */
+    }
+  }
+  

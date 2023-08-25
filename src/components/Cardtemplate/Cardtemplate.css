@@ -1,3 +1,9 @@
+.carddd{
+    height: 450px;
+    position: relative;
+    overflow: hidden;  
+}
+
 .card-img {
     object-fit: cover;
   }
@@ -21,3 +27,47 @@
     width: 200px;
     font-size: medium;
   }
+
+
+
+  /* Ajuster les cartes pour les petits écrans */
+@media (max-width: 800.98px) {
+  .col-md-4 {
+    flex: 0 0 100%; /* Les cartes occuperont toute la largeur */
+    max-width: 100%; /* Largeur maximale pour les cartes */
+    margin-bottom: 20px; /* Ajouter de l'espace entre les cartes */
+  }
+  .carddd{
+    height: 400px;
+    width: 80%;
+    position: relative;
+    overflow: hidden;  
+}
+  .overlay {
+    opacity: 1; /* Garder l'overlay visible en permanence */
+    background-color: rgba(82, 82, 82, 0.8); /* Légèrement plus foncé pour une meilleure lisibilité */
+  }
+  .template {
+    width: 100%; /* Utiliser la largeur complète disponible pour le bouton */
+    font-size: 14px; /* Réduire la taille de la police du bouton */
+  }
+}
+
+/* Rétablir les cartes pour les écrans moyens et grands */
+@media (min-width: 801px) {
+  .col-md-4 {
+    flex: 0 0 33.333%; /* Rétablir la largeur des cartes */
+    max-width: 33.333%; /* Rétablir la largeur maximale des cartes */
+    margin: 40px; /* Rétablir la marge entre les cartes */
+  }
+  .overlay {
+    opacity: 0;
+  }
+  .card:hover .overlay {
+    opacity: 1;
+  }
+  .template {
+    width: 200px;
+    font-size: medium;
+  }
+}

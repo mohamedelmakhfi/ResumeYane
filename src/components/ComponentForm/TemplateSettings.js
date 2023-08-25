@@ -25,7 +25,6 @@ const TemplateSettings = ({numResume, setNumresume, resumeTemplates, prevResume,
       
     return (
         <div className='container rounded bg-light' >
-        
         <div className='bg-white rounded-3 mt-4 p-3 mb-4 border border-primary'>
             <h3 className='text-center'><span className='difcolor'>Template Section</span></h3>
         <hr />

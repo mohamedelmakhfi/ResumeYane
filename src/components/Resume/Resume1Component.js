@@ -4,26 +4,7 @@ import { jsPDF } from 'jspdf';
 
 const getIconClas = getIconClass;
 
-/**const generatePDF = () => {
-  const report = new JsPDF('portrait','pt','a4');
-  
-
-  report.html(document.querySelector('#cvContainer')).then(() => {
-      report.save('report.pdf');
-  });
-
-  
-    // Utilise html2canvas pour capturer le contenu en tant qu'image
-    const cvContainer = document.querySelector('#cvContainer');
-    html2canvas(cvContainer).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png'); // Convertit l'image en données base64
-    report.addImage(imgData, 'PNG', 0, 0, 595, 842); // Ajoute l'image au PDF
-    report.save('report.pdf');
-});
-   
-}*/
-
-const generatePDF = () => {
+  const generatePDF = () => {
 	const cvContainer = document.querySelector('#cvContainer');
   
 	if (cvContainer) {
@@ -41,6 +22,9 @@ const generatePDF = () => {
 	  });
 	}
   }
+
+
+  
 
 
 
@@ -103,7 +87,7 @@ const Resume1Component = (props) => {
           <div className='col-lg-4 text-center py-4' style={background1color}>
               <div className='Header-left'>
                 <img className="img-thumbnail rounded-circle mb-2 " style={smallerImageSize}  
-                    src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg" }
+                    src={props.imgUrl ? props.imgUrl : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"}
                     alt='profil'
                 />
                 <h4 className='display-7 mt-2' style={{...fonttext , ...smallerFont}}> {props.name} {props.surname}</h4>
@@ -280,8 +264,8 @@ const Resume1Component = (props) => {
               <hr />
                 {props.certificates.map((certif,index) => (
                   <div className="col-md-12 row" style={smallerParagraph} key={index}>
-                    <p className=" offset-md-2 col-md-6"> {certif.company}</p>
-                    <p className="col-md-4"> {certif.certificateLink}</p>
+                    <p className="col-md-6"> {certif.company}</p>
+                    <p className="col-md-6"> {certif.certificateLink}</p>
                     <br />             
                   </div>
                 ))}  

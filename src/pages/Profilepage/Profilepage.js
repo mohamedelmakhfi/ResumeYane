@@ -6,11 +6,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { doc, getDoc, runTransaction } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, ResumeComponent, SkillForm, TemplateSettings } from '../../components/ComponentForm/index';
+import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, ResumeComponent, SkillForm } from '../../components/ComponentForm/index';
 import { ColorSection, FontSection, TemplateSection } from '../../components/ComponentForm/componenetsTemplatesSetting';
 import { fontOptions } from '../../data/Datatemp';
-
-
 
 const ProfilePage  = () => {
 
@@ -435,7 +433,7 @@ const prevResume = () => {
 
 
     return (
-<div className='mx-5' style={{display : 'flex', gap : '12px' }}>
+    <div className='mx-5 containnnr'>
       <div className="container rounded bg-light" style={{ maxWidth: '1000px' }}>
 
       <BreadcrumbComponent name={name} handleLogout={handleLogout} />
@@ -459,12 +457,12 @@ const prevResume = () => {
           <div className='container rounded bg-light' >
           
           <div className='bg-white rounded-3 mt-4 p-3 mb-4 border border-primary'>
-              <h3 className='text-center'><span className='difcolor'>Template </span>Section</h3>
+              <h3 className='text-center textt'><span className='difcolor'>Template </span>Section</h3>
           <hr />
           <div className="accordion" id="accordionExample">
           <div className="accordion-item">
               <h2 className="accordion-header">
-                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Change Color Template</button>
+                <button className="accordion-button collapsed texttt" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Change Color Template</button>
               </h2>
               <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div className="accordion-body">
@@ -478,7 +476,7 @@ const prevResume = () => {
             </div>
 
             <div className="accordion-item ">
-              <h2 className="accordion-header "><button className="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >Change font</button></h2>
+              <h2 className="accordion-header "><button className="accordion-button collapsed texttt" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >Change font</button></h2>
               <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div className="accordion-body">
                   <FontSection fonts={fontOptions} selectedFont={selectedFonttitre} setSelectedFont={setSelectedFont} name={name} surname={surname} />
@@ -488,7 +486,7 @@ const prevResume = () => {
 
             <div className="accordion-item">
               <h2 className="accordion-header">
-                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" > Change Template</button></h2>
+                <button className="accordion-button collapsed texttt" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" > Change Template</button></h2>
               <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div className="accordion-body">
                   <TemplateSection userId={userId} numResume={numResume} setNumresume={setNumresume} resumeTemplates={resumeTemplates} prevResume={prevResume} nextResume={nextResume} />
@@ -525,10 +523,9 @@ const prevResume = () => {
 
                                                   {/*parametrs and Resumes */}
        
-    <div className='container rounded bg-light'>
-    <ResumeComponent name={name} surname={surname} email={email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession} titleColor={titleColor} Colortext1={Colortext1} background1color={background1color} Colortext2={Colortext2} background2color={background2color} selectedFonttitre={selectedFonttitre} numResume={numResume} />
-    </div>
-
+      <div className='container rounded bg-light' style={{ maxWidth: '1000px' }}>
+      <ResumeComponent name={name} surname={surname} email={email} phone={phone} address={address} state={state} country={country} education={education} experience={experience} profesummary={profesummary} hobbies={hobbies} languages={languages} skills={skills} file={file} imgUrl={imgUrl} certificates={certificates} links={links} projects={projects} profession={profession} titleColor={titleColor} Colortext1={Colortext1} background1color={background1color} Colortext2={Colortext2} background2color={background2color} selectedFonttitre={selectedFonttitre} numResume={numResume} />
+      </div>
        
     </div>
   );

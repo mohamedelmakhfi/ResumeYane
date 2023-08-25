@@ -3,7 +3,7 @@ import React from 'react';
 
 const SkillForm = ({ skills, addSkill, removeSkill, handleSkillChange }) => {
   return (
-    <div className="row mt-7 p-3">
+    <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">
         <span>Skills and level</span>
         <span className="border px-2 difcolor btnhov add-experience" onClick={addSkill}>
@@ -16,8 +16,8 @@ const SkillForm = ({ skills, addSkill, removeSkill, handleSkillChange }) => {
       </div>
       <br />
       {skills.map((skill, index) => (
-        <React.Fragment key={index}>
-          <div className="col-md-6">
+        <React.Fragment key={index} >
+          <div className="col-md-6 col-6">
             <label className="labels">Skill {index + 1}</label>
             <input
               type="text"
@@ -27,7 +27,7 @@ const SkillForm = ({ skills, addSkill, removeSkill, handleSkillChange }) => {
               onChange={(e) => handleSkillChange(index, 'skill', e.target.value)}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 col-6">
             <label className="labels">Level</label>
             <select
               className="form-control"

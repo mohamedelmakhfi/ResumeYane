@@ -14,7 +14,7 @@ const ProfileImageForm = ({ file, imgUrl, setFile , handleLogout , setCurrentSte
 
   return (
 
-          <div className="d-flex flex-column align-items-center text-center p-3 py-5">
+          <div className="d-flex flex-column align-items-center text-center p-3">
             <img className="rounded-circle mt-5" width="150px" 
               src={ file ? URL.createObjectURL(file) : imgUrl }
               alt='profil'

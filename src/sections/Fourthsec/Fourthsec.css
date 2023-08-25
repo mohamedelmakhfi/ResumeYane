@@ -13,3 +13,25 @@
     column-gap: 50px;
 }
 
+/* Ajuster la section pour les petits écrans */
+@media (max-width: 1000.98px) {
+    .Fourthsec-main {
+      margin: 60px 20px; /* Réduire la marge extérieure */
+      padding: 30px; /* Réduire l'espacement interne */
+      flex-direction: column; /* Disposition verticale pour les petits écrans */
+      align-items: center; /* Centrer horizontalement les éléments */
+      column-gap: 0; /* Supprimer l'espacement entre les colonnes */
+    }
+  }
+  
+  /* Rétablir la section pour les écrans moyens et grands */
+  @media (min-width: 1001px) {
+    .Fourthsec-main {
+      margin: 120px 20px 20px 20px;
+      padding: 50px; /* Rétablir l'espacement interne */
+      flex-direction: row; /* Disposition horizontale pour les écrans moyens et grands */
+      justify-content: center; /* Centrer horizontalement les éléments */
+      column-gap: 50px; /* Rétablir l'espacement entre les colonnes */
+    }
+  }
+  

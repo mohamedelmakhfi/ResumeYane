@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import  './Signsec.css'
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../firebase';
 import { AuthContext } from '../../context/AuthContext';
 
 const Signsec = () => {
@@ -30,7 +30,22 @@ const Signsec = () => {
             const errorCode = error.code;
             alert(`error => ${errorCode}  !!`);
         });
+    }
 
+    const handleSignupGoogle = (e) => {
+        e.preventDefault();
+
+        signInWithPopup(auth, provider)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            dispatch({type:"SIGNUP" , payload:user})
+            navigate("/Templates");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                alert(`error => ${errorCode}  !!`);
+            });
+        
     }
 
 
@@ -56,6 +71,9 @@ const Signsec = () => {
                             </div>
                             <div className="d-grid haha">
                             <button className="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sing up</button>
+                            <button class="btn btn-lg btn-primary btn-login text-uppercase  mb-2" style={{backgroundColor: '#dd4b39'}}
+                                onClick={handleSignupGoogle} ><i class="fab fa-google me-2"></i> Sign up with google</button>
+                                
                             { error && <span className='error text-center'>{ error && <span className='error text-center'>Please fill all fields</span>}</span>}
                             </div>
                         </form>
