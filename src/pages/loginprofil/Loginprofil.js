@@ -9,16 +9,20 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, ResumeComponent, SkillForm} from '../../components/ComponentForm/index';
 import  { ColorSection, FontSection, TemplateSection } from '../../components/ComponentForm/componenetsTemplatesSetting/index'
 import { fontOptions } from '../../data/Datatemp';
+import { Alert } from 'react-bootstrap';
+
 
 const Loginprofil = () => {
   
   const {dispatch} = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
   
+  const user = currentUser;
   const userId = currentUser.uid;
   const userEmail = currentUser.email;
 
   const navigate = useNavigate();
+  const [logoutError, setLogoutError] = useState(null);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -26,12 +30,11 @@ const Loginprofil = () => {
       dispatch({type:"LOGOUT"})
       alert('Sign-out successful.');
       navigate('/');
-
     }).catch((error) => {
       alert(error);
     });
-
   }
+
 
   /*********************** initialise data  ****************************/
 
@@ -125,18 +128,12 @@ const prevResume = () => {
   },[])
 
   /**************************** End get data ********************************** */
-
-
-
-  /******************************* copy ************************************************ */
   
-  
-
   //********************** upload image *********************** */
 
     useEffect(()=> {
       const uploadFile = () => {
-        const storageRef = ref(storage, file.name);
+        const storageRef = ref(storage, `${user.uid}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
 
@@ -165,22 +162,15 @@ const prevResume = () => {
             });
           }
         );
-
       };
       file && uploadFile();
-    },[file]);
-
+    },[file , user.uid]);
 
   //********************** End upload image *********************** */
 
-
   const handleAdd = async (e) => {
     e.preventDefault();
-    
-    // Prepare the hobbies data in an array format
     const hobbiesData = hobbies.filter(hobby => hobby.trim() !== '');
-
-    
     try {
       await runTransaction(db, async (transaction) => {
     
@@ -208,7 +198,6 @@ const prevResume = () => {
           profession: profession,
         });
       });
-    
       alert("Submit réussi !"); 
     }catch (error) {
       alert("Submit échoué !");
@@ -430,9 +419,9 @@ const prevResume = () => {
 
   //****************************  end experience parametrs *******************************
 
-  /********************************* End Copy ****************************************** */
-  const [currentStep, setCurrentStep] = useState(0);
 
+
+  const [currentStep, setCurrentStep] = useState(0);
   const [titleColor, setTitleColor] = useState('#A80000');
   const [Colortext1, setColortext1] = useState('#ffffff');
   const [background1color, setBackground1Color] = useState('#A80000');
@@ -463,7 +452,7 @@ const prevResume = () => {
           {currentStep === 6 && <LinksForm links={links} handleLinkChange={handleLinkChange} addLink={addLink} removeLink={removeLink} /> }
           {currentStep === 7 && <ExperienceForm experience={experience} addExperience={addExperience} removeExperience={removeExperience} handleExperienceChange={handleExperienceChange} />}
           {currentStep === 8 && <SkillForm skills={skills} addSkill={addSkill} removeSkill={removeSkill} handleSkillChange={handleSkillChange} /> }
-          {currentStep === 9 &&  <ProjectForm projects={projects} addProject={addProject} removeProject={removeProject} handleProjectChange={handleProjectChange} />}
+          {currentStep === 9 && <ProjectForm projects={projects} addProject={addProject} removeProject={removeProject} handleProjectChange={handleProjectChange} />}
           {currentStep ===10 && 
           <div className='container rounded bg-light' >
           

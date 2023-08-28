@@ -61,7 +61,7 @@ const Resume4Component = (props) => {
   }
 
   const smallerFont = {
-        fontSize: '12px', // Ajuste la taille de police
+        fontSize: '12px',
     };
     
   /* ********* titles *********** */
@@ -90,15 +90,17 @@ const Resume4Component = (props) => {
     ...Colortext2,
   }
 
-  const a4Width = 595; // Largeur en points
-  const a4Height = 900; // Hauteur en points
+  const a4Width = 595; 
+  const a4Height = 900;
 
   const smallerImageSize = {
-      width: '100px', // Ajuste la taille de l'image
+	width: '100px',
+	height: '100px',
+	objectFit : 'cover',
   };
 
   const smallerParagraph = {
-      fontSize: '10px', // Ajuste la taille des paragraphes
+      fontSize: '10px', 
   };
 	
 	return (

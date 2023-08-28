@@ -77,11 +77,11 @@
 
 @media (max-width: 767.98px) {
     .contact-page {                                     
-      padding: 30px;                                                   
+      padding: 10px;                                                   
       border-radius: 20px;                                             
     }
     .input-field {
-        width: 70%;
+        width: 50%;
         padding: 5px;
         margin-bottom: 20px;
         border: 1px solid blue;
@@ -101,15 +101,15 @@
         text-align: center;
         font-weight: bold;
     }
-    .left-text p{
-        font-size: 16px;
+    .left-text p,ul {
+        font-size: 12px;
     }
     .left-text, .right-content {
       text-align: center;                                         
     }
     .right-content iframe {
       width: 100%;                                                     
-      height: 250px;                                                   
+      height: 150px;                                                   
     }
     .right-content .input-field, .right-content .textarea-field {
       width: 100%;                                                     

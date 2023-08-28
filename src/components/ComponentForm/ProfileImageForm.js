@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { FaRegCircleDown } from 'react-icons/fa6';
 import { AuthContext } from '../../context/AuthContext';
+import './ProfileImageForm.css';
 
 const ProfileImageForm = ({ file, imgUrl, setFile , handleLogout , setCurrentStep }) => {
   
@@ -15,7 +16,7 @@ const ProfileImageForm = ({ file, imgUrl, setFile , handleLogout , setCurrentSte
   return (
 
           <div className="d-flex flex-column align-items-center text-center p-3">
-            <img className="rounded-circle mt-5" width="150px" 
+            <img className="rounded-circle mt-5 image" 
               src={ file ? URL.createObjectURL(file) : imgUrl }
               alt='profil'
             />

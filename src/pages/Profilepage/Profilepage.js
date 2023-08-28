@@ -17,10 +17,9 @@ const ProfilePage  = () => {
 
   const navigate = useNavigate();
 
-
+  const user = currentUser;
   const userId = currentUser.uid;
   const userEmail = currentUser.email;
-
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -119,7 +118,7 @@ const prevResume = () => {
 
   useEffect(()=> {
     const uploadFile = () => {
-      const storageRef = ref(storage, file.name);
+      const storageRef = ref(storage, `${user.uid}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
 
@@ -199,6 +198,10 @@ const prevResume = () => {
       console.error("Erreur lors de la soumission du formulaire :", error);
     }
   };
+
+  
+
+
   
   //**************************** skills parametrs *******************************
 

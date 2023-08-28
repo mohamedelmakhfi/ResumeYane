@@ -1,6 +1,7 @@
 import html2canvas from "html2canvas";
 import { getIconClass } from "../../data/Datatemp";
 import { jsPDF } from 'jspdf';
+import './Resume1.css';
 
 const getIconClas = getIconClass;
 
@@ -8,25 +9,19 @@ const getIconClas = getIconClass;
 	const cvContainer = document.querySelector('#cvContainer');
   
 	if (cvContainer) {
-	  const dpi = 300; // Set your desired DPI value
-	  const scale = dpi / 96; // Calculate scale factor based on DPI
+	  const dpi = 300; 
+	  const scale = dpi / 96; 
   
 	  html2canvas(cvContainer, { scale: scale }).then(canvas => {
-		const imgData = canvas.toDataURL('image/jpeg', 1.0); // Use JPEG format with higher quality
-  
-		const pdf = new jsPDF('p', 'mm', 'a4'); // Create a new PDF document
-		const imgWidth = 210; // A4 width in mm
-		const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate image height to maintain aspect ratio
-		pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight); // Add image to PDF
-		pdf.save('cv.pdf'); // Save the PDF
+		const imgData = canvas.toDataURL('image/jpeg', 1.0); 
+		const pdf = new jsPDF('p', 'mm', 'a4'); 
+		const imgWidth = 210; 
+		const imgHeight = (canvas.height * imgWidth) / canvas.width;
+		pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight); 
+		pdf.save('cv.pdf');
 	  });
 	}
   }
-
-
-  
-
-
 
 
 const Resume1Component = (props) => {
@@ -38,7 +33,7 @@ const Resume1Component = (props) => {
   }
 
   const smallerFont = {
-        fontSize: '11px', // Ajuste la taille de police
+        fontSize: '11px', 
     };
     
   /* ********* titles *********** */
@@ -67,15 +62,17 @@ const Resume1Component = (props) => {
     ...Colortext2,
   }
 
-  const a4Width = 595; // Largeur en points
-  const a4Height = 900; // Hauteur en points
+  const a4Width = 595; 
+  const a4Height = 900;
 
   const smallerImageSize = {
-      width: '100px', // Ajuste la taille de l'image
+      width: '100px',
+      height: '100px',
+      objectFit : 'cover', 
   };
 
   const smallerParagraph = {
-      fontSize: '9px', // Ajuste la taille des paragraphes
+      fontSize: '9px',
   };
   
 
@@ -201,7 +198,7 @@ const Resume1Component = (props) => {
                             </div>
                         );
                     } else {
-                        return null; // Skip odd-indexed items
+                        return null; 
                     }
                 })}       
             </div>
@@ -240,7 +237,7 @@ const Resume1Component = (props) => {
                 </div>
             );
         } else {
-            return null; // Skip odd-indexed items
+            return null;
         }
     })}         
             </div>

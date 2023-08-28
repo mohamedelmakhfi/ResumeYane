@@ -1,10 +1,11 @@
 import './Contactus.css'
-import { Firstsec, Header , Fourthsec } from '../../sections/index';
+import { Header } from '../../sections/index';
 
 const Contactus = () => {
   return (
     <>
         <Header/>
+        
         {/*<section className="contactus mb-4">
 
             <h2 className="h1-responsive font-weight-bold text-center my-4"><span style={{"color":"blue" ,"fontWeight":"bold"}}>Contact</span> us</h2>
