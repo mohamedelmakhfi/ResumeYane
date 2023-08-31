@@ -1,6 +1,26 @@
 import React from 'react'
 
-const Educationform = ({ education, handleEducationChange, addEducation, removeEducation }) => {
+const Educationform = ({ education , setEducation}) => {
+
+  const addEducation = () => {
+    setEducation([...education, { school: '', degree: '', startDate: '', endDate: '' }]);
+  };
+
+  const removeEducation = () => {
+    if (education.length > 1) {
+      const updatedEducation = education.slice(0, education.length - 1);
+      setEducation(updatedEducation);
+    }
+  };
+
+  const handleEducationChange = (index, field, value) => {
+    setEducation(prevEducation => {
+      const newEducation = [...prevEducation];
+      newEducation[index][field] = value;
+      return newEducation;
+    });
+  };
+
   return (
     <div className="row ">
     <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">

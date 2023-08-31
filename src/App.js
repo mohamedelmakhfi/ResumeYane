@@ -4,16 +4,14 @@ import { Home , Contactus , Login, Signup, Templates, Forgotpassword, Resumeform
 import { BrowserRouter as Router , Route , Routes, Navigate } from 'react-router-dom'
 import { Footer } from './sections';
 import { useContext } from 'react';
-import { AuthContext, AuthContextProvider } from './context/AuthContext';
+import { AuthContext } from './context/AuthContext';
 
 
 
 
 const App = () => {
 
-
   const {currentUser} = useContext(AuthContext);
-
 
   const RequireAuth = ({children}) => {
     return currentUser ? children : <Navigate to='/Login' /> ;
@@ -32,9 +30,12 @@ const App = () => {
             <Route path='/Templates' element={<Templates />} />
             <Route path='/Forgotpassword' element={<Forgotpassword />} />
             <Route path='/Resumeform' element={<Resumeform />} />
+            
           </Routes>
         </Container>
-        {/* Utilisation de RequireAuth ici pour les routes nécessitant une authentification */}
+        {/* Utilisation de RequireAuth ici pour les routes nécessitant une authentification 
+        
+        <Route path='/*' element={<NotFoundPage />} />*/}
           <Routes>
             <Route path='/Profilepage' element={
                           <RequireAuth> 

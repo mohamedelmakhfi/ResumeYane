@@ -1,7 +1,26 @@
 // ExperienceForm.js
 import React from 'react';
 
-const ExperienceForm = ({ experience, addExperience, removeExperience, handleExperienceChange}) => {
+const ExperienceForm = ({ experience, setExperiences }) => {
+
+  const addExperience = () => {
+    setExperiences([...experience, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
+  };
+
+  const removeExperience = () => {
+    if (experience.length > 0) {
+      const updatedExperience = experience.slice(0, experience.length - 1);
+      setExperiences(updatedExperience);
+    }
+  };
+
+  const handleExperienceChange = (index, field, value) => {
+    setExperiences(prevExperiences => {
+      const newExperiences = [...prevExperiences];
+      newExperiences[index][field] = value;
+      return newExperiences;
+    });
+  };
   return (
     <div className="p-3 ">
       <div className="d-flex justify-content-between align-items-center experience difcolor btnhov ">

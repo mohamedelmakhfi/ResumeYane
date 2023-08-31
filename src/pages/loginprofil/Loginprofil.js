@@ -9,7 +9,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { BreadcrumbComponent, CertificatesForm, Educationform, ExperienceForm, HobbiesForm, LanguagesForm, LinksForm, PersonalInfoForm, ProfileImageForm, ProjectForm, ResumeComponent, SkillForm} from '../../components/ComponentForm/index';
 import  { ColorSection, FontSection, TemplateSection } from '../../components/ComponentForm/componenetsTemplatesSetting/index'
 import { fontOptions } from '../../data/Datatemp';
-import { Alert } from 'react-bootstrap';
+
 
 
 const Loginprofil = () => {
@@ -22,7 +22,6 @@ const Loginprofil = () => {
   const userEmail = currentUser.email;
 
   const navigate = useNavigate();
-  const [logoutError, setLogoutError] = useState(null);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -205,219 +204,16 @@ const prevResume = () => {
     }
   };
   
-  //**************************** skills parametrs *******************************
+  //******************************************************************************
 
-              const [skills, setSkills] = useState([{ skill: '', level: 0 },]);
-              
-              const addSkill = () => {
-                setSkills([...skills, { skill: '', level: 0 }]);
-              };
-              
-              const removeSkill = () => {
-                if (skills.length > 0) {
-                  const updatedSkills = skills.slice(0, skills.length - 1);
-                  setSkills(updatedSkills);
-                }
-              };
-              
-              const handleSkillChange = (index, field, value) => {
-                setSkills(prevSkills => {
-                  const newSkills = [...prevSkills];
-                  newSkills[index][field] = value;
-                  return newSkills;
-                });
-              };
-  
-
-  //**************************** End skills parametrs *******************************
-
-
-/************************************* Projets parametrs *************************************/
-           
-
-
-        const [projects, setProjects] = useState([]);
-
-        const addProject = () => {
-          setProjects([...projects, { projectName: '', projectType: '', description: '' }]);
-        };
-
-        const removeProject = () => {
-          if (projects.length > 0) {
-            const updatedProjects = projects.slice(0, projects.length - 1);
-            setProjects(updatedProjects);
-          }
-        };
-
-        const handleProjectChange = (index, field, value) => {
-          setProjects(prevProjects => {
-            const newProjects = [...prevProjects];
-            newProjects[index][field] = value;
-            return newProjects;
-          });
-        };
-
-
-/************************************* Projets parametrs *************************************/
-
-
-
-/************************************   Certificats parametrs ****************************/
-  
-
-
-
-
-          const [certificates, setCertificates] = useState([{ company: '', certificateLink: '' },]);
-
-          const addCertificate = () => {
-            setCertificates([...certificates, { company: '', certificateLink: '' }]);
-          };
-
-          const removeCertificate = () => {
-            if (certificates.length > 0) {
-              setCertificates(certificates.slice(0, certificates.length - 1));
-            }
-          };
-
-          const handleCertificateChange = (index, field, value) => {
-            setCertificates(prevCertificates => {
-              const newCertificates = [...prevCertificates];
-              newCertificates[index][field] = value;
-              return newCertificates;
-            });
-          };
-
-
-
-/************************************  end  Certificats parametrs ****************************/
-
-  //****************************  Links parametrs *******************************
-
-            const [links, setLinks] = useState([{ platform: '', url: '' },]);
-
-            const addLink = () => {
-              setLinks([...links, { platform: '', url: '' }]);
-            };
-
-            const removeLink = () => {
-              if (links.length > 0) {
-                setLinks(links.slice(0, links.length - 1));
-              }
-            };
-
-            const handleLinkChange = (index, field, value) => {
-              setLinks(prevLinks => {
-                const newLinks = [...prevLinks];
-                newLinks[index][field] = value;
-                return newLinks;
-              });
-            };
-
-  //**************************** End Links parametrs *******************************
-
-
-    //**************************** Hobbies parametrs *******************************
-
-                  const [hobbies, setHobbies] = useState([]);
-                
-                  const addHobby = () => {
-                    setHobbies(prevHobbies => [...prevHobbies, '']);
-                  };
-                
-                  const removeHobby = () => {
-                    if (hobbies.length > 0) {
-                      setHobbies(prevHobbies => prevHobbies.slice(0, hobbies.length - 1));
-                    }
-                  };
-                
-                  const handleHobbyChange = (index, value) => {
-                    setHobbies(prevHobbies => {
-                      const newHobbies = [...prevHobbies];
-                      newHobbies[index] = value;
-                      return newHobbies;
-                    });
-                  };
-
-  //**************************** End Hobiiesparametrs *******************************
-
-
-                  //**************************** languages parametrs *******************************
-
-                  const [languages, setLanguages] = useState([{ language: '', proficiency: '' },]);
-
-                  const addField = () => {
-                    setLanguages([...languages, { language: '', proficiency: '' }]); 
-                  };
-
-                  const removeField = () => {
-                    if (languages.length > 1) {
-                      const updatedLanguages = languages.slice(0, languages.length - 1);
-                      setLanguages(updatedLanguages);
-                    }
-                  };
-
-                  const handleLanguageChange = (index, field, value) => {
-                    setLanguages(prevLanguages => {
-                      const newLanguages = [...prevLanguages];
-                      newLanguages[index][field] = value;
-                      return newLanguages;
-                    });
-                  };
-
-//**************************** End languages parametrs *******************************
-
-
-
-  //**************************** education parametrs *******************************
-
-                  const [education, setEducation] = useState([{ school: '', degree: '', startDate: '', endDate: '' },]);
-                  
-                  const addEducation = () => {
-                    setEducation([...education, { school: '', degree: '', startDate: '', endDate: '' }]);
-                  };
-
-                  const removeEducation = () => {
-                    if (education.length > 1) {
-                      const updatedEducation = education.slice(0, education.length - 1);
-                      setEducation(updatedEducation);
-                    }
-                  };
-
-                  const handleEducationChange = (index, field, value) => {
-                    setEducation(prevEducation => {
-                      const newEducation = [...prevEducation];
-                      newEducation[index][field] = value;
-                      return newEducation;
-                    });
-                  };
-
-//**************************** End education parametrs *******************************
-
-  //**************************** experience parametrs *******************************
-
-              const [experience, setExperiences] = useState([{ position: '', company: '', startDate: '', endDate: '', workSummary: '' },]);
-              
-              const addExperience = () => {
-                setExperiences([...experience, { position: '', company: '', startDate: '', endDate: '', workSummary: '' }]);
-              };
-
-              const removeExperience = () => {
-                if (experience.length > 0) {
-                  const updatedExperience = experience.slice(0, experience.length - 1);
-                  setExperiences(updatedExperience);
-                }
-              };
-
-              const handleExperienceChange = (index, field, value) => {
-                setExperiences(prevExperiences => {
-                  const newExperiences = [...prevExperiences];
-                  newExperiences[index][field] = value;
-                  return newExperiences;
-                });
-              };
-
-  //****************************  end experience parametrs *******************************
+const [skills, setSkills] = useState([]);
+const [projects, setProjects] = useState([]);
+const [certificates, setCertificates] = useState([]);
+const [links, setLinks] = useState([]);
+const [hobbies, setHobbies] = useState([]);
+const [languages, setLanguages] = useState([{ language: '', proficiency: '' },]);
+const [education, setEducation] = useState([{ school: '', degree: '', startDate: '', endDate: '' },]);
+const [experience, setExperiences] = useState([]);
 
 
 
@@ -434,6 +230,7 @@ const prevResume = () => {
   return (
     
     <div className='mx-5 containnnr'>
+      {alert}
       <div className="container rounded bg-light" style={{ maxWidth: '1000px' }}>
 
       <BreadcrumbComponent name={name} handleLogout={handleLogout} />
@@ -445,14 +242,14 @@ const prevResume = () => {
           <ProfileImageForm file={file} imgUrl={imgUrl} setFile={setFile}  handleLogout={handleLogout} setCurrentStep={setCurrentStep}/>
           </div> }
           {currentStep === 1 && <PersonalInfoForm name={name} surname={surname} profession={profession} phone={phone} address={address} authEmail={email} profsummary={profesummary} country={country} state={state} setName={setName} setSurname={setSurname} setProfession={setProfession} setPhone={setPhone} setAddress={setAddress} setProfsummary={setProfsummary} setCountry={setCountry} setState={setState} />}
-          {currentStep === 2 && <Educationform education={education} handleEducationChange={handleEducationChange} addEducation={addEducation} removeEducation={removeEducation} />}
-          {currentStep === 3 && <LanguagesForm languages={languages} handleLanguageChange={handleLanguageChange} addField={addField} removeField={removeField} />}
-          {currentStep === 4 && <HobbiesForm hobbies={hobbies}  handleHobbyChange={handleHobbyChange} addHobby={addHobby} removeHobby={removeHobby}/> }
-          {currentStep === 5 && <CertificatesForm certificates={certificates}  handleCertificateChange={handleCertificateChange} addCertificate={addCertificate} removeCertificate={removeCertificate} /> }
-          {currentStep === 6 && <LinksForm links={links} handleLinkChange={handleLinkChange} addLink={addLink} removeLink={removeLink} /> }
-          {currentStep === 7 && <ExperienceForm experience={experience} addExperience={addExperience} removeExperience={removeExperience} handleExperienceChange={handleExperienceChange} />}
-          {currentStep === 8 && <SkillForm skills={skills} addSkill={addSkill} removeSkill={removeSkill} handleSkillChange={handleSkillChange} /> }
-          {currentStep === 9 && <ProjectForm projects={projects} addProject={addProject} removeProject={removeProject} handleProjectChange={handleProjectChange} />}
+          {currentStep === 2 && <SkillForm skills={skills} setSkills={setSkills} /> }
+          {currentStep === 3 && <LinksForm links={links} setLinks={setLinks} /> }
+          {currentStep === 4 && <LanguagesForm languages={languages} setLanguages={setLanguages} />}
+          {currentStep === 5 && <HobbiesForm hobbies={hobbies} setHobbies={setHobbies}/> }
+          {currentStep === 6 && <Educationform education={education} setEducation={setEducation}/>}
+          {currentStep === 7 && <ExperienceForm experience={experience} setExperiences={setExperiences} />}
+          {currentStep === 8 && <ProjectForm projects={projects} setProjects={setProjects} />}
+          {currentStep === 9 && <CertificatesForm certificates={certificates} setCertificates={setCertificates} /> }
           {currentStep ===10 && 
           <div className='container rounded bg-light' >
           
@@ -506,6 +303,14 @@ const prevResume = () => {
                 e.preventDefault();
                 setCurrentStep(currentStep - 1)
               }}>Précédent</button>
+            )}
+            {currentStep === 9 && (<>
+              <button className="btn btn-primary" onClick={(e) => {
+                e.preventDefault();
+                setCurrentStep(currentStep + 1)
+              }}> Templates setting</button>
+                <button className="btn btn-secondary" onClick={() => setCurrentStep(0)}>Back</button>
+              </>
             )}
             {currentStep < 9 && (
               <button className="btn btn-primary" onClick={(e) => {

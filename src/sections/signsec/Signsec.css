@@ -12,7 +12,8 @@
     .bg-image {
       background-color: aquamarine;
       border-radius: 30px 30px 30px 30px;
-      background-image: url('../../assets/images/login.jpg');
+      background-image: url('../../assets/images/signup.jpg');
+      background-size: cover;
     }
     
     .login-heading {

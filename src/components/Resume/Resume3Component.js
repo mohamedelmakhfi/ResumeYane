@@ -2,44 +2,26 @@ import React from 'react';
 import { getIconClass } from '../../data/Datatemp';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import WarningAlert from '../../sections/WarningAlert/WarningAlert';
 ;
 
 const getIconClas = getIconClass;
-
-/**const generatePDF = () => {
-  const report = new JsPDF('portrait','pt','a4');
-  
-
-  report.html(document.querySelector('#cvContainer')).then(() => {
-      report.save('report.pdf');
-  });
-
-  
-    // Utilise html2canvas pour capturer le contenu en tant qu'image
-    const cvContainer = document.querySelector('#cvContainer');
-    html2canvas(cvContainer).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png'); // Convertit l'image en données base64
-    report.addImage(imgData, 'PNG', 0, 0, 595, 842); // Ajoute l'image au PDF
-    report.save('report.pdf');
-});
-   
-}*/
 
 const generatePDF = () => {
 	const cvContainer = document.querySelector('#cvContainer');
   
 	if (cvContainer) {
-	  const dpi = 300; // Set your desired DPI value
-	  const scale = dpi / 96; // Calculate scale factor based on DPI
+	  const dpi = 300; 
+	  const scale = dpi / 96; 
   
 	  html2canvas(cvContainer, { scale: scale }).then(canvas => {
-		const imgData = canvas.toDataURL('image/jpeg', 1.0); // Use JPEG format with higher quality
+		const imgData = canvas.toDataURL('image/jpeg', 1.0); 
   
-		const pdf = new jsPDF('p', 'mm', 'a4'); // Create a new PDF document
-		const imgWidth = 210; // A4 width in mm
-		const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate image height to maintain aspect ratio
-		pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight); // Add image to PDF
-		pdf.save('cv.pdf'); // Save the PDF
+		const pdf = new jsPDF('p', 'mm', 'a4'); 
+		const imgWidth = 210; 
+		const imgHeight = (canvas.height * imgWidth) / canvas.width; 
+		pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight); 
+		pdf.save('cv.pdf');
 	  });
 	}
   }
@@ -52,7 +34,7 @@ const Resume3Component = (props) => {
       fontFamily : props.selectedFonttitre,
     }
     const smallerFont = {
-      fontSize: '10px', // Ajuste la taille de police
+      fontSize: '10px', 
   };
   
     /* ********* titles *********** */
@@ -81,23 +63,27 @@ const Resume3Component = (props) => {
       ...Colortext2,
     }
 
-
-    const a4Width = 595; // Largeur en points
-  const a4Height = 900; // Hauteur en points
-
   const smallerImageSize = {
-      width: '100px', // Ajuste la taille de l'image
+      width: '100px', 
   };
 
   const smallerParagraph = {
-      fontSize: '8px', // Ajuste la taille des paragraphes
+      fontSize: '8px', 
   };
   
 
   return (
     <div className="container mt-3">
-      
-        <div className="resume-wrapper mx-auto p-5 " id='cvContainer' style={{backgroundColor : background1color.backgroundColor === '#A80000' ? '#D9D9D9' : background1color.backgroundColor , maxWidth: `${a4Width}px`, minWidth : `${a4Width}px` , maxHeight: `${a4Height}px` , minHeight : `${a4Height}px`, margin: '0 auto' }}>
+      <WarningAlert>
+        <div className="resume-wrapper mx-auto p-5 " id='cvContainer' 
+          style={{
+            backgroundColor : background1color.backgroundColor === '#A80000' ? '#D9D9D9' : background1color.backgroundColor ,
+            maxWidth: `${(854 * 210) / 297}px`,
+            minWidth: `${(854 * 210) / 297}px`,
+            maxHeight: '854px',
+            minHeight: '854px',
+            margin: '0 auto'
+            }}>
 
           
             <div className="row align-items-center py-2" style={{color : Colortext2.color , background : background2color.backgroundColor}}>
@@ -173,7 +159,7 @@ const Resume3Component = (props) => {
 
 
 
-                <section className="work-section py-2">
+                {props.experience.length > 0 && <section className="work-section py-2">
                   {/* ... (work experiences section) ... */}
                   <h3 className="text-uppercase resume-section-heading mb-3" style={TitleColor}>Work Experiences</h3>
                   {props.experience.map((exp,index) => (        
@@ -186,10 +172,10 @@ const Resume3Component = (props) => {
                       
                     </div>
                   ))}
-                </section>
+                </section>}
 
 
-                <section className="project-section py-2">
+                {props.projects.length > 0 && <section className="project-section py-2">
                   {/* ... (projects section) ... */}
                   <h3 className="text-uppercase resume-section-heading mb-3" style={TitleColor}>Projects</h3>
 
@@ -207,10 +193,10 @@ const Resume3Component = (props) => {
                   </div>
                   ))} 
 								</div>
-                </section>
+                </section>}
 
 
-                <section className="certificate-section py-2">
+                {props.certificates.length > 0 && <section className="certificate-section py-2">
                 <h3 className="text-uppercase resume-section-heading mb-3" style={TitleColor}>Certificates</h3>
                 {props.certificates.map((cert, index) => {
                     if (index % 2 === 0) {
@@ -241,15 +227,15 @@ const Resume3Component = (props) => {
                         return null; // Skip odd-indexed items
                     }
                 })}
-            </section>
+                </section>}
               </div>
 
               <aside className="resume-aside col-12 col-lg-4 col-xl-3 " style={background2color}>
-                <section className="skills-section py-3">
+                <section className="skills-section py-2">
                   <div className="item text-center">
                   <h4 className="item-title " style={TitleColor}>skills</h4>
                   {props.skills.map((skill, index) => (
-            			<ul key={index} className="list-unstyled resume-skills-list" style={smallerParagraph}>
+            			<ul key={index} className="list-unstyled resume-interests-list mb-0" style={smallerParagraph}>
                     <li className="mb-2">{skill.skill}</li>
                     </ul>
 									))}
@@ -258,9 +244,9 @@ const Resume3Component = (props) => {
 
               
 
-                <section className="languages-section py-2 ">
+                <section className="languages-section  ">
                   {/* ... (languages section) ... */}
-                  <h3 className="text-uppercase resume-section-heading mb-3 text-center" style={TitleColor}>Languages</h3>
+                  <h3 className="text-uppercase resume-section-heading text-center" style={TitleColor}>Languages</h3>
                   {props.languages.map((language ,index) => (                     
 										<ul key = {index} className="list-unstyled resume-languages-list mx-1 d-flex justify-content-center" style={smallerParagraph}>
 											<li className="">
@@ -271,8 +257,8 @@ const Resume3Component = (props) => {
                     ))}
                 </section>
 
-                <section className="skills-section py-3 text-center">
-										<h3 className="text-uppercase resume-section-heading mb-4" style={TitleColor}>Interests</h3>
+                <section className="skills-section text-center">
+										<h3 className="text-uppercase resume-section-heading " style={TitleColor}>Interests</h3>
                     {props.hobbies.map((hobbie ,index) => (
 										<ul key={index} className="list-unstyled resume-interests-list mb-0" style={smallerParagraph}>
 											<li className="mb-2">{hobbie}</li>
@@ -280,13 +266,9 @@ const Resume3Component = (props) => {
                     ))} 
 									</section>
                
-
-                
               </aside>
             </div>
           </div>
-
-          <hr />
 
           <div className="resume-footer text-center">
             {/* ... (footer content) ... */}
@@ -299,8 +281,10 @@ const Resume3Component = (props) => {
           </div>
 
         </div>
+      </WarningAlert>
         <button onClick={generatePDF} className="btn btn-secondary mt-3 mb-3 mx-auto d-block" type="button">Export PDF</button>
-      </div>
+  
+  </div>
 
    
   );

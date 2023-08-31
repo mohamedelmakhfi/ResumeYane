@@ -2,6 +2,8 @@ import html2canvas from "html2canvas";
 import { getIconClass } from "../../data/Datatemp";
 import { jsPDF } from 'jspdf';
 import './Resume1.css';
+import { useEffect, useRef, useState } from "react";
+import WarningAlert from "../../sections/WarningAlert/WarningAlert";
 
 const getIconClas = getIconClass;
 
@@ -62,8 +64,6 @@ const Resume1Component = (props) => {
     ...Colortext2,
   }
 
-  const a4Width = 595; 
-  const a4Height = 900;
 
   const smallerImageSize = {
       width: '100px',
@@ -78,9 +78,16 @@ const Resume1Component = (props) => {
 
   return (
     <>
-    <div className='container mt-3' >
-      
-        <div className='row' id='cvContainer' style={{ maxWidth: `${a4Width}px`, minWidth : `${a4Width}px` , maxHeight: `${a4Height}px` , minHeight : `${a4Height}px`, margin: '0 auto' }}>
+     <div className='container mt-3'>
+     <WarningAlert>
+        <div className='row' id='cvContainer'
+            style={{
+                    maxWidth: `${(854 * 210) / 297}px`,
+                    minWidth: `${(854 * 210) / 297}px`,
+                    maxHeight: '854px',
+                    minHeight: '854px',
+                    margin: '0 auto'
+            }}>
           <div className='col-lg-4 text-center py-4' style={background1color}>
               <div className='Header-left'>
                 <img className="img-thumbnail rounded-circle mb-2 " style={smallerImageSize}  
@@ -171,7 +178,7 @@ const Resume1Component = (props) => {
 
             <br />
 
-            <div className='text-left'>
+             <div className='text-left'>
               <h4 className='text-center' style={TitleColor}>Education</h4>
               <hr />
               {props.education.map((edu, index) => {
@@ -204,45 +211,45 @@ const Resume1Component = (props) => {
             </div>
             
             
-            <div className='text-left'>
+            {props.experience.length > 0 && <div className='text-left'>
               <h4 className='text-center' style={TitleColor}>Work Experience</h4>
               <hr />
               {props.experience.map((exp, index) => {
-        if (index % 2 === 0) {
-            const nextExp = props.experience[index + 1];
-            return (
-                <div key={index} className="row mb-3" style={smallerParagraph}>
-                    <div className="col-6">
-                        <div className="resume-position " style={{fontWeight : "bold"}}>{exp.position}</div>
-                        <div className="resume-company ">{exp.company}</div>
-                        <div className="resume-summary ">
-                            {exp.workSummary}
-                        </div>
-                        <div className="resume-exp-time ">
-                            {exp.startDate} - {exp.endDate}
-                        </div>
-                    </div>
-                    {nextExp && (
-                        <div className="col-6">
-                            <div className="resume-position " style={{fontWeight : "bold"}}>{nextExp.position}</div>
-                            <div className="resume-company ">{nextExp.company}</div>
-                            <div className="resume-summary ">
-                                {nextExp.workSummary}
-                            </div>
-                            <div className="resume-exp-time ">
-                                {nextExp.startDate} - {nextExp.endDate}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        } else {
-            return null;
-        }
-    })}         
-            </div>
+                        if (index % 2 === 0) {
+                            const nextExp = props.experience[index + 1];
+                            return (
+                                <div key={index} className="row mb-3" style={smallerParagraph}>
+                                    <div className="col-6">
+                                        <div className="resume-position " style={{fontWeight : "bold"}}>{exp.position}</div>
+                                        <div className="resume-company ">{exp.company}</div>
+                                        <div className="resume-summary ">
+                                            {exp.workSummary}
+                                        </div>
+                                        <div className="resume-exp-time ">
+                                            {exp.startDate} - {exp.endDate}
+                                        </div>
+                                    </div>
+                                    {nextExp && (
+                                        <div className="col-6">
+                                            <div className="resume-position " style={{fontWeight : "bold"}}>{nextExp.position}</div>
+                                            <div className="resume-company ">{nextExp.company}</div>
+                                            <div className="resume-summary ">
+                                                {nextExp.workSummary}
+                                            </div>
+                                            <div className="resume-exp-time ">
+                                                {nextExp.startDate} - {nextExp.endDate}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        } else {
+                            return null;
+                        }
+                    })}         
+            </div>}
 
-            <div className='d-flex justify-content-center flex-column'>
+            {props.projects.length > 0 && <div className='d-flex justify-content-center flex-column'>
               <h4 className='text-center' style={TitleColor}>projects</h4>
               <hr />
                 {props.projects.map((projet,index) => (
@@ -254,9 +261,9 @@ const Resume1Component = (props) => {
                   <h6 style={smallerParagraph}> {projet.description}</h6>
                   <br /></div>              
                 ))}  
-            </div>
+            </div>}
 
-            <div className='text-left d-flex justify-content-center flex-column'>
+            {props.certificates.length > 0 && <div className='text-left d-flex justify-content-center flex-column'>
               <h4 className='text-center' style={TitleColor}>Certificates</h4>
               <hr />
                 {props.certificates.map((certif,index) => (
@@ -266,11 +273,11 @@ const Resume1Component = (props) => {
                     <br />             
                   </div>
                 ))}  
-            </div>
+            </div>}
 
           </div>
         </div>
-        
+      </WarningAlert>
     </div>
     <button onClick={generatePDF} className="btn btn-secondary mt-3 mb-3 mx-auto d-block" type="button">Export PDF</button>
 

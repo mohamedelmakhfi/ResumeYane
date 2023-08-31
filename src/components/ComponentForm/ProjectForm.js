@@ -5,8 +5,26 @@ import { projectTypes } from '../../data/Datatemp';
 const projectType = projectTypes ;
 
 
-const ProjectForm = ({ projects, addProject, removeProject, handleProjectChange }) => {
-  
+const ProjectForm = ({ projects, setProjects }) => {
+
+  const addProject = () => {
+    setProjects([...projects, { projectName: '', projectType: '', description: '' }]);
+  };
+
+  const removeProject = () => {
+    if (projects.length > 0) {
+      const updatedProjects = projects.slice(0, projects.length - 1);
+      setProjects(updatedProjects);
+    }
+  };
+
+  const handleProjectChange = (index, field, value) => {
+    setProjects(prevProjects => {
+      const newProjects = [...prevProjects];
+      newProjects[index][field] = value;
+      return newProjects;
+    });
+  };
   return (
     <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">

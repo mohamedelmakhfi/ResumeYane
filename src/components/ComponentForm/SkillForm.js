@@ -1,7 +1,27 @@
 // SkillForm.js
 import React from 'react';
 
-const SkillForm = ({ skills, addSkill, removeSkill, handleSkillChange }) => {
+const SkillForm = ({ skills, setSkills }) => {
+
+  const addSkill = () => {
+    setSkills([...skills, { skill: '', level: 0 }]);
+  };
+  
+  const removeSkill = () => {
+    if (skills.length > 0) {
+      const updatedSkills = skills.slice(0, skills.length - 1);
+      setSkills(updatedSkills);
+    }
+  };
+  
+  const handleSkillChange = (index, field, value) => {
+    setSkills(prevSkills => {
+      const newSkills = [...prevSkills];
+      newSkills[index][field] = value;
+      return newSkills;
+    });
+  };
+
   return (
     <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">

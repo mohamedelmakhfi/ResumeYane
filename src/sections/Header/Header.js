@@ -16,7 +16,9 @@ const user = currentUser;
     <>
       <nav className="navbar navbar-expand-md navbar-dark rounded">
         <div className="container">
-          <Link to="/" className="navbar-brand text-dark">ResumeYane</Link>
+          <div>
+            <div id="logo"></div>
+            <Link to="/" className="navbar-brand text-dark">Resume<span className='difcolor'>Yane</span></Link></div>
           <button className="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu">
             <span className="navbar-toggler-icon"></span>
           </button>

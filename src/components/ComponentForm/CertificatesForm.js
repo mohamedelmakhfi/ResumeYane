@@ -4,7 +4,25 @@ import { popularCertificateCompanies } from '../../data/Datatemp';
 
 const popularCertificateCompanie = popularCertificateCompanies ;
 
-const CertificatesForm = ({ certificates, handleCertificateChange, addCertificate, removeCertificate}) => {
+const CertificatesForm = ({ certificates, setCertificates}) => {
+
+  const addCertificate = () => {
+    setCertificates([...certificates, { company: '', certificateLink: '' }]);
+  };
+
+  const removeCertificate = () => {
+    if (certificates.length > 0) {
+      setCertificates(certificates.slice(0, certificates.length - 1));
+    }
+  };
+
+  const handleCertificateChange = (index, field, value) => {
+    setCertificates(prevCertificates => {
+      const newCertificates = [...prevCertificates];
+      newCertificates[index][field] = value;
+      return newCertificates;
+    });
+  };
   return (
     <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">

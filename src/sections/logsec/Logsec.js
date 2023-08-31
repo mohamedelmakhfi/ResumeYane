@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react'
-import './Logsec.css'
+import { useContext, useState } from 'react';
+import './Logsec.css';
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, db, provider } from '../../firebase';
 import { Link , useNavigate } from 'react-router-dom';
@@ -75,7 +75,7 @@ const Logsec = () => {
   return (
     <div className="container-fluid ps-md-0">
             <div className="row g-0">
-                <div className="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+                <div className="d-none d-md-flex col-md-4 col-lg-6 bg-imagee"></div>
                 <div className="col-md-8 col-lg-6 ">
                   <div className="login d-flex align-items-center py-5">
                       <div className="container">

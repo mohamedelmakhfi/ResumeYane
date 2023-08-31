@@ -1,5 +1,5 @@
-ResumeCraft - Online Resume Builder with React.js firebase.
-== > ResumeYane
+ResumeCraft - Online Resume Builder with React.js / firebase.
+                    == > ResumeYane
 
 ************ pour login : **************
 email:

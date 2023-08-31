@@ -17,7 +17,6 @@ const Cardtemplate = (props) => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-
     try{
       //setResumenbr(props.id);
       await setDoc(doc(db , "resume" , currentUser.uid), {
@@ -34,36 +33,30 @@ const Cardtemplate = (props) => {
     <>
     {user === null ? (
       <>
-      <div  className="col-md-4 mx-4 d-flex align-items-center justify-content-center ">
-            <div
-              className={`card carddd text-black bg-blue`}
-              >
-
+      <div className="col-md-4 mx-4 d-flex align-items-center justify-content-center ">
+            <div className={`card carddd text-black bg-blue m-2`}>
               <img
                 id={props.id}
                 src={props.imageUrl}
                 alt={`Template `}
                 className="card-img"
-                style={{ height: '110%', objectFit: 'cover' }}
+                style={{  objectFit: 'cover' }}
               />
               <div className="overlay d-flex align-items-center justify-content-center">
                 <Link to="/Login" className="btn template btn-primary">Create this resume</Link>
               </div>
             </div>
-          </div>
+      </div>
       </>
     ) : (
       <div  className="col-md-4 mx-4 d-flex align-items-center justify-content-center ">
-            <div
-              className={`card  carddd text-black bg-blue`}
-              >
-
+            <div className={`card  carddd text-black bg-blue`}>
               <img
                 id={props.id}
                 src={props.imageUrl}
                 alt={`Template `}
                 className="card-img"
-                style={{ height: '100%', objectFit: 'cover' }}
+                style={{  objectFit: 'cover' }}
               />
               <div className="overlay d-flex align-items-center justify-content-center">
               <button className="btn template btn-primary" onClick={handleAdd}>Create this resume</button>              

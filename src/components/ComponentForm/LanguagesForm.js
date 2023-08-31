@@ -1,7 +1,26 @@
 // LanguagesForm.js
 import React from 'react';
 
-const LanguagesForm = ({ languages, handleLanguageChange, addField, removeField }) => {
+const LanguagesForm = ({ languages , setLanguages }) => {
+
+  const addField = () => {
+    setLanguages([...languages, { language: '', proficiency: '' }]); 
+  };
+
+  const removeField = () => {
+    if (languages.length > 1) {
+      const updatedLanguages = languages.slice(0, languages.length - 1);
+      setLanguages(updatedLanguages);
+    }
+  };
+
+  const handleLanguageChange = (index, field, value) => {
+    setLanguages(prevLanguages => {
+      const newLanguages = [...prevLanguages];
+      newLanguages[index][field] = value;
+      return newLanguages;
+    });
+  };
   return (
     <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">

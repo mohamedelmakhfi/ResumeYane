@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import  './Signsec.css'
+import  './Signsec.css';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../firebase';

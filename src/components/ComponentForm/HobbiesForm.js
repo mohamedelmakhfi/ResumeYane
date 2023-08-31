@@ -1,7 +1,25 @@
 // HobbiesForm.js
 import React from 'react';
 
-const HobbiesForm = ({ hobbies, handleHobbyChange, addHobby, removeHobby }) => {
+const HobbiesForm = ({ hobbies, setHobbies}) => {
+
+  const addHobby = () => {
+    setHobbies(prevHobbies => [...prevHobbies, '']);
+  };
+
+  const removeHobby = () => {
+    if (hobbies.length > 0) {
+      setHobbies(prevHobbies => prevHobbies.slice(0, hobbies.length - 1));
+    }
+  };
+
+  const handleHobbyChange = (index, value) => {
+    setHobbies(prevHobbies => {
+      const newHobbies = [...prevHobbies];
+      newHobbies[index] = value;
+      return newHobbies;
+    });
+  };
   return (
     <div className="row p-3">
       <div className="d-flex justify-content-between m-2 align-items-center difcolor btnhov experience">

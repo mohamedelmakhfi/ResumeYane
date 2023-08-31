@@ -8,9 +8,10 @@
     min-height: 70vh;
   }
   
-  .bg-image {
+  .bg-imagee {
     border-radius: 30px 30px 30px 30px;
-    background-image: url('../../assets/images/login.jpg');
+    background-image: url('../../assets/images/resumeLogin.jpg');
+    background-size: cover;
   }
   
   .login-heading {
