@@ -27,11 +27,8 @@ Nous accueillons les contributions de la communauté pour améliorer et dévelop
 
 ## Auteurs
 
-- [Votre nom](lien_vers_votre_profil_github) - Développeur principal
+- [El makhfi Mohamed](https://github.com/mohamedelmakhfi/ResumeYane) - Développeur principal
 
-## Licence
-
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ---
 
