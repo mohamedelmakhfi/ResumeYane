@@ -27,7 +27,7 @@ Nous accueillons les contributions de la communauté pour améliorer et dévelop
 
 ## Auteurs
 
-- [El makhfi Mohamed](https://github.com/mohamedelmakhfi/ResumeYane) - Développeur principal
+- [El makhfi Mohamed](https://github.com/mohamedelmakhfi) - Développeur principal
 
 
 ---
