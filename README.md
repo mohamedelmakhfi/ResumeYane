@@ -1,8 +1,5 @@
-ResumeCraft - Online Resume Builder with React.js / firebase.
-                    == > ResumeYane
+# ResumeCraft - Online Resume Builder with React.js / firebase.
 
 ************ pour login : **************
-email:
-mohamed@gmail.com
-password:
-123456
+<p>email: mohamed@gmail.com</p>
+<p>password: 123456</p>
